@@ -1,18 +1,18 @@
 """RAG pipeline: DuckDB for structured queries + ChromaDB for semantic search."""
 
 import os
+import sys
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 import duckdb
 import chromadb
 from chromadb.config import Settings
 from openai import OpenAI
 
-# Paths
-PROJECT_ROOT = Path(__file__).parent.parent
-DB_PATH = PROJECT_ROOT / "data" / "dubai_properties.duckdb"
-CHROMA_DIR = PROJECT_ROOT / "chroma_db"
+from config import DB_PATH, CHROMA_DIR, DEFAULT_MODEL, LLM_TEMPERATURE, LLM_MAX_TOKENS
 
 # Initialize clients
 duck_conn = duckdb.connect(str(DB_PATH), read_only=True)
@@ -209,7 +209,7 @@ def generate_answer(
     context: str,
     structured: Dict[str, Any],
     semantic: List[Dict[str, Any]],
-    model: str = "openai/gpt-4o-mini",
+    model: str = DEFAULT_MODEL,
 ) -> str:
     """Generate answer using LLM with retrieved context."""
     client = get_openai_client()
@@ -266,8 +266,8 @@ Answer the question using ONLY the data above. Cite specific sources."""
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
-        temperature=0.3,
-        max_tokens=2000,
+        temperature=LLM_TEMPERATURE,
+        max_tokens=LLM_MAX_TOKENS,
     )
 
     return response.choices[0].message.content
@@ -276,7 +276,7 @@ Answer the question using ONLY the data above. Cite specific sources."""
 def rag_query(
     query: str,
     filters: Optional[Dict[str, Any]] = None,
-    model: str = "openai/gpt-4o-mini",
+    model: str = DEFAULT_MODEL,
 ) -> Dict[str, Any]:
     """Full RAG pipeline: structured + semantic search + generation."""
     # Structured search (DuckDB)
@@ -305,7 +305,7 @@ def health_check() -> Dict[str, bool]:
     try:
         duck_conn.execute("SELECT 1")
         checks["duckdb"] = True
-    except Exception:
+    except duckdb.Error:
         checks["duckdb"] = False
 
     try:

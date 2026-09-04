@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+data/dubai_properties.duckdb
+data/processed/
+chroma_db/
+.env
+*.egg-info/

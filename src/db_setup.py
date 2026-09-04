@@ -1,13 +1,13 @@
 """DuckDB setup: schema, data loading, and analytical views."""
 
-import csv
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 import duckdb
 
-PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
-DB_PATH = PROJECT_ROOT / "data" / "dubai_properties.duckdb"
+from config import PROJECT_ROOT, DATA_DIR, DB_PATH, MANAGEMENT_FEE_RATE, VACANCY_RATE
 
 
 def init_db():
@@ -68,7 +68,7 @@ def init_db():
     # --- Analytical Views ---
 
     # Net yield calculation (deterministic, no LLM involvement)
-    conn.execute("""
+    conn.execute(f"""
         CREATE OR REPLACE VIEW v_net_yield AS
         SELECT
             t.transaction_id,
@@ -90,16 +90,16 @@ def init_db():
             ROUND(t.price_aed * t.roi_pct / 100) AS estimated_annual_rent,
             -- Annual service charges
             ROUND(t.size_sqft * t.service_charge_aed_sqft) AS annual_service_charges,
-            -- Management fees (8% of rent)
-            ROUND(t.price_aed * t.roi_pct / 100 * 0.08) AS management_fees,
-            -- Vacancy loss (5% of rent, ~2-3 weeks/year)
-            ROUND(t.price_aed * t.roi_pct / 100 * 0.05) AS vacancy_loss,
+            -- Management fees
+            ROUND(t.price_aed * t.roi_pct / 100 * {MANAGEMENT_FEE_RATE}) AS management_fees,
+            -- Vacancy loss (~2-3 weeks/year)
+            ROUND(t.price_aed * t.roi_pct / 100 * {VACANCY_RATE}) AS vacancy_loss,
             -- Net yield
             ROUND(
                 (t.price_aed * t.roi_pct / 100
                  - t.size_sqft * t.service_charge_aed_sqft
-                 - t.price_aed * t.roi_pct / 100 * 0.08
-                 - t.price_aed * t.roi_pct / 100 * 0.05
+                 - t.price_aed * t.roi_pct / 100 * {MANAGEMENT_FEE_RATE}
+                 - t.price_aed * t.roi_pct / 100 * {VACANCY_RATE}
                 ) / t.price_aed * 100,
                 2
             ) AS net_yield_pct,
