@@ -1,0 +1,1242 @@
+[
+  {
+    "id": "TRX-001",
+    "text": "Property Transaction in Downtown Dubai: 1-bedroom apartment priced at AED 1,450,000, size 720 sqft, ROI 7.2%, developer: Emaar, status: Ready, date: 2024-01-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Downtown Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1450000,
+      "size_sqft": 720,
+      "roi_pct": 7.2,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-01-15"
+    }
+  },
+  {
+    "id": "TRX-002",
+    "text": "Property Transaction in Downtown Dubai: 2-bedroom apartment priced at AED 2,800,000, size 1250 sqft, ROI 6.8%, developer: Emaar, status: Ready, date: 2024-02-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Downtown Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 2800000,
+      "size_sqft": 1250,
+      "roi_pct": 6.8,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-02-10"
+    }
+  },
+  {
+    "id": "TRX-003",
+    "text": "Property Transaction in Dubai Marina: 1-bedroom apartment priced at AED 1,350,000, size 680 sqft, ROI 7.5%, developer: DAMAC, status: Ready, date: 2024-01-22.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Marina",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1350000,
+      "size_sqft": 680,
+      "roi_pct": 7.5,
+      "developer": "DAMAC",
+      "handover_status": "Ready",
+      "date": "2024-01-22"
+    }
+  },
+  {
+    "id": "TRX-004",
+    "text": "Property Transaction in Dubai Marina: 2-bedroom apartment priced at AED 2,100,000, size 1100 sqft, ROI 6.9%, developer: Select Group, status: Ready, date: 2024-03-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Marina",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 2100000,
+      "size_sqft": 1100,
+      "roi_pct": 6.9,
+      "developer": "Select Group",
+      "handover_status": "Ready",
+      "date": "2024-03-05"
+    }
+  },
+  {
+    "id": "TRX-005",
+    "text": "Property Transaction in Palm Jumeirah: 4-bedroom villa priced at AED 12,500,000, size 5200 sqft, ROI 5.2%, developer: Nakheel, status: Ready, date: 2024-02-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Palm Jumeirah",
+      "property_type": "Villa",
+      "bedrooms": 4,
+      "price_aed": 12500000,
+      "size_sqft": 5200,
+      "roi_pct": 5.2,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-02-28"
+    }
+  },
+  {
+    "id": "TRX-006",
+    "text": "Property Transaction in Dubai Hills Estate: 1-bedroom apartment priced at AED 1,200,000, size 650 sqft, ROI 7.8%, developer: Emaar, status: Off-Plan, date: 2024-01-30.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Hills Estate",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1200000,
+      "size_sqft": 650,
+      "roi_pct": 7.8,
+      "developer": "Emaar",
+      "handover_status": "Off-Plan",
+      "date": "2024-01-30"
+    }
+  },
+  {
+    "id": "TRX-007",
+    "text": "Property Transaction in Dubai Hills Estate: 2-bedroom apartment priced at AED 1,950,000, size 1050 sqft, ROI 7.1%, developer: Emaar, status: Off-Plan, date: 2024-04-12.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Hills Estate",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1950000,
+      "size_sqft": 1050,
+      "roi_pct": 7.1,
+      "developer": "Emaar",
+      "handover_status": "Off-Plan",
+      "date": "2024-04-12"
+    }
+  },
+  {
+    "id": "TRX-008",
+    "text": "Property Transaction in JVC (Jumeirah Village Circle): 1-bedroom apartment priced at AED 780,000, size 520 sqft, ROI 9.2%, developer: Nakheel, status: Ready, date: 2024-02-18.",
+    "metadata": {
+      "source": "transactions",
+      "community": "JVC (Jumeirah Village Circle)",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 780000,
+      "size_sqft": 520,
+      "roi_pct": 9.2,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-02-18"
+    }
+  },
+  {
+    "id": "TRX-009",
+    "text": "Property Transaction in JVC (Jumeirah Village Circle): 0-bedroom studio priced at AED 550,000, size 380 sqft, ROI 8.8%, developer: Binghatti, status: Ready, date: 2024-03-22.",
+    "metadata": {
+      "source": "transactions",
+      "community": "JVC (Jumeirah Village Circle)",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 550000,
+      "size_sqft": 380,
+      "roi_pct": 8.8,
+      "developer": "Binghatti",
+      "handover_status": "Ready",
+      "date": "2024-03-22"
+    }
+  },
+  {
+    "id": "TRX-010",
+    "text": "Property Transaction in MBR City (Mohammed Bin Rashid): 2-bedroom apartment priced at AED 2,200,000, size 1150 sqft, ROI 6.5%, developer: Meraas, status: Off-Plan, date: 2024-01-08.",
+    "metadata": {
+      "source": "transactions",
+      "community": "MBR City (Mohammed Bin Rashid)",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 2200000,
+      "size_sqft": 1150,
+      "roi_pct": 6.5,
+      "developer": "Meraas",
+      "handover_status": "Off-Plan",
+      "date": "2024-01-08"
+    }
+  },
+  {
+    "id": "TRX-011",
+    "text": "Property Transaction in Downtown Dubai: 3-bedroom penthouse priced at AED 8,500,000, size 3200 sqft, ROI 5.8%, developer: Emaar, status: Ready, date: 2024-05-01.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Downtown Dubai",
+      "property_type": "Penthouse",
+      "bedrooms": 3,
+      "price_aed": 8500000,
+      "size_sqft": 3200,
+      "roi_pct": 5.8,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-05-01"
+    }
+  },
+  {
+    "id": "TRX-012",
+    "text": "Property Transaction in Dubai Marina: 0-bedroom studio priced at AED 920,000, size 450 sqft, ROI 7.9%, developer: Emaar, status: Ready, date: 2024-02-14.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Marina",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 920000,
+      "size_sqft": 450,
+      "roi_pct": 7.9,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-02-14"
+    }
+  },
+  {
+    "id": "TRX-013",
+    "text": "Property Transaction in Business Bay: 1-bedroom apartment priced at AED 1,150,000, size 640 sqft, ROI 7.0%, developer: Omniyat, status: Ready, date: 2024-03-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Business Bay",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1150000,
+      "size_sqft": 640,
+      "roi_pct": 7.0,
+      "developer": "Omniyat",
+      "handover_status": "Ready",
+      "date": "2024-03-10"
+    }
+  },
+  {
+    "id": "TRX-014",
+    "text": "Property Transaction in Business Bay: 2-bedroom apartment priced at AED 1,850,000, size 1020 sqft, ROI 6.7%, developer: DAMAC, status: Ready, date: 2024-04-20.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Business Bay",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1850000,
+      "size_sqft": 1020,
+      "roi_pct": 6.7,
+      "developer": "DAMAC",
+      "handover_status": "Ready",
+      "date": "2024-04-20"
+    }
+  },
+  {
+    "id": "TRX-015",
+    "text": "Property Transaction in Arabian Ranches: 3-bedroom villa priced at AED 3,200,000, size 2800 sqft, ROI 6.2%, developer: Emaar, status: Ready, date: 2024-01-25.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Arabian Ranches",
+      "property_type": "Villa",
+      "bedrooms": 3,
+      "price_aed": 3200000,
+      "size_sqft": 2800,
+      "roi_pct": 6.2,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-01-25"
+    }
+  },
+  {
+    "id": "TRX-016",
+    "text": "Property Transaction in Arabian Ranches: 4-bedroom villa priced at AED 4,800,000, size 3800 sqft, ROI 5.9%, developer: Emaar, status: Ready, date: 2024-06-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Arabian Ranches",
+      "property_type": "Villa",
+      "bedrooms": 4,
+      "price_aed": 4800000,
+      "size_sqft": 3800,
+      "roi_pct": 5.9,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-06-15"
+    }
+  },
+  {
+    "id": "TRX-017",
+    "text": "Property Transaction in Sports City: 1-bedroom apartment priced at AED 720,000, size 510 sqft, ROI 8.5%, developer: Union Properties, status: Ready, date: 2024-02-20.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Sports City",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 720000,
+      "size_sqft": 510,
+      "roi_pct": 8.5,
+      "developer": "Union Properties",
+      "handover_status": "Ready",
+      "date": "2024-02-20"
+    }
+  },
+  {
+    "id": "TRX-018",
+    "text": "Property Transaction in Sports City: 2-bedroom apartment priced at AED 1,100,000, size 820 sqft, ROI 7.8%, developer: Select Group, status: Ready, date: 2024-03-18.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Sports City",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1100000,
+      "size_sqft": 820,
+      "roi_pct": 7.8,
+      "developer": "Select Group",
+      "handover_status": "Ready",
+      "date": "2024-03-18"
+    }
+  },
+  {
+    "id": "TRX-019",
+    "text": "Property Transaction in Discovery Gardens: 1-bedroom apartment priced at AED 680,000, size 490 sqft, ROI 8.7%, developer: Nakheel, status: Ready, date: 2024-04-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Discovery Gardens",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 680000,
+      "size_sqft": 490,
+      "roi_pct": 8.7,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-04-05"
+    }
+  },
+  {
+    "id": "TRX-020",
+    "text": "Property Transaction in Discovery Gardens: 0-bedroom studio priced at AED 480,000, size 350 sqft, ROI 9.1%, developer: Nakheel, status: Ready, date: 2024-01-12.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Discovery Gardens",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 480000,
+      "size_sqft": 350,
+      "roi_pct": 9.1,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-01-12"
+    }
+  },
+  {
+    "id": "TRX-021",
+    "text": "Property Transaction in JLT (Jumeirah Lake Towers): 1-bedroom apartment priced at AED 1,050,000, size 620 sqft, ROI 7.4%, developer: DAMAC, status: Ready, date: 2024-05-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "JLT (Jumeirah Lake Towers)",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1050000,
+      "size_sqft": 620,
+      "roi_pct": 7.4,
+      "developer": "DAMAC",
+      "handover_status": "Ready",
+      "date": "2024-05-10"
+    }
+  },
+  {
+    "id": "TRX-022",
+    "text": "Property Transaction in JLT (Jumeirah Lake Towers): 2-bedroom apartment priced at AED 1,650,000, size 980 sqft, ROI 7.0%, developer: DMCC, status: Ready, date: 2024-02-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "JLT (Jumeirah Lake Towers)",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1650000,
+      "size_sqft": 980,
+      "roi_pct": 7.0,
+      "developer": "DMCC",
+      "handover_status": "Ready",
+      "date": "2024-02-28"
+    }
+  },
+  {
+    "id": "TRX-023",
+    "text": "Property Transaction in The Springs: 2-bedroom apartment priced at AED 1,400,000, size 1200 sqft, ROI 7.3%, developer: Emaar, status: Ready, date: 2024-03-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "The Springs",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1400000,
+      "size_sqft": 1200,
+      "roi_pct": 7.3,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-03-15"
+    }
+  },
+  {
+    "id": "TRX-024",
+    "text": "Property Transaction in The Springs: 3-bedroom villa priced at AED 2,800,000, size 2400 sqft, ROI 6.5%, developer: Emaar, status: Ready, date: 2024-04-01.",
+    "metadata": {
+      "source": "transactions",
+      "community": "The Springs",
+      "property_type": "Villa",
+      "bedrooms": 3,
+      "price_aed": 2800000,
+      "size_sqft": 2400,
+      "roi_pct": 6.5,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-04-01"
+    }
+  },
+  {
+    "id": "TRX-025",
+    "text": "Property Transaction in Al Barsha: 1-bedroom apartment priced at AED 950,000, size 580 sqft, ROI 7.6%, developer: Various, status: Ready, date: 2024-01-20.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Al Barsha",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 950000,
+      "size_sqft": 580,
+      "roi_pct": 7.6,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-01-20"
+    }
+  },
+  {
+    "id": "TRX-026",
+    "text": "Property Transaction in Al Barsha: 2-bedroom apartment priced at AED 1,500,000, size 950 sqft, ROI 7.1%, developer: Various, status: Ready, date: 2024-06-01.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Al Barsha",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1500000,
+      "size_sqft": 950,
+      "roi_pct": 7.1,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-06-01"
+    }
+  },
+  {
+    "id": "TRX-027",
+    "text": "Property Transaction in Deira: 1-bedroom apartment priced at AED 650,000, size 470 sqft, ROI 8.9%, developer: Various, status: Ready, date: 2024-02-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Deira",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 650000,
+      "size_sqft": 470,
+      "roi_pct": 8.9,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-02-05"
+    }
+  },
+  {
+    "id": "TRX-028",
+    "text": "Property Transaction in Deira: 0-bedroom studio priced at AED 420,000, size 320 sqft, ROI 9.3%, developer: Various, status: Ready, date: 2024-03-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Deira",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 420000,
+      "size_sqft": 320,
+      "roi_pct": 9.3,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-03-28"
+    }
+  },
+  {
+    "id": "TRX-029",
+    "text": "Property Transaction in Bur Dubai: 1-bedroom apartment priced at AED 800,000, size 530 sqft, ROI 8.1%, developer: Various, status: Ready, date: 2024-04-18.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Bur Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 800000,
+      "size_sqft": 530,
+      "roi_pct": 8.1,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-04-18"
+    }
+  },
+  {
+    "id": "TRX-030",
+    "text": "Property Transaction in Bur Dubai: 2-bedroom apartment priced at AED 1,300,000, size 880 sqft, ROI 7.5%, developer: Various, status: Ready, date: 2024-05-22.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Bur Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1300000,
+      "size_sqft": 880,
+      "roi_pct": 7.5,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-05-22"
+    }
+  },
+  {
+    "id": "TRX-031",
+    "text": "Property Transaction in International City: 1-bedroom apartment priced at AED 480,000, size 420 sqft, ROI 9.8%, developer: Nakheel, status: Ready, date: 2024-01-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "International City",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 480000,
+      "size_sqft": 420,
+      "roi_pct": 9.8,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-01-05"
+    }
+  },
+  {
+    "id": "TRX-032",
+    "text": "Property Transaction in International City: 0-bedroom studio priced at AED 320,000, size 290 sqft, ROI 10.2%, developer: Nakheel, status: Ready, date: 2024-06-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "International City",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 320000,
+      "size_sqft": 290,
+      "roi_pct": 10.2,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-06-10"
+    }
+  },
+  {
+    "id": "TRX-033",
+    "text": "Property Transaction in Dubai Silicon Oasis: 1-bedroom apartment priced at AED 550,000, size 460 sqft, ROI 9.0%, developer: Various, status: Ready, date: 2024-02-12.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Silicon Oasis",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 550000,
+      "size_sqft": 460,
+      "roi_pct": 9.0,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-02-12"
+    }
+  },
+  {
+    "id": "TRX-034",
+    "text": "Property Transaction in Dubai Silicon Oasis: 2-bedroom apartment priced at AED 850,000, size 750 sqft, ROI 8.4%, developer: Various, status: Ready, date: 2024-03-30.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Silicon Oasis",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 850000,
+      "size_sqft": 750,
+      "roi_pct": 8.4,
+      "developer": "Various",
+      "handover_status": "Ready",
+      "date": "2024-03-30"
+    }
+  },
+  {
+    "id": "TRX-035",
+    "text": "Property Transaction in Tilal Al Ghaf: 2-bedroom apartment priced at AED 1,800,000, size 1100 sqft, ROI 7.2%, developer: Meraas, status: Off-Plan, date: 2024-04-25.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Tilal Al Ghaf",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1800000,
+      "size_sqft": 1100,
+      "roi_pct": 7.2,
+      "developer": "Meraas",
+      "handover_status": "Off-Plan",
+      "date": "2024-04-25"
+    }
+  },
+  {
+    "id": "TRX-036",
+    "text": "Property Transaction in Tilal Al Ghaf: 4-bedroom villa priced at AED 5,500,000, size 4200 sqft, ROI 5.5%, developer: Meraas, status: Off-Plan, date: 2024-01-18.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Tilal Al Ghaf",
+      "property_type": "Villa",
+      "bedrooms": 4,
+      "price_aed": 5500000,
+      "size_sqft": 4200,
+      "roi_pct": 5.5,
+      "developer": "Meraas",
+      "handover_status": "Off-Plan",
+      "date": "2024-01-18"
+    }
+  },
+  {
+    "id": "TRX-037",
+    "text": "Property Transaction in DAMAC Hills 2: 1-bedroom apartment priced at AED 680,000, size 490 sqft, ROI 8.6%, developer: DAMAC, status: Off-Plan, date: 2024-05-08.",
+    "metadata": {
+      "source": "transactions",
+      "community": "DAMAC Hills 2",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 680000,
+      "size_sqft": 490,
+      "roi_pct": 8.6,
+      "developer": "DAMAC",
+      "handover_status": "Off-Plan",
+      "date": "2024-05-08"
+    }
+  },
+  {
+    "id": "TRX-038",
+    "text": "Property Transaction in DAMAC Hills 2: 2-bedroom apartment priced at AED 1,050,000, size 780 sqft, ROI 8.0%, developer: DAMAC, status: Off-Plan, date: 2024-02-22.",
+    "metadata": {
+      "source": "transactions",
+      "community": "DAMAC Hills 2",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1050000,
+      "size_sqft": 780,
+      "roi_pct": 8.0,
+      "developer": "DAMAC",
+      "handover_status": "Off-Plan",
+      "date": "2024-02-22"
+    }
+  },
+  {
+    "id": "TRX-039",
+    "text": "Property Transaction in Dubai Creek Harbour: 1-bedroom apartment priced at AED 1,300,000, size 690 sqft, ROI 7.3%, developer: Emaar, status: Off-Plan, date: 2024-03-12.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Creek Harbour",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1300000,
+      "size_sqft": 690,
+      "roi_pct": 7.3,
+      "developer": "Emaar",
+      "handover_status": "Off-Plan",
+      "date": "2024-03-12"
+    }
+  },
+  {
+    "id": "TRX-040",
+    "text": "Property Transaction in Dubai Creek Harbour: 2-bedroom apartment priced at AED 2,000,000, size 1080 sqft, ROI 6.9%, developer: Emaar, status: Off-Plan, date: 2024-06-20.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Creek Harbour",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 2000000,
+      "size_sqft": 1080,
+      "roi_pct": 6.9,
+      "developer": "Emaar",
+      "handover_status": "Off-Plan",
+      "date": "2024-06-20"
+    }
+  },
+  {
+    "id": "TRX-041",
+    "text": "Property Transaction in Bluewaters Island: 2-bedroom apartment priced at AED 3,500,000, size 1400 sqft, ROI 6.1%, developer: Meraas, status: Ready, date: 2024-01-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Bluewaters Island",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 3500000,
+      "size_sqft": 1400,
+      "roi_pct": 6.1,
+      "developer": "Meraas",
+      "handover_status": "Ready",
+      "date": "2024-01-28"
+    }
+  },
+  {
+    "id": "TRX-042",
+    "text": "Property Transaction in Bluewaters Island: 3-bedroom apartment priced at AED 5,200,000, size 2100 sqft, ROI 5.7%, developer: Meraas, status: Ready, date: 2024-04-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Bluewaters Island",
+      "property_type": "Apartment",
+      "bedrooms": 3,
+      "price_aed": 5200000,
+      "size_sqft": 2100,
+      "roi_pct": 5.7,
+      "developer": "Meraas",
+      "handover_status": "Ready",
+      "date": "2024-04-15"
+    }
+  },
+  {
+    "id": "TRX-043",
+    "text": "Property Transaction in Meydan: 1-bedroom apartment priced at AED 1,100,000, size 620 sqft, ROI 7.4%, developer: Meydan, status: Off-Plan, date: 2024-05-30.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Meydan",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1100000,
+      "size_sqft": 620,
+      "roi_pct": 7.4,
+      "developer": "Meydan",
+      "handover_status": "Off-Plan",
+      "date": "2024-05-30"
+    }
+  },
+  {
+    "id": "TRX-044",
+    "text": "Property Transaction in Meydan: 2-bedroom apartment priced at AED 1,750,000, size 1000 sqft, ROI 7.0%, developer: Meydan, status: Off-Plan, date: 2024-02-08.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Meydan",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1750000,
+      "size_sqft": 1000,
+      "roi_pct": 7.0,
+      "developer": "Meydan",
+      "handover_status": "Off-Plan",
+      "date": "2024-02-08"
+    }
+  },
+  {
+    "id": "TRX-045",
+    "text": "Property Transaction in Al Furjan: 1-bedroom apartment priced at AED 980,000, size 570 sqft, ROI 7.7%, developer: Nakheel, status: Ready, date: 2024-03-25.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Al Furjan",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 980000,
+      "size_sqft": 570,
+      "roi_pct": 7.7,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-03-25"
+    }
+  },
+  {
+    "id": "TRX-046",
+    "text": "Property Transaction in Al Furjan: 2-bedroom apartment priced at AED 1,550,000, size 920 sqft, ROI 7.2%, developer: Nakheel, status: Ready, date: 2024-06-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Al Furjan",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1550000,
+      "size_sqft": 920,
+      "roi_pct": 7.2,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-06-05"
+    }
+  },
+  {
+    "id": "TRX-047",
+    "text": "Property Transaction in Dubai South: 1-bedroom apartment priced at AED 620,000, size 470 sqft, ROI 9.4%, developer: Dubai South, status: Off-Plan, date: 2024-01-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai South",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 620000,
+      "size_sqft": 470,
+      "roi_pct": 9.4,
+      "developer": "Dubai South",
+      "handover_status": "Off-Plan",
+      "date": "2024-01-10"
+    }
+  },
+  {
+    "id": "TRX-048",
+    "text": "Property Transaction in Dubai South: 2-bedroom apartment priced at AED 950,000, size 720 sqft, ROI 8.7%, developer: Dubai South, status: Off-Plan, date: 2024-04-08.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai South",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 950000,
+      "size_sqft": 720,
+      "roi_pct": 8.7,
+      "developer": "Dubai South",
+      "handover_status": "Off-Plan",
+      "date": "2024-04-08"
+    }
+  },
+  {
+    "id": "TRX-049",
+    "text": "Property Transaction in Town Square: 1-bedroom apartment priced at AED 650,000, size 480 sqft, ROI 9.0%, developer: Nshama, status: Ready, date: 2024-02-25.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Town Square",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 650000,
+      "size_sqft": 480,
+      "roi_pct": 9.0,
+      "developer": "Nshama",
+      "handover_status": "Ready",
+      "date": "2024-02-25"
+    }
+  },
+  {
+    "id": "TRX-050",
+    "text": "Property Transaction in Town Square: 2-bedroom apartment priced at AED 980,000, size 750 sqft, ROI 8.3%, developer: Nshama, status: Ready, date: 2024-05-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Town Square",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 980000,
+      "size_sqft": 750,
+      "roi_pct": 8.3,
+      "developer": "Nshama",
+      "handover_status": "Ready",
+      "date": "2024-05-15"
+    }
+  },
+  {
+    "id": "TRX-051",
+    "text": "Property Transaction in Downtown Dubai: 2-bedroom apartment priced at AED 3,200,000, size 1350 sqft, ROI 6.5%, developer: Emaar, status: Ready, date: 2024-06-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Downtown Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 3200000,
+      "size_sqft": 1350,
+      "roi_pct": 6.5,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-06-28"
+    }
+  },
+  {
+    "id": "TRX-052",
+    "text": "Property Transaction in Dubai Marina: 3-bedroom apartment priced at AED 3,200,000, size 1650 sqft, ROI 6.4%, developer: Emaar, status: Ready, date: 2024-03-08.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Marina",
+      "property_type": "Apartment",
+      "bedrooms": 3,
+      "price_aed": 3200000,
+      "size_sqft": 1650,
+      "roi_pct": 6.4,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-03-08"
+    }
+  },
+  {
+    "id": "TRX-053",
+    "text": "Property Transaction in Palm Jumeirah: 2-bedroom apartment priced at AED 6,500,000, size 2200 sqft, ROI 5.5%, developer: Nakheel, status: Ready, date: 2024-04-30.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Palm Jumeirah",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 6500000,
+      "size_sqft": 2200,
+      "roi_pct": 5.5,
+      "developer": "Nakheel",
+      "handover_status": "Ready",
+      "date": "2024-04-30"
+    }
+  },
+  {
+    "id": "TRX-054",
+    "text": "Property Transaction in Dubai Hills Estate: 3-bedroom apartment priced at AED 2,800,000, size 1500 sqft, ROI 6.8%, developer: Emaar, status: Off-Plan, date: 2024-01-15.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Hills Estate",
+      "property_type": "Apartment",
+      "bedrooms": 3,
+      "price_aed": 2800000,
+      "size_sqft": 1500,
+      "roi_pct": 6.8,
+      "developer": "Emaar",
+      "handover_status": "Off-Plan",
+      "date": "2024-01-15"
+    }
+  },
+  {
+    "id": "TRX-055",
+    "text": "Property Transaction in JVC (Jumeirah Village Circle): 2-bedroom apartment priced at AED 1,050,000, size 700 sqft, ROI 8.4%, developer: Binghatti, status: Ready, date: 2024-06-12.",
+    "metadata": {
+      "source": "transactions",
+      "community": "JVC (Jumeirah Village Circle)",
+      "property_type": "Apartment",
+      "bedrooms": 2,
+      "price_aed": 1050000,
+      "size_sqft": 700,
+      "roi_pct": 8.4,
+      "developer": "Binghatti",
+      "handover_status": "Ready",
+      "date": "2024-06-12"
+    }
+  },
+  {
+    "id": "TRX-056",
+    "text": "Property Transaction in Business Bay: 0-bedroom studio priced at AED 850,000, size 420 sqft, ROI 7.5%, developer: Omniyat, status: Ready, date: 2024-02-18.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Business Bay",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 850000,
+      "size_sqft": 420,
+      "roi_pct": 7.5,
+      "developer": "Omniyat",
+      "handover_status": "Ready",
+      "date": "2024-02-18"
+    }
+  },
+  {
+    "id": "TRX-057",
+    "text": "Property Transaction in Downtown Dubai: 1-bedroom apartment priced at AED 1,600,000, size 780 sqft, ROI 7.0%, developer: Emaar, status: Ready, date: 2024-05-05.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Downtown Dubai",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1600000,
+      "size_sqft": 780,
+      "roi_pct": 7.0,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-05-05"
+    }
+  },
+  {
+    "id": "TRX-058",
+    "text": "Property Transaction in Dubai Marina: 1-bedroom apartment priced at AED 1,400,000, size 700 sqft, ROI 7.3%, developer: DAMAC, status: Ready, date: 2024-04-10.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Dubai Marina",
+      "property_type": "Apartment",
+      "bedrooms": 1,
+      "price_aed": 1400000,
+      "size_sqft": 700,
+      "roi_pct": 7.3,
+      "developer": "DAMAC",
+      "handover_status": "Ready",
+      "date": "2024-04-10"
+    }
+  },
+  {
+    "id": "TRX-059",
+    "text": "Property Transaction in Arabian Ranches: 5-bedroom villa priced at AED 6,200,000, size 4800 sqft, ROI 5.6%, developer: Emaar, status: Ready, date: 2024-06-01.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Arabian Ranches",
+      "property_type": "Villa",
+      "bedrooms": 5,
+      "price_aed": 6200000,
+      "size_sqft": 4800,
+      "roi_pct": 5.6,
+      "developer": "Emaar",
+      "handover_status": "Ready",
+      "date": "2024-06-01"
+    }
+  },
+  {
+    "id": "TRX-060",
+    "text": "Property Transaction in Sports City: 0-bedroom studio priced at AED 520,000, size 370 sqft, ROI 8.9%, developer: Union Properties, status: Ready, date: 2024-01-28.",
+    "metadata": {
+      "source": "transactions",
+      "community": "Sports City",
+      "property_type": "Studio",
+      "bedrooms": 0,
+      "price_aed": 520000,
+      "size_sqft": 370,
+      "roi_pct": 8.9,
+      "developer": "Union Properties",
+      "handover_status": "Ready",
+      "date": "2024-01-28"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_0",
+    "text": "[Market Report: Downtown] Introduction: # Downtown Dubai Market Report - Q1 2024",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Introduction",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_1",
+    "text": "[Market Report: Downtown] Executive Summary: Downtown Dubai continues to be the emirate's most prestigious address, anchored by the iconic Burj Khalifa and Dubai Mall. Q1 2024 saw strong demand from both end-users and investors, with prices appreciating 8-12% year-over-year.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Executive Summary",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_2",
+    "text": "[Market Report: Downtown] Key Metrics: - **Average Price per sqft:** AED 2,100 - AED 2,800\n- **Average 1BR Price:** AED 1.4M - AED 1.8M\n- **Average 2BR Price:** AED 2.5M - AED 3.5M\n- **Rental Yield:** 6.5% - 7.5%\n- **Occupancy Rate:** 92%\n- **Transaction Volume:** Up 15% vs Q4 2023",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Key Metrics",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_3",
+    "text": "[Market Report: Downtown] Price Trends: Downtown Dubai has experienced steady price appreciation driven by limited new supply and sustained demand from international investors. The off-plan segment has been particularly active, with Emaar's latest launches selling out within hours.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Price Trends",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_4",
+    "text": "[Market Report: Downtown] Investment Highlights: 1. **Premium Location:** Walking distance to Dubai Mall and Burj Khalifa\n2. **Strong Rental Demand:** High occupancy rates driven by tourism and business travelers\n3. **Capital Appreciation:** Consistent 8-12% annual price growth\n4. **Developer Premium:** Emaar properties command 10-15% premium over comparable units",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Investment Highlights",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_5",
+    "text": "[Market Report: Downtown] Risk Factors: - Premium pricing limits entry point for small investors\n- Supply of new luxury units may soften rental yields\n- Service charges among the highest in Dubai (AED 18-25/sqft/year)",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Risk Factors",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_downtown_section_6",
+    "text": "[Market Report: Downtown] Recommendation: Downtown Dubai remains a safe-haven investment for capital preservation. Best suited for investors with AED 1.5M+ budget seeking stable yields and long-term appreciation. 1BR apartments offer the best balance of entry price and rental yield.\n\n---\n\n*Report compiled from Dubai Land Department transaction data and market analyst reports.*",
+    "metadata": {
+      "source": "market_report",
+      "community": "Downtown",
+      "section": "Recommendation",
+      "filename": "market_report_downtown.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_0",
+    "text": "[Market Report: Dubai Hills] Introduction: # Dubai Hills Estate Market Report - Q1 2024",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Introduction",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_1",
+    "text": "[Market Report: Dubai Hills] Executive Summary: Dubai Hills Estate, developed by Emaar, has become the go-to master-planned community for families seeking quality living at competitive prices. The community saw strong off-plan activity in Q1 2024, with several new phases launched.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Executive Summary",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_2",
+    "text": "[Market Report: Dubai Hills] Key Metrics: - **Average Price per sqft:** AED 1,400 - AED 1,900\n- **Average 1BR Price:** AED 1.1M - AED 1.4M\n- **Average 2BR Price:** AED 1.7M - AED 2.2M\n- **Average 3BR Price:** AED 2.5M - AED 3.2M\n- **Rental Yield:** 6.8% - 7.5%\n- **Occupancy Rate:** 88%\n- **Transaction Volume:** Up 25% vs Q4 2023",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Key Metrics",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_3",
+    "text": "[Market Report: Dubai Hills] Price Trends: Dubai Hills Estate has experienced consistent price appreciation driven by its family-friendly amenities, including Dubai Hills Mall, schools, and extensive green spaces. The community offers a suburban lifestyle within 15 minutes of Downtown Dubai.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Price Trends",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_4",
+    "text": "[Market Report: Dubai Hills] Investment Highlights: 1. **Master-Planned Community:** Parks, schools, malls, and golf course\n2. **Emaar Quality:** Premium build quality and community management\n3. **Family-Oriented:** Strong demand from families with children\n4. **Strategic Location:** Easy access to Al Khail Road and Sheikh Zayed Road",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Investment Highlights",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_5",
+    "text": "[Market Report: Dubai Hills] Risk Factors: - Higher prices compared to other suburban communities\n- Off-plan purchases carry completion risk\n- Limited nightlife and entertainment options",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Risk Factors",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_dubai_hills_section_6",
+    "text": "[Market Report: Dubai Hills] Recommendation: Dubai Hills Estate is ideal for investors targeting family-oriented tenants seeking quality living. 2BR and 3BR units command strong rental demand. The community offers good capital appreciation potential with lower volatility compared to freehold areas.\n\n---\n\n*Report compiled from Dubai Land Department transaction data and market analyst reports.*",
+    "metadata": {
+      "source": "market_report",
+      "community": "Dubai Hills",
+      "section": "Recommendation",
+      "filename": "market_report_dubai_hills.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_0",
+    "text": "[Market Report: Jvc] Introduction: # JVC (Jumeirah Village Circle) Market Report - Q1 2024",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Introduction",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_1",
+    "text": "[Market Report: Jvc] Executive Summary: JVC has emerged as one of Dubai's top-performing affordable investment destinations. The community delivered some of the highest rental yields in Q1 2024, driven by competitive entry prices and growing demand from young families and professionals.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Executive Summary",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_2",
+    "text": "[Market Report: Jvc] Key Metrics: - **Average Price per sqft:** AED 1,000 - AED 1,400\n- **Average Studio Price:** AED 500K - AED 650K\n- **Average 1BR Price:** AED 700K - AED 900K\n- **Average 2BR Price:** AED 1.0M - AED 1.3M\n- **Rental Yield:** 8.5% - 9.5%\n- **Occupancy Rate:** 85%\n- **Transaction Volume:** Up 35% vs Q4 2023",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Key Metrics",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_3",
+    "text": "[Market Report: Jvc] Price Trends: JVC continues to offer some of the lowest entry prices in Dubai while delivering above-average yields. The community has benefited from infrastructure improvements, including new roads and retail outlets. Prices have appreciated 15-20% over the past year but remain well below established communities.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Price Trends",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_4",
+    "text": "[Market Report: Jvc] Investment Highlights: 1. **Highest Yields:** Among the best rental yields in Dubai (8.5-9.5%)\n2. **Low Entry Point:** Studios from AED 500K, 1BR from AED 700K\n3. **Growing Infrastructure:** New malls, schools, and parks under development\n4. **Capital Appreciation:** 15-20% price growth in the past year",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Investment Highlights",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_5",
+    "text": "[Market Report: Jvc] Risk Factors: - Construction activity may affect current residents\n- Lower rental rates compared to premium communities\n- Longer commute to key business districts",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Risk Factors",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_jvc_section_6",
+    "text": "[Market Report: Jvc] Recommendation: JVC is ideal for first-time investors seeking high yields with limited capital. Studios and 1BR units offer the best return on investment. The community is well-suited for buy-to-let strategies targeting young professionals and small families.\n\n---\n\n*Report compiled from Dubai Land Department transaction data and market analyst reports.*",
+    "metadata": {
+      "source": "market_report",
+      "community": "Jvc",
+      "section": "Recommendation",
+      "filename": "market_report_jvc.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_0",
+    "text": "[Market Report: Marina] Introduction: # Dubai Marina Market Report - Q1 2024",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Introduction",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_1",
+    "text": "[Market Report: Marina] Executive Summary: Dubai Marina remains one of the most sought-after waterfront communities, attracting young professionals and investors alike. The area saw a 20% increase in transaction volume in Q1 2024, with prices stabilizing after the 2022-2023 surge.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Executive Summary",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_2",
+    "text": "[Market Report: Marina] Key Metrics: - **Average Price per sqft:** AED 1,600 - AED 2,200\n- **Average 1BR Price:** AED 1.2M - AED 1.5M\n- **Average 2BR Price:** AED 1.8M - AED 2.5M\n- **Rental Yield:** 7.0% - 8.0%\n- **Occupancy Rate:** 89%\n- **Transaction Volume:** Up 20% vs Q4 2023",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Key Metrics",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_3",
+    "text": "[Market Report: Marina] Price Trends: Prices in Dubai Marina have moderated after the sharp increases of 2022-2023. The community offers better value per sqft compared to Downtown Dubai while maintaining strong rental demand. Studios and 1BR units are particularly popular among investors targeting young professional tenants.",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Price Trends",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_4",
+    "text": "[Market Report: Marina] Investment Highlights: 1. **Waterfront Living:** Premium lifestyle at competitive prices\n2. **Strong Rental Market:** High demand from expat professionals\n3. **Excellent Connectivity:** Near Sheikh Zayed Road and Dubai Metro\n4. **Walk-to-Beach Access:** JBR Beach within walking distance",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Investment Highlights",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_5",
+    "text": "[Market Report: Marina] Risk Factors: - Aging buildings may require higher maintenance costs\n- Traffic congestion during peak hours\n- Competition from newer communities like Dubai Harbour",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Risk Factors",
+      "filename": "market_report_marina.md"
+    }
+  },
+  {
+    "id": "market_report_marina_section_6",
+    "text": "[Market Report: Marina] Recommendation: Dubai Marina offers excellent value for investors seeking waterfront properties with strong yields. Studios under AED 1M and 1BR units represent the sweet spot for rental income. Consider newer buildings (post-2018) for lower service charges and better amenities.\n\n---\n\n*Report compiled from Dubai Land Department transaction data and market analyst reports.*",
+    "metadata": {
+      "source": "market_report",
+      "community": "Marina",
+      "section": "Recommendation",
+      "filename": "market_report_marina.md"
+    }
+  }
+]
