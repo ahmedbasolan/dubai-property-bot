@@ -7,6 +7,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
 from rag import rag_query, health_check, structured_search
+from config import REC_ICONS, MIN_BUDGET, MAX_BUDGET
 
 # Page config
 st.set_page_config(
@@ -51,7 +52,7 @@ COMMUNITIES = [
 selected_community = st.sidebar.selectbox("Community", COMMUNITIES, index=0)
 
 budget_range = st.sidebar.slider(
-    "Budget (AED)", min_value=300_000, max_value=15_000_000,
+    "Budget (AED)", min_value=MIN_BUDGET, max_value=MAX_BUDGET,
     value=(500_000, 5_000_000), step=100_000,
 )
 
@@ -65,9 +66,9 @@ selected_type = st.sidebar.selectbox("Property Type", property_types, index=0)
 filters = {}
 if selected_community != "Any":
     filters["community"] = selected_community
-if budget_range[0] > 300_000:
+if budget_range[0] > MIN_BUDGET:
     filters["min_price"] = budget_range[0]
-if budget_range[1] < 15_000_000:
+if budget_range[1] < MAX_BUDGET:
     filters["max_price"] = budget_range[1]
 if selected_bedrooms != "Any":
     filters["bedrooms"] = 0 if selected_bedrooms == "Studio" else int(selected_bedrooms)
@@ -86,7 +87,7 @@ if st.sidebar.button("Show Investment Leaderboard"):
     st.caption("Based on 7 metrics: yield, net yield, price/sqft, service charges, supply pipeline, occupancy, developer")
 
     for cs in scores:
-        rec_color = {"INVEST": "🟢", "HOLD": "🟡", "AVOID": "🔴"}.get(cs["recommendation"], "⚪")
+        rec_color = REC_ICONS.get(cs["recommendation"], "⚪")
         col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
         with col1:
             st.write(f"**{cs['community']}**")
@@ -128,7 +129,7 @@ if query := st.chat_input("Ask about Dubai real estate investments..."):
                 if result["structured"]["community_scores"]:
                     with st.expander("📊 Relevant Community Scores"):
                         for cs in result["structured"]["community_scores"][:5]:
-                            rec_icon = {"INVEST": "🟢", "HOLD": "🟡", "AVOID": "🔴"}.get(cs["recommendation"], "⚪")
+                            rec_icon = REC_ICONS.get(cs["recommendation"], "⚪")
                             st.markdown(
                                 f"**{cs['community']}** {rec_icon} {cs['recommendation']}\n"
                                 f"- Composite Score: {cs['composite_score']:.0f}/100\n"

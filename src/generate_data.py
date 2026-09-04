@@ -7,10 +7,13 @@ parking_spots, completion_year, furnishing, amenities.
 import csv
 import json
 import random
+import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
+sys.path.insert(0, str(Path(__file__).parent))
+
+from config import DATA_DIR
+
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 # Community profiles with realistic field distributions

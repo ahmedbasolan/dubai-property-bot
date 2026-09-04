@@ -5,17 +5,16 @@ This script only handles semantic search for market reports.
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import List, Dict, Any
+
+sys.path.insert(0, str(Path(__file__).parent))
 
 import chromadb
 from chromadb.config import Settings
 
-# Paths
-PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
-CHROMA_DIR = PROJECT_ROOT / "chroma_db"
-PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+from config import DATA_DIR, CHROMA_DIR, PROCESSED_DIR
 
 
 def load_markdown_reports(data_dir: Path) -> List[Dict[str, Any]]:
