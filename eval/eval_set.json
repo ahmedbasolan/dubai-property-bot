@@ -1,0 +1,64 @@
+{
+  "eval_set": [
+    {
+      "id": "eval_001",
+      "question": "Which community has the best ROI for 1BR apartments under AED 1.5M?",
+      "expected_keywords": ["JVC", "International City", "Discovery Gardens", "Sports City", "high ROI"],
+      "expected_answer_summary": "JVC, International City, Discovery Gardens, and Sports City offer the highest ROI (8.5-9.8%) for 1BR apartments under AED 1.5M."
+    },
+    {
+      "id": "eval_002",
+      "question": "What is the average price per sqft in Downtown Dubai?",
+      "expected_keywords": ["2100", "2800", "AED", "sqft"],
+      "expected_answer_summary": "Average price per sqft in Downtown Dubai is AED 2,100-2,800."
+    },
+    {
+      "id": "eval_003",
+      "question": "Compare rental yields between Dubai Marina and JVC.",
+      "expected_keywords": ["Dubai Marina", "JVC", "yield", "7.0", "8.5", "9.5"],
+      "expected_answer_summary": "JVC offers higher rental yields (8.5-9.5%) compared to Dubai Marina (7.0-8.0%)."
+    },
+    {
+      "id": "eval_004",
+      "question": "What properties are available in Business Bay for under AED 2M?",
+      "expected_keywords": ["Business Bay", "apartment", "studio", "1BR", "2BR"],
+      "expected_answer_summary": "Business Bay has 1BR apartments around AED 1.15M and 2BR around AED 1.85M, both under AED 2M."
+    },
+    {
+      "id": "eval_005",
+      "question": "Which developer has the most transactions in the dataset?",
+      "expected_keywords": ["Emaar", "developer", "most transactions"],
+      "expected_answer_summary": "Emaar has the most transactions, appearing across Downtown Dubai, Dubai Marina, Dubai Hills Estate, and Arabian Ranches."
+    },
+    {
+      "id": "eval_006",
+      "question": "What is the ROI range for off-plan properties vs ready properties?",
+      "expected_keywords": ["off-plan", "ready", "ROI", "range"],
+      "expected_answer_summary": "Off-plan properties (Dubai Hills, Tilal Al Ghaf, DAMAC Hills 2) typically offer 5.5-8.7% ROI, while ready properties range from 5.2-10.2%."
+    },
+    {
+      "id": "eval_007",
+      "question": "What are the risks of investing in DAMAC Hills 2 according to market reports?",
+      "expected_keywords": ["DAMAC Hills 2", "risk", "off-plan", "completion"],
+      "expected_answer_summary": "As an off-plan community, DAMAC Hills 2 carries completion risk, but offers competitive pricing with ROI of 8.0-8.6%."
+    },
+    {
+      "id": "eval_008",
+      "question": "Which communities have villas available and what are their price ranges?",
+      "expected_keywords": ["villa", "Palm Jumeirah", "Arabian Ranches", "Springs", "price"],
+      "expected_answer_summary": "Villas available in Palm Jumeirah (AED 6.5M-12.5M), Arabian Ranches (AED 3.2M-6.2M), and The Springs (AED 2.8M)."
+    },
+    {
+      "id": "eval_009",
+      "question": "What is the occupancy rate in Downtown Dubai according to the market report?",
+      "expected_keywords": ["92%", "occupancy", "Downtown Dubai"],
+      "expected_answer_summary": "Downtown Dubai has an occupancy rate of 92% according to the Q1 2024 market report."
+    },
+    {
+      "id": "eval_010",
+      "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
+      "expected_keywords": ["JVC", "first-time", "budget", "yield", "recommendation"],
+      "expected_answer_summary": "Top recommendations: JVC (highest yield 8.5-9.5%), International City (low entry, 9.8-10.2% yield), and Town Square (affordable, 8.3-9.0% yield)."
+    }
+  ]
+}
