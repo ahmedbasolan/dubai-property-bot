@@ -199,13 +199,13 @@ export default function PropertiesPage() {
                 <div>
                   <p className="text-muted-foreground">Net Yield</p>
                   <p className="font-bold text-lg text-emerald-400">
-                    {t.net_yield_pct.toFixed(1)}%
+                    {t.net_yield_pct?.toFixed(1) ?? "—"}%
                   </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground">ROI</p>
                   <p className="font-bold text-lg text-emerald-400">
-                    {t.roi_pct}%
+                    {t.roi_pct ?? "—"}%
                   </p>
                 </div>
               </div>
