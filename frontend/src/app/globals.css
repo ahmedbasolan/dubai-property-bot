@@ -127,3 +127,7 @@
 .leaflet-control-attribution {
   display: none !important;
 }
+
+.dark-tiles {
+  filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.2) saturate(0.3);
+}
