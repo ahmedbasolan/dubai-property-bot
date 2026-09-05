@@ -300,10 +300,32 @@ def map_data():
 
 
 @app.get("/api/chat")
-def chat(q: str = Query(..., description="Investor question")):
-    """RAG chat: retrieves data + generates answer via Groq/OpenAI."""
+def chat(
+    q: str = Query(..., description="Investor question"),
+    x_groq_api_key: Optional[str] = Query(None, alias="api_key"),
+):
+    """RAG chat: retrieves data + generates answer via Groq/OpenAI.
+
+    Users can pass their own API key via ?api_key=... or X-Groq-API-Key header.
+    Falls back to server-side GROQ_API_KEY from .env.
+    """
+    import os as _os
     from rag import rag_query
-    result = rag_query(q)
+
+    # Temporarily override the key if user provided one
+    original = _os.environ.get("GROQ_API_KEY")
+    if x_groq_api_key:
+        _os.environ["GROQ_API_KEY"] = x_groq_api_key
+
+    try:
+        result = rag_query(q)
+    finally:
+        # Restore original key
+        if original:
+            _os.environ["GROQ_API_KEY"] = original
+        elif x_groq_api_key:
+            _os.environ.pop("GROQ_API_KEY", None)
+
     return {
         "answer": result["answer"],
         "communities": [s["community"] for s in result["structured"]["community_scores"][:5]],
