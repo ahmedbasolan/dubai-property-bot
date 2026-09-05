@@ -48,8 +48,8 @@ export interface MortgageResult {
   total_interest: number;
   total_acquisition_cost: number;
   dld_transfer_fee: number;
-  equity_at_year_5: number;
-  equity_at_year_10: number;
+  monthly_service_charges: number;
+  down_payment: number;
 }
 
 export interface STRResult {

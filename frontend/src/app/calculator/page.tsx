@@ -170,26 +170,24 @@ export default function CalculatorPage() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Equity Year 5
+                    Down Payment
                   </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    AED {mortgage.equity_at_year_5.toLocaleString()}
+                    AED {(mortgage.down_payment ?? 0).toLocaleString()}
                   </div>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Equity Year 10
+                    Monthly Service Charges
                   </CardTitle>
-                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    AED {mortgage.equity_at_year_10.toLocaleString()}
+                    AED {(mortgage.monthly_service_charges ?? 0).toLocaleString()}
                   </div>
                 </CardContent>
               </Card>
