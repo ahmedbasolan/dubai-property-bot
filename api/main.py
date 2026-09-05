@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 from typing import Optional, List
 
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,7 +13,7 @@ from rag import structured_search
 from calculators import calculate_mortgage, calculate_str
 from developer_scorecard import get_all_developer_scores
 from price_trends import get_all_trends, get_top_gainers, get_top_volume
-from db_setup import get_scoring_engine
+from generate_data import COMMUNITY_PROFILES
 
 app = FastAPI(title="Dubai Property Investor API", version="1.0.0")
 
@@ -155,17 +155,15 @@ def top_volume():
 
 @app.get("/api/scores")
 def investment_scores():
-    engine = get_scoring_engine()
-    scores = engine.get_community_scores()
-    return {"scores": scores}
+    result = structured_search("", filters=None)
+    return {"scores": result["community_scores"]}
 
 
 @app.get("/api/map")
 def map_data():
-    from generate_data import generate_community_profiles
-    profiles = generate_community_profiles()
-    engine = get_scoring_engine()
-    scores = engine.get_community_scores()
+    profiles = COMMUNITY_PROFILES
+    result = structured_search("", filters=None)
+    scores = result["community_scores"]
 
     score_map = {s["community"]: s for s in scores}
     features = []
