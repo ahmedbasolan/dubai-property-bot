@@ -13,7 +13,6 @@ from rag import structured_search
 from calculators import calculate_mortgage, calculate_str
 from developer_scorecard import get_all_developer_scores
 from price_trends import get_all_trends, get_top_gainers, get_top_volume
-from generate_data import COMMUNITY_PROFILES
 
 app = FastAPI(title="Dubai Property Investor API", version="1.0.0")
 
@@ -86,7 +85,7 @@ def mortgage_calculator(
         down_payment_pct=down_payment_pct / 100,
         interest_rate=interest_rate,
         tenure_years=tenure_years,
-        size_sqft=size_sqft,
+        size_sqft=int(size_sqft),
         service_charge_sqft=service_charge_sqft,
     )
     return {
@@ -95,8 +94,8 @@ def mortgage_calculator(
         "total_interest": result.total_interest,
         "total_acquisition_cost": result.total_acquisition_cost,
         "dld_transfer_fee": result.dld_transfer_fee,
-        "equity_at_year_5": result.equity_at_year_5,
-        "equity_at_year_10": result.equity_at_year_10,
+        "monthly_service_charges": result.monthly_service_charges,
+        "down_payment": result.down_payment,
     }
 
 
@@ -105,8 +104,12 @@ def str_calculator(
     community: str,
     bedrooms: int = 1,
     property_price: float = 1000000,
+    size_sqft: float = 750,
+    service_charge_sqft: float = 15,
 ):
-    result = calculate_str(community, bedrooms, property_price)
+    result = calculate_str(
+        community, bedrooms, int(property_price), int(size_sqft), service_charge_sqft
+    )
     if result is None:
         return {"error": f"No STR data for {community} {bedrooms}BR"}
     return {
@@ -114,13 +117,13 @@ def str_calculator(
         "bedrooms": result.bedrooms,
         "avg_daily_rate": result.avg_daily_rate,
         "occupancy_rate": result.occupancy_rate,
-        "gross_annual_revenue": result.gross_annual_revenue,
-        "net_annual_revenue": result.net_annual_revenue,
+        "gross_annual_revenue": result.annual_revenue,
+        "net_annual_revenue": result.net_revenue,
         "gross_yield": result.gross_yield,
-        "net_yield_after_fees": result.net_yield_after_fees,
-        "management_fee_rate": result.management_fee_rate,
-        "total_fees": result.total_fees,
-        "dtcm_license_fee": result.dtcm_license_fee,
+        "net_yield_after_fees": result.net_yield,
+        "management_fee_rate": result.management_fee_pct,
+        "total_fees": result.management_fee + result.annual_service_charges,
+        "dtcm_license_fee": result.dtcm_license,
     }
 
 
@@ -130,27 +133,41 @@ def developers():
     return {"developers": [vars(d) for d in scores]}
 
 
+def _trend_to_points(t):
+    """Convert a PriceTrend to a list of point dicts."""
+    return [
+        {"quarter": q, "avg_price": p, "transactions": v}
+        for q, p, v in zip(t.quarters, t.prices, t.volumes)
+    ]
+
+
 @app.get("/api/trends")
 def price_trends(community: Optional[str] = None):
     all_trends = get_all_trends()
     if community:
         trend = all_trends.get(community)
         if trend:
-            return {"community": community, "data": [vars(t) for t in trend]}
+            return {"community": community, "data": _trend_to_points(trend)}
         return {"error": f"No trend data for {community}"}
-    return {"trends": {k: [vars(t) for t in v] for k, v in all_trends.items()}}
+    return {"trends": {k: _trend_to_points(v) for k, v in all_trends.items()}}
 
 
 @app.get("/api/trends/top-gainers")
 def top_gainers():
     gainers = get_top_gainers()
-    return {"gainers": [vars(g) for g in gainers]}
+    return {"gainers": [
+        {"community": g.community, "yoy_change_pct": g.yoy_change_pct, "trend_direction": g.trend_direction}
+        for g in gainers
+    ]}
 
 
 @app.get("/api/trends/top-volume")
 def top_volume():
     volume = get_top_volume()
-    return {"volume": [vars(v) for v in volume]}
+    return {"volume": [
+        {"community": v.community, "total_volume": sum(v.volumes), "yoy_change_pct": v.yoy_change_pct}
+        for v in volume
+    ]}
 
 
 @app.get("/api/scores")
@@ -159,21 +176,49 @@ def investment_scores():
     return {"scores": result["community_scores"]}
 
 
+COMMUNITY_COORDS = {
+    "Downtown Dubai": (25.1972, 55.2744),
+    "Dubai Marina": (25.0800, 55.1400),
+    "Palm Jumeirah": (25.1120, 55.1390),
+    "Dubai Hills Estate": (25.1330, 55.2460),
+    "JVC (Jumeirah Village Circle)": (25.0600, 55.2100),
+    "Business Bay": (25.1850, 55.2650),
+    "Arabian Ranches": (25.0500, 55.2800),
+    "Sports City": (25.0400, 55.2200),
+    "Discovery Gardens": (25.0800, 55.1400),
+    "JLT (Jumeirah Lake Towers)": (25.0780, 55.1410),
+    "The Springs": (25.0500, 55.1500),
+    "Al Barsha": (25.1100, 55.2000),
+    "Deira": (25.2600, 55.3000),
+    "Bur Dubai": (25.2300, 55.2800),
+    "International City": (25.1600, 55.4000),
+    "Dubai Silicon Oasis": (25.1200, 55.3900),
+    "Tilal Al Ghaf": (25.0200, 55.2500),
+    "DAMAC Hills 2": (25.0100, 55.2700),
+    "Dubai Creek Harbour": (25.2100, 55.3400),
+    "Bluewaters Island": (25.0800, 55.1200),
+    "Meydan": (25.1700, 55.2700),
+    "Al Furjan": (25.0500, 55.1200),
+    "Dubai South": (24.9200, 55.1600),
+    "Town Square": (25.0700, 55.2500),
+    "DIFC": (25.2100, 55.2800),
+}
+
+
 @app.get("/api/map")
 def map_data():
-    profiles = COMMUNITY_PROFILES
     result = structured_search("", filters=None)
     scores = result["community_scores"]
 
     score_map = {s["community"]: s for s in scores}
     features = []
-    for p in profiles:
-        s = score_map.get(p["community"], {})
+    for name, coords in COMMUNITY_COORDS.items():
+        s = score_map.get(name, {})
         features.append({
-            "community": p["community"],
-            "district": p["district"],
-            "lat": p["lat"],
-            "lng": p["lng"],
+            "community": name,
+            "district": s.get("district", ""),
+            "lat": coords[0],
+            "lng": coords[1],
             "composite_score": s.get("composite_score", 0),
             "recommendation": s.get("recommendation", "HOLD"),
             "avg_net_yield": s.get("avg_net_yield_pct", 0),
