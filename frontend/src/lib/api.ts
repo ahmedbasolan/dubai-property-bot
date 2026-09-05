@@ -1,4 +1,5 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const DEFAULT_GROQ_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY || "";
 
 async function fetchApi<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`);
@@ -125,8 +126,12 @@ export const api = {
   getTopGainers: () => fetchApi<{ gainers: TrendPoint[] }>("/api/trends/top-gainers"),
   getTopVolume: () => fetchApi<{ volume: TrendPoint[] }>("/api/trends/top-volume"),
   getMapData: () => fetchApi<{ features: MapFeature[] }>("/api/map"),
-  chat: (q: string) =>
-    fetchApi<{ answer: string; communities: string[]; transaction_count: number }>(
-      `/api/chat?q=${encodeURIComponent(q)}`
-    ),
+  chat: (q: string, apiKey?: string) => {
+    const key = apiKey || DEFAULT_GROQ_KEY;
+    const qs = new URLSearchParams({ q });
+    if (key) qs.set("api_key", key);
+    return fetchApi<{ answer: string; communities: string[]; transaction_count: number }>(
+      `/api/chat?${qs.toString()}`
+    );
+  },
 };

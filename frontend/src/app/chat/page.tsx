@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { useDataSource } from "@/components/data-source-provider";
-import { Send, Bot, User, AlertCircle, Database } from "lucide-react";
+import { Send, Bot, User, AlertCircle, Database, Key, Check } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,6 +27,9 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userApiKey, setUserApiKey] = useState("");
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [keySaved, setKeySaved] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { useLive } = useDataSource();
 
@@ -44,7 +47,7 @@ export default function ChatPage() {
     setError(null);
 
     try {
-      const res = await api.chat(query.trim());
+      const res = await api.chat(query.trim(), userApiKey || undefined);
       const assistantMsg: Message = {
         role: "assistant",
         content: res.answer,
@@ -66,11 +69,68 @@ export default function ChatPage() {
           <Bot size={20} className="text-emerald-400" />
           <h1 className="text-lg font-bold">Investment Advisor</h1>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Database size={14} />
-          <span>Powered by DuckDB + ChromaDB + Groq</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowKeyInput(!showKeyInput)}
+            className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+          >
+            <Key size={12} />
+            {userApiKey ? (
+              <span className="text-emerald-400 flex items-center gap-1">
+                <Check size={12} /> Custom Key
+              </span>
+            ) : (
+              <span className="text-muted-foreground">Use Your Key</span>
+            )}
+          </button>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Database size={14} />
+            <span>Groq</span>
+          </div>
         </div>
       </div>
+
+      {showKeyInput && (
+        <div className="px-4 pb-2">
+          <div className="p-3 rounded-lg bg-accent/30 border border-border">
+            <label className="text-xs text-muted-foreground block mb-1.5">
+              Your Groq API Key (optional — default key is pre-configured)
+            </label>
+            <div className="flex gap-2">
+              <input
+                type="password"
+                value={userApiKey}
+                onChange={(e) => {
+                  setUserApiKey(e.target.value);
+                  setKeySaved(false);
+                }}
+                placeholder="gsk_..."
+                className="flex-1 bg-background border border-border rounded-lg px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+              />
+              <button
+                onClick={() => {
+                  setKeySaved(true);
+                  setTimeout(() => setKeySaved(false), 2000);
+                }}
+                className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm hover:bg-primary/90"
+              >
+                {keySaved ? <Check size={14} /> : "Save"}
+              </button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Get a free key at{" "}
+              <a
+                href="https://console.groq.com/keys"
+                target="_blank"
+                rel="noopener"
+                className="text-emerald-400 hover:underline"
+              >
+                console.groq.com/keys
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
@@ -203,8 +263,16 @@ export default function ChatPage() {
           </button>
         </form>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          {useLive ? "Using live BayutAPI data" : "Using mock data"} • Powered
-          by Groq (Llama 3.3)
+          {useLive ? "Live BayutAPI data" : "Mock data"} •{" "}
+          {userApiKey ? "Your Groq key" : "Default Groq key"} •{" "}
+          <a
+            href="https://console.groq.com/keys"
+            target="_blank"
+            rel="noopener"
+            className="text-emerald-400 hover:underline"
+          >
+            Get free key
+          </a>
         </p>
       </div>
     </div>
