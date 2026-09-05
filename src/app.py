@@ -7,9 +7,13 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
 import pandas as pd
+import tempfile
+import os
+from datetime import datetime
 from rag import rag_query, health_check, structured_search
 from calculators import calculate_mortgage, calculate_str
 from price_trends import get_price_trend, get_all_trends, get_top_gainers, get_top_volume, HISTORICAL_DATA
+from export import generate_excel_report, generate_pdf_report
 from config import REC_ICONS, MIN_BUDGET, MAX_BUDGET
 
 # Page config
@@ -488,6 +492,36 @@ with tab_map:
             f"{rec_icon} **{s['community']}** — Score: {s['composite_score']:.0f}/100 | "
             f"Net Yield: {s['avg_net_yield_pct']:.1f}% | Avg Price: AED {s['avg_price']:,.0f}"
         )
+
+# --- Export Section ---
+st.sidebar.markdown("---")
+st.sidebar.header("📥 Export Report")
+
+if st.sidebar.button("Generate Excel Report"):
+    with st.spinner("Generating Excel report..."):
+        tmp = tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False)
+        generate_excel_report(tmp.name, interest_rate, tenure, down_payment_pct)
+        with open(tmp.name, "rb") as f:
+            st.sidebar.download_button(
+                label="Download Excel",
+                data=f.read(),
+                file_name=f"dubai_investment_report_{datetime.now().strftime('%Y%m%d')}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        os.unlink(tmp.name)
+
+if st.sidebar.button("Generate PDF Report"):
+    with st.spinner("Generating PDF report..."):
+        tmp = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
+        generate_pdf_report(tmp.name, interest_rate, tenure, down_payment_pct)
+        with open(tmp.name, "rb") as f:
+            st.sidebar.download_button(
+                label="Download PDF",
+                data=f.read(),
+                file_name=f"dubai_investment_report_{datetime.now().strftime('%Y%m%d')}.pdf",
+                mime="application/pdf",
+            )
+        os.unlink(tmp.name)
 
 # --- Footer ---
 st.sidebar.markdown("---")
