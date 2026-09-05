@@ -113,7 +113,11 @@ export default function ChatPage() {
       </div>
 
       {/* Settings Panel */}
-      {showSettings && (
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-out ${
+          showSettings ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
         <div className="px-4 pb-3">
           <div className="p-4 rounded-lg bg-accent/30 border border-border space-y-3">
             {/* Provider Selector */}
@@ -128,7 +132,7 @@ export default function ChatPage() {
                       setModel("");
                       setApiKey("");
                     }}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                       provider === p.id
                         ? "bg-primary text-primary-foreground"
                         : "bg-background border border-border hover:bg-accent/50"
@@ -149,7 +153,7 @@ export default function ChatPage() {
               <select
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                className="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none input-focus"
               >
                 <option value="">Default ({currentProvider.defaultModel})</option>
                 {currentProvider.models.map((m) => (
@@ -176,11 +180,11 @@ export default function ChatPage() {
                     provider === "openai" ? "sk-..." :
                     "sk-or-..."
                   }
-                  className="flex-1 bg-background border border-border rounded-lg px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="flex-1 bg-background border border-border rounded-lg px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none input-focus"
                 />
                 <button
                   onClick={() => setKeySaved(true)}
-                  className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm hover:bg-primary/90"
+                  className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm hover:bg-primary/90 btn-press"
                 >
                   {keySaved ? <Check size={14} /> : "Save"}
                 </button>
@@ -191,7 +195,7 @@ export default function ChatPage() {
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -207,12 +211,12 @@ export default function ChatPage() {
                 transaction data, community scores, and market reports.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-lg w-full stagger-children">
               {SUGGESTIONS.map((s) => (
                 <button
                   key={s}
                   onClick={() => handleSend(s)}
-                  className="text-left text-sm p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
+                  className="text-left text-sm p-3 rounded-lg border border-border hover:bg-accent/50 transition-all duration-200 btn-press"
                 >
                   {s}
                 </button>
@@ -224,7 +228,7 @@ export default function ChatPage() {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex gap-3 message-enter ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             {msg.role === "assistant" && (
               <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
@@ -272,15 +276,15 @@ export default function ChatPage() {
         ))}
 
         {loading && (
-          <div className="flex gap-3">
+          <div className="flex gap-3 message-enter">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
               <Bot size={16} className="text-emerald-400" />
             </div>
             <div className="bg-accent/50 rounded-xl px-4 py-3">
-              <div className="flex gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:0ms]" />
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:150ms]" />
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-bounce [animation-delay:300ms]" />
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_infinite_alternate]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_0.2s_infinite_alternate]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_0.4s_infinite_alternate]" />
               </div>
             </div>
           </div>

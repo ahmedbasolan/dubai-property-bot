@@ -40,21 +40,23 @@ export function Sidebar() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="fixed top-4 left-4 z-50 md:hidden bg-card border border-border rounded-lg p-2 shadow-lg"
+        className="fixed top-4 left-4 z-50 md:hidden bg-card border border-border rounded-lg p-2 shadow-lg btn-press"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
-          onClick={() => setOpen(false)}
-        />
-      )}
+      {/* Backdrop */}
+      <div
+        className={cn(
+          "fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300",
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setOpen(false)}
+      />
 
       <aside
         className={cn(
-          "fixed md:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-transform duration-200",
+          "fixed md:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-all duration-300 ease-out",
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
@@ -67,7 +69,7 @@ export function Sidebar() {
           </p>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1">
+        <nav className="flex-1 p-3 space-y-0.5 stagger-children">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -76,13 +78,13 @@ export function Sidebar() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <item.icon size={18} />
+                <item.icon size={18} className="transition-transform duration-200" />
                 {item.label}
               </Link>
             );
@@ -100,7 +102,7 @@ export function Sidebar() {
               <button
                 onClick={() => setUseLive(!useLive)}
                 className={cn(
-                  "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   useLive
                     ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                     : "bg-accent text-muted-foreground border border-border"
@@ -112,13 +114,13 @@ export function Sidebar() {
                 </span>
                 <div
                   className={cn(
-                    "w-8 h-4 rounded-full transition-colors relative",
+                    "w-8 h-4 rounded-full transition-colors duration-200 relative",
                     useLive ? "bg-emerald-500" : "bg-muted"
                   )}
                 >
                   <div
                     className={cn(
-                      "absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform",
+                      "absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform duration-200 ease-out",
                       useLive ? "translate-x-4" : "translate-x-0.5"
                     )}
                   />

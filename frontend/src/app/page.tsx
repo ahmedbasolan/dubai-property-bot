@@ -45,9 +45,12 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-muted-foreground">Loading dashboard...</span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-10 h-10">
+            <div className="absolute inset-0 rounded-full border-2 border-muted" />
+            <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          </div>
+          <span className="text-sm text-muted-foreground animate-fade-in">Loading dashboard...</span>
         </div>
       </div>
     );
@@ -56,14 +59,14 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Card className="max-w-md">
+        <Card className="max-w-md animate-scale-in">
           <CardContent className="py-8 text-center">
             <AlertCircle className="h-10 w-10 mx-auto text-red-400 mb-3" />
             <p className="font-medium">Failed to load data</p>
             <p className="text-sm text-muted-foreground mt-1">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 rounded-lg bg-accent text-sm hover:bg-accent/80"
+              className="mt-4 px-4 py-2 rounded-lg bg-accent text-sm hover:bg-accent/80 btn-press"
             >
               Retry
             </button>
@@ -91,7 +94,7 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-1">
@@ -106,8 +109,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-0 bg-gradient-to-br from-card to-card/50">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
+        <Card className="border-0 bg-gradient-to-br from-card to-card/50 card-hover animate-fade-in-up">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Communities
@@ -115,14 +118,14 @@ export default function Dashboard() {
             <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{communities.length}</div>
+            <div className="text-3xl font-bold tabular-nums">{communities.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
               {transactions.length} transactions
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5">
+        <Card className="border-0 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 card-hover animate-fade-in-up">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-emerald-400">
               Avg Net Yield
@@ -130,7 +133,7 @@ export default function Dashboard() {
             <TrendingUp className="h-4 w-4 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-emerald-400">
+            <div className="text-3xl font-bold text-emerald-400 tabular-nums">
               {avgYield.toFixed(1)}%
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -139,7 +142,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-gradient-to-br from-blue-500/10 to-blue-500/5">
+        <Card className="border-0 bg-gradient-to-br from-blue-500/10 to-blue-500/5 card-hover animate-fade-in-up">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-blue-400">
               Avg Score
@@ -147,7 +150,7 @@ export default function Dashboard() {
             <MapPin className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-400">
+            <div className="text-3xl font-bold text-blue-400 tabular-nums">
               {avgScore.toFixed(0)}<span className="text-lg text-muted-foreground">/100</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -156,7 +159,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-gradient-to-br from-card to-card/50">
+        <Card className="border-0 bg-gradient-to-br from-card to-card/50 card-hover animate-fade-in-up">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Recommendations
@@ -180,7 +183,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border-0">
+        <Card className="border-0 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp size={18} className="text-emerald-400" />
@@ -188,18 +191,18 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <div className="space-y-1 stagger-children">
               {communities.slice(0, 8).map((c, i) => (
                 <div
                   key={c.community}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors group"
+                  className="flex items-center justify-between p-3 rounded-lg list-item-hover group cursor-default"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-mono text-muted-foreground w-5">
+                    <span className="text-xs font-mono text-muted-foreground w-5 tabular-nums">
                       {i + 1}.
                     </span>
                     <div>
-                      <div className="font-medium text-sm group-hover:text-foreground transition-colors">
+                      <div className="font-medium text-sm group-hover:text-foreground transition-colors duration-200">
                         {c.community}
                       </div>
                       <div className="text-xs text-muted-foreground">
@@ -208,7 +211,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-sm">
+                    <div className="font-bold text-sm tabular-nums">
                       {c.composite_score.toFixed(0)}<span className="text-muted-foreground text-xs">/100</span>
                     </div>
                     <div className="flex items-center gap-1 text-xs justify-end">
@@ -234,7 +237,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0">
+        <Card className="border-0 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 size={18} className="text-blue-400" />
@@ -242,14 +245,14 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <div className="space-y-1 stagger-children">
               {transactions.slice(0, 8).map((t) => (
                 <div
                   key={t.transaction_id}
-                  className="flex items-center justify-between p-3 rounded-lg hover:bg-accent/50 transition-colors group"
+                  className="flex items-center justify-between p-3 rounded-lg list-item-hover group cursor-default"
                 >
                   <div>
-                    <div className="font-medium text-sm group-hover:text-foreground transition-colors">
+                    <div className="font-medium text-sm group-hover:text-foreground transition-colors duration-200">
                       {formatBedrooms(t.bedrooms)} {t.property_type} — {t.community}
                     </div>
                     <div className="text-xs text-muted-foreground">
@@ -258,10 +261,10 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-sm">
+                    <div className="font-bold text-sm tabular-nums">
                       AED {(t.price_aed / 1000000).toFixed(2)}M
                     </div>
-                    <div className="text-xs text-emerald-400">
+                    <div className="text-xs text-emerald-400 tabular-nums">
                       {t.roi_pct}% yield
                     </div>
                   </div>

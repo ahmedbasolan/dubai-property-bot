@@ -26,8 +26,12 @@ export default function CommunitiesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-pulse text-muted-foreground">
-          Loading leaderboard...
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-10 h-10">
+            <div className="absolute inset-0 rounded-full border-2 border-muted" />
+            <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          </div>
+          <span className="text-sm text-muted-foreground animate-fade-in">Loading leaderboard...</span>
         </div>
       </div>
     );
@@ -41,7 +45,7 @@ export default function CommunitiesPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
+      <div className="animate-fade-in">
         <h1 className="text-3xl font-bold tracking-tight">
           Investment Leaderboard
         </h1>
@@ -50,11 +54,11 @@ export default function CommunitiesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 stagger-children">
         {communities.map((c, i) => (
           <Card
             key={c.community}
-            className={`relative overflow-hidden ${
+            className={`relative overflow-hidden card-hover animate-fade-in-up ${
               i === 0
                 ? "ring-2 ring-amber-500/50"
                 : ""
