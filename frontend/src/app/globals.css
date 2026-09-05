@@ -94,3 +94,36 @@
     @apply font-sans;
   }
 }
+
+/* Leaflet dark theme overrides */
+.leaflet-container {
+  background: #0a0a0a !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+
+.dark-popup .leaflet-popup-content-wrapper {
+  background: #1a1a2e !important;
+  color: #e5e5e5 !important;
+  border-radius: 12px !important;
+  border: 1px solid #333 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark-popup .leaflet-popup-tip {
+  background: #1a1a2e !important;
+  border: 1px solid #333 !important;
+}
+
+.dark-popup .leaflet-popup-close-button {
+  color: #888 !important;
+}
+
+.leaflet-control-zoom a {
+  background: #1a1a2e !important;
+  color: #e5e5e5 !important;
+  border-color: #333 !important;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
