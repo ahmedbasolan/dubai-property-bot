@@ -297,3 +297,15 @@ def map_data():
             "avg_price": s.get("avg_price", 0),
         })
     return {"features": features}
+
+
+@app.get("/api/chat")
+def chat(q: str = Query(..., description="Investor question")):
+    """RAG chat: retrieves data + generates answer via Groq/OpenAI."""
+    from rag import rag_query
+    result = rag_query(q)
+    return {
+        "answer": result["answer"],
+        "communities": [s["community"] for s in result["structured"]["community_scores"][:5]],
+        "transaction_count": len(result["structured"]["transactions"]),
+    }

@@ -22,13 +22,30 @@ chroma_client = chromadb.PersistentClient(
 )
 
 
-def get_openai_client() -> OpenAI:
-    """Get OpenAI client, using OpenRouter if OPENROUTER_API_KEY is set."""
-    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    base_url = None
+def get_llm_client() -> OpenAI:
+    """Get LLM client — supports Groq, OpenRouter, or OpenAI."""
+    groq_key = os.environ.get("GROQ_API_KEY")
+    openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+    openai_key = os.environ.get("OPENAI_API_KEY")
+
+    if groq_key:
+        return OpenAI(api_key=groq_key, base_url="https://api.groq.com/openai/v1")
+    if openrouter_key:
+        return OpenAI(api_key=openrouter_key, base_url="https://openrouter.ai/api/v1")
+    if openai_key:
+        return OpenAI(api_key=openai_key)
+    return None
+
+
+def get_model() -> str:
+    """Get model name based on which API key is configured."""
+    if os.environ.get("GROQ_API_KEY"):
+        return "llama-3.3-70b-versatile"
     if os.environ.get("OPENROUTER_API_KEY"):
-        base_url = "https://openrouter.ai/api/v1"
-    return OpenAI(api_key=api_key, base_url=base_url)
+        return "openai/gpt-4o-mini"
+    if os.environ.get("OPENAI_API_KEY"):
+        return "gpt-4o-mini"
+    return DEFAULT_MODEL
 
 
 def structured_search(
@@ -209,10 +226,17 @@ def generate_answer(
     context: str,
     structured: Dict[str, Any],
     semantic: List[Dict[str, Any]],
-    model: str = DEFAULT_MODEL,
+    model: str = None,
 ) -> str:
     """Generate answer using LLM with retrieved context."""
-    client = get_openai_client()
+    client = get_llm_client()
+    if not client:
+        return (
+            "LLM not configured. Add GROQ_API_KEY (free) to your .env file.\n\n"
+            "Based on the data retrieved:\n\n" + context[:1500]
+        )
+    if model is None:
+        model = get_model()
 
     # Build citations
     citations = []
@@ -276,7 +300,7 @@ Answer the question using ONLY the data above. Cite specific sources."""
 def rag_query(
     query: str,
     filters: Optional[Dict[str, Any]] = None,
-    model: str = DEFAULT_MODEL,
+    model: str = None,
 ) -> Dict[str, Any]:
     """Full RAG pipeline: structured + semantic search + generation."""
     # Structured search (DuckDB)
@@ -320,7 +344,7 @@ def health_check() -> Dict[str, bool]:
     except Exception:
         checks["chromadb_reports"] = False
 
-    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    api_key = os.environ.get("GROQ_API_KEY") or os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
     checks["api_key"] = bool(api_key)
 
     return checks

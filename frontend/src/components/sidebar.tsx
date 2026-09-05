@@ -12,6 +12,7 @@ import {
   Map,
   Calculator,
   GitCompare,
+  MessageSquare,
   Menu,
   X,
   Radio,
@@ -21,6 +22,7 @@ import { useState } from "react";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/chat", label: "Advisor", icon: MessageSquare },
   { href: "/properties", label: "Properties", icon: Building2 },
   { href: "/communities", label: "Leaderboard", icon: Trophy },
   { href: "/trends", label: "Trends", icon: TrendingUp },
