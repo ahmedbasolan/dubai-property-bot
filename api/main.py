@@ -1,10 +1,19 @@
-"""FastAPI backend for Dubai Property Investor Bot."""
+"""FastAPI backend for Dubai Property Investor Bot.
 
+Supports two data modes:
+  - Mock data (default): local DuckDB with synthetic transactions
+  - BayutAPI: real DLD-registered data via RapidAPI (set BAYUT_API_KEY in .env)
+"""
+
+import os
 import sys
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,8 +22,9 @@ from rag import structured_search
 from calculators import calculate_mortgage, calculate_str
 from developer_scorecard import get_all_developer_scores
 from price_trends import get_all_trends, get_top_gainers, get_top_volume
+from data_provider import MockDataProvider
 
-app = FastAPI(title="Dubai Property Investor API", version="1.0.0")
+app = FastAPI(title="Dubai Property Investor API", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,10 +34,58 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- Data source selection ---
+BAYUT_KEY = os.getenv("BAYUT_API_KEY", "")
+_provider = None
+
+
+def get_provider():
+    """Lazy-init the appropriate data provider."""
+    global _provider
+    if _provider is not None:
+        return _provider
+
+    if BAYUT_KEY:
+        try:
+            from bayut_provider import BayutProvider
+            _provider = BayutProvider(BAYUT_KEY)
+            print("[API] Using BayutAPI (real DLD data)")
+        except Exception as e:
+            print(f"[API] BayutAPI init failed, falling back to mock: {e}")
+            _provider = MockDataProvider()
+    else:
+        _provider = MockDataProvider()
+        print("[API] Using mock data (set BAYUT_API_KEY for real data)")
+
+    return _provider
+
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "1.0.0"}
+    provider = get_provider()
+    data_source = "bayut" if BAYUT_KEY and "Bayut" in type(provider).__name__ else "mock"
+    return {
+        "status": "ok",
+        "version": "2.0.0",
+        "data_source": data_source,
+        "bayut_configured": bool(BAYUT_KEY),
+    }
+
+
+@app.get("/api/data-source")
+def data_source_info():
+    """Return current data source status."""
+    provider = get_provider()
+    is_bayut = BAYUT_KEY and "Bayut" in type(provider).__name__
+    return {
+        "source": "bayut" if is_bayut else "mock",
+        "bayut_configured": bool(BAYUT_KEY),
+        "message": (
+            "Real DLD-registered transaction data via BayutAPI"
+            if is_bayut
+            else "Synthetic mock data (set BAYUT_API_KEY in .env for real data)"
+        ),
+    }
 
 
 @app.get("/api/communities")
@@ -44,7 +102,21 @@ def get_transactions(
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
     limit: int = Query(default=50, le=200),
+    use_live: bool = Query(default=False, description="Use live BayutAPI data"),
 ):
+    if use_live and BAYUT_KEY:
+        provider = get_provider()
+        txns = provider.get_transactions(
+            community=community,
+            bedrooms=bedrooms,
+            property_type=property_type,
+            min_price=int(min_price) if min_price else None,
+            max_price=int(max_price) if max_price else None,
+            limit=limit,
+        )
+        return {"transactions": [vars(t) for t in txns], "total": len(txns), "source": "bayut"}
+
+    # Default: use DuckDB (mock or pre-ingested data)
     result = structured_search("", filters=None)
     txns = result["transactions"]
 
@@ -59,7 +131,7 @@ def get_transactions(
     if max_price is not None:
         txns = [t for t in txns if t["price_aed"] <= max_price]
 
-    return {"transactions": txns[:limit], "total": len(txns)}
+    return {"transactions": txns[:limit], "total": len(txns), "source": "mock"}
 
 
 @app.get("/api/transactions/{transaction_id}")
