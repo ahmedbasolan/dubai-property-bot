@@ -121,10 +121,9 @@ export function LeafletMap({ features, selected, onSelect }: LeafletMapProps) {
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
     L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "https://tiles.openfreemap.org/styles/dark/{z}/{x}/{y}.png",
       {
         maxZoom: 19,
-        className: "dark-tiles",
       }
     ).addTo(map);
 
