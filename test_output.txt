@@ -1,0 +1,16 @@
+**Direct Answer:** International City offers the highest net yield among the listed communities.
+
+**Supporting Data**
+
+| Source | Net Yield (Net ROI) | Gross ROI (ROI) | Supply Risk / Pipeline |
+|--------|--------------------|----------------|------------------------|
+| Community Score (International City) | **7.68 %** (Net Yield) | 9.8 % (ROI) | High – 15.5 % pipeline (high risk)【CITATIONS】 |
+| Transaction TRX‑043 (International City, 1 BR) | **8.25 %** Net Yield | 10.3 % ROI | – (ready unit)【CITATIONS】 |
+| Transaction TRX‑040 (International City, 1 BR) | **7.72 %** Net Yield | 9.6 % ROI | –【CITATIONS】 |
+| Transaction TRX‑041 (International City, 0 BR) | **7.45 %** Net Yield | 9.6 % ROI | –【CITATIONS】 |
+
+For comparison, the next‑best community scores are:
+
+- Dubai Silicon Oasis – Net Yield 7.30 % (medium supply risk, 9.1 % pipeline)【CITATIONS】  
+- Dubai South – Net Yield 7.13 % (medium supply risk, 14.2 % pipeline)【CITATIONS】  
+- JVC – Net Yield 7.07 % (high supply risk, 15.9 % pipeli

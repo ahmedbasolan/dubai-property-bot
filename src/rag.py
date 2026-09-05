@@ -40,7 +40,7 @@ def get_llm_client() -> OpenAI:
 def get_model() -> str:
     """Get model name based on which API key is configured."""
     if os.environ.get("GROQ_API_KEY"):
-        return "llama-3.3-70b-versatile"
+        return "openai/gpt-oss-120b"
     if os.environ.get("OPENROUTER_API_KEY"):
         return "openai/gpt-4o-mini"
     if os.environ.get("OPENAI_API_KEY"):
