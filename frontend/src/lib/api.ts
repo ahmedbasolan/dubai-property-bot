@@ -96,11 +96,21 @@ export interface MapFeature {
   avg_price: number;
 }
 
+export interface HealthResponse {
+  status: string;
+  version: string;
+  data_source: string;
+  bayut_configured: boolean;
+}
+
 export const api = {
+  getHealth: () => fetchApi<HealthResponse>("/api/health"),
   getCommunities: () => fetchApi<{ communities: CommunityScore[] }>("/api/communities"),
-  getTransactions: (params?: Record<string, string>) => {
-    const qs = params ? "?" + new URLSearchParams(params).toString() : "";
-    return fetchApi<{ transactions: Transaction[] }>(`/api/transactions${qs}`);
+  getTransactions: (params?: Record<string, string>, useLive = false) => {
+    const allParams = { ...(params || {}) };
+    if (useLive) allParams.use_live = "true";
+    const qs = Object.keys(allParams).length ? "?" + new URLSearchParams(allParams).toString() : "";
+    return fetchApi<{ transactions: Transaction[]; source: string }>(`/api/transactions${qs}`);
   },
   getTransaction: (id: string) => fetchApi<{ transaction: Transaction }>(`/api/transactions/${id}`),
   getMortgage: (params: Record<string, string>) =>
