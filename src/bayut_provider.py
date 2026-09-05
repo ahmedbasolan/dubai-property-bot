@@ -253,7 +253,11 @@ class BayutProvider(DataProvider):
 
             # Get developer from project
             project = p.get("project", {})
-            developer = project.get("developer", {}).get("name", "") if project else ""
+            dev_raw = project.get("developer", "") if project else ""
+            if isinstance(dev_raw, dict):
+                developer = dev_raw.get("name", "")
+            else:
+                developer = str(dev_raw) if dev_raw else ""
 
             transactions.append(Transaction(
                 transaction_id=f"BAYUT-{p.get('id', '')}",

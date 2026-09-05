@@ -47,7 +47,7 @@ export default function PropertiesPage() {
       (t) =>
         t.community.toLowerCase().includes(q) ||
         t.transaction_id.toLowerCase().includes(q) ||
-        t.developer.toLowerCase().includes(q)
+        (typeof t.developer === "string" && t.developer.toLowerCase().includes(q))
     );
   }
 
@@ -217,7 +217,7 @@ export default function PropertiesPage() {
                 </span>
                 <span>Floor {t.floor_level}</span>
                 <span>{t.view_type} view</span>
-                <span>{t.developer}</span>
+                {typeof t.developer === "string" && <span>{t.developer}</span>}
               </div>
 
               <div className="text-xs text-muted-foreground">
