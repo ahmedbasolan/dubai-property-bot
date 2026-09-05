@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import type { MapFeature } from "@/lib/api";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -105,6 +105,8 @@ export function LeafletMap({ features, selected, onSelect }: LeafletMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
 
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return;
@@ -141,11 +143,11 @@ export function LeafletMap({ features, selected, onSelect }: LeafletMapProps) {
     markersRef.current = [];
 
     features.forEach((f) => {
-      const marker = createCircleMarker(f, map, onSelect);
+      const marker = createCircleMarker(f, map, (feat) => onSelectRef.current(feat));
       marker.addTo(map);
       markersRef.current.push(marker);
     });
-  }, [features, onSelect]);
+  }, [features]);
 
   useEffect(() => {
     if (!selected) return;
