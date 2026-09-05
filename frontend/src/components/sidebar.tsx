@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useDataSource } from "@/components/data-source-provider";
 import {
   LayoutDashboard,
   Building2,
@@ -13,6 +14,8 @@ import {
   GitCompare,
   Menu,
   X,
+  Radio,
+  Database,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -29,6 +32,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { useLive, setUseLive, source, bayutConfigured } = useDataSource();
 
   return (
     <>
@@ -54,7 +58,7 @@ export function Sidebar() {
       >
         <div className="p-6 border-b border-border">
           <h1 className="text-lg font-bold tracking-tight">
-            🏙️ Dubai Property
+            Dubai Property
           </h1>
           <p className="text-xs text-muted-foreground mt-1">
             Investment Analysis Platform
@@ -83,7 +87,48 @@ export function Sidebar() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border space-y-3">
+          {/* Data Source Toggle */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+              <Database size={14} />
+              Data Source
+            </div>
+            {bayutConfigured ? (
+              <button
+                onClick={() => setUseLive(!useLive)}
+                className={cn(
+                  "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  useLive
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    : "bg-accent text-muted-foreground border border-border"
+                )}
+              >
+                <span className="flex items-center gap-2">
+                  <Radio size={14} className={useLive ? "text-emerald-400" : "text-muted-foreground"} />
+                  {useLive ? "Live (BayutAPI)" : "Mock Data"}
+                </span>
+                <div
+                  className={cn(
+                    "w-8 h-4 rounded-full transition-colors relative",
+                    useLive ? "bg-emerald-500" : "bg-muted"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform",
+                      useLive ? "translate-x-4" : "translate-x-0.5"
+                    )}
+                  />
+                </div>
+              </button>
+            ) : (
+              <div className="px-3 py-2 rounded-lg text-xs text-muted-foreground bg-accent/50 border border-border">
+                Add BAYUT_API_KEY to .env for real data
+              </div>
+            )}
+          </div>
+
           <div className="text-xs text-muted-foreground space-y-1">
             <p>73 Mock Transactions</p>
             <p>25 Communities</p>

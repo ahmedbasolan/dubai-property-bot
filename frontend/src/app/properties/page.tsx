@@ -13,7 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api, type Transaction } from "@/lib/api";
-import { Search, Bed, Bath } from "lucide-react";
+import { useDataSource } from "@/components/data-source-provider";
+import { Search, Bed, Bath, Radio } from "lucide-react";
 
 export default function PropertiesPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -22,13 +23,21 @@ export default function PropertiesPage() {
   const [community, setCommunity] = useState<string>("all");
   const [bedrooms, setBedrooms] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("yield");
+  const { useLive } = useDataSource();
+  const [dataSource, setDataSource] = useState("mock");
 
   useEffect(() => {
-    api.getTransactions().then((data) => {
+    setLoading(true);
+    const params: Record<string, string> = {};
+    if (community !== "all") params.community = community;
+    if (bedrooms !== "all") params.bedrooms = bedrooms;
+
+    api.getTransactions(params, useLive).then((data) => {
       setTransactions(data.transactions);
+      setDataSource(data.source);
       setLoading(false);
     });
-  }, []);
+  }, [useLive, community, bedrooms]);
 
   let filtered = transactions;
 
@@ -78,11 +87,19 @@ export default function PropertiesPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Properties</h1>
-        <p className="text-muted-foreground mt-1">
-          {filtered.length} properties found
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Properties</h1>
+          <p className="text-muted-foreground mt-1">
+            {filtered.length} properties found
+          </p>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <Radio size={14} className={dataSource === "bayut" ? "text-emerald-400" : "text-muted-foreground"} />
+          <span className={dataSource === "bayut" ? "text-emerald-400" : "text-muted-foreground"}>
+            {dataSource === "bayut" ? "Live DLD Data" : "Mock Data"}
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
