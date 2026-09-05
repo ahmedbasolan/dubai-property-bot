@@ -134,7 +134,7 @@ export default function ComparePage() {
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Net Yield</span>
                     <span className="font-bold text-emerald-400">
-                      {t.net_yield_pct.toFixed(1)}%
+                      {t.net_yield_pct?.toFixed(1) ?? "—"}%
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
