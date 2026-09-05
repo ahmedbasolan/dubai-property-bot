@@ -59,6 +59,126 @@
       "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
       "expected_keywords": ["JVC", "first-time", "budget", "yield", "recommendation"],
       "expected_answer_summary": "Top recommendations: JVC (highest yield 8.5-9.5%), International City (low entry, 9.8-10.2% yield), and Town Square (affordable, 8.3-9.0% yield)."
+    },
+    {
+      "id": "eval_011",
+      "question": "What is the net yield for a property in Dubai Marina with AED 1.35M price and AED 14/sqft service charges?",
+      "expected_keywords": ["net yield", "service charges", "Dubai Marina", "AED", "sqft"],
+      "expected_answer_summary": "Net yield is approximately 5.5-6.5% after deducting service charges, management fees (8%), and vacancy loss (5%)."
+    },
+    {
+      "id": "eval_012",
+      "question": "Which communities have HIGH supply risk?",
+      "expected_keywords": ["supply risk", "high", "pipeline", "units", "construction"],
+      "expected_answer_summary": "Communities with >15% of stock in pipeline have HIGH supply risk. This includes Tilal Al Ghaf, DAMAC Hills 2, Dubai South, and JVC."
+    },
+    {
+      "id": "eval_013",
+      "question": "What is the monthly mortgage payment for a AED 1.5M property with 20% down payment at 4.5% for 25 years?",
+      "expected_keywords": ["mortgage", "monthly", "AED", "6670", "6,670", "down payment"],
+      "expected_answer_summary": "Monthly mortgage payment is approximately AED 6,670 with 20% down payment (AED 300K), 4.5% interest, 25 year tenure."
+    },
+    {
+      "id": "eval_014",
+      "question": "What are the total acquisition costs for a AED 1M property including DLD fees and agency fees?",
+      "expected_keywords": ["DLD", "transfer fee", "4%", "agency", "2%", "acquisition"],
+      "expected_answer_summary": "Total acquisition cost includes: DLD transfer fee (4% + AED 580 admin), agency fee (2%), total approximately AED 1.066M."
+    },
+    {
+      "id": "eval_015",
+      "question": "How much can I earn from short-term renting a 1BR in Downtown Dubai?",
+      "expected_keywords": ["short-term", "Airbnb", "Downtown Dubai", "daily rate", "occupancy", "revenue"],
+      "expected_answer_summary": "A 1BR in Downtown Dubai can earn AED 650/night at 75% occupancy, generating approximately AED 177,000/year gross revenue."
+    },
+    {
+      "id": "eval_016",
+      "question": "Is short-term rental better than long-term rental in Dubai Marina?",
+      "expected_keywords": ["short-term", "long-term", "Dubai Marina", "comparison", "premium"],
+      "expected_answer_summary": "Short-term rental in Dubai Marina generates approximately 40-50% premium over long-term rental, but requires DTCM license and management fees."
+    },
+    {
+      "id": "eval_017",
+      "question": "What is the service charge difference between Downtown Dubai and JVC?",
+      "expected_keywords": ["service charge", "Downtown Dubai", "JVC", "AED", "sqft", "comparison"],
+      "expected_answer_summary": "Downtown Dubai has higher service charges (AED 18-30/sqft) compared to JVC (AED 8-15/sqft), directly impacting net yield."
+    },
+    {
+      "id": "eval_018",
+      "question": "Which developer has the best on-time delivery rate?",
+      "expected_keywords": ["developer", "on-time", "delivery", "Emaar", "Meraas", "track record"],
+      "expected_answer_summary": "Emaar has 92% on-time delivery rate, followed by Meraas at 88%. These developers have strong track records in Dubai."
+    },
+    {
+      "id": "eval_019",
+      "question": "What is the ROI for a studio apartment in International City?",
+      "expected_keywords": ["studio", "International City", "ROI", "yield", "affordable"],
+      "expected_answer_summary": "Studios in International City offer ROI of 9.5-10.5%, among the highest in Dubai due to low entry price and consistent rental demand."
+    },
+    {
+      "id": "eval_020",
+      "question": "Compare the investment scores of Dubai Hills Estate and Business Bay.",
+      "expected_keywords": ["Dubai Hills Estate", "Business Bay", "score", "comparison", "investment"],
+      "expected_answer_summary": "Dubai Hills Estate has higher composite score due to newer developments, better community planning, and strong Emaar brand premium."
+    },
+    {
+      "id": "eval_021",
+      "question": "What view types are available in Palm Jumeirah and how do they affect price?",
+      "expected_keywords": ["Palm Jumeirah", "view", "sea", "atlantis", "price", "premium"],
+      "expected_answer_summary": "Palm Jumeirah offers sea, Atlantis, and community views. Sea view commands 25-40% premium over community view."
+    },
+    {
+      "id": "eval_022",
+      "question": "What is the price per sqft trend in Dubai Marina over the last 2 years?",
+      "expected_keywords": ["Dubai Marina", "price", "trend", "sqft", "appreciation", "growth"],
+      "expected_answer_summary": "Dubai Marina price per sqft increased from AED 1,500 (Q1 2022) to AED 2,050 (Q1 2024), approximately 37% appreciation."
+    },
+    {
+      "id": "eval_023",
+      "question": "Which communities have the highest transaction volume?",
+      "expected_keywords": ["transaction volume", "Dubai Marina", "JVC", "Downtown", "Business Bay", "high volume"],
+      "expected_answer_summary": "Dubai Marina, JVC, and Downtown Dubai have the highest transaction volumes, indicating strong market liquidity."
+    },
+    {
+      "id": "eval_024",
+      "question": "What is the floor level premium in Dubai buildings?",
+      "expected_keywords": ["floor", "premium", "high floor", "low floor", "view", "price"],
+      "expected_answer_summary": "Higher floors command 10-20% premium in Dubai due to better views, less noise, and prestige factor."
+    },
+    {
+      "id": "eval_025",
+      "question": "What parking spots are typical for apartments in Business Bay?",
+      "expected_keywords": ["parking", "Business Bay", "spots", "apartment", "amenities"],
+      "expected_answer_summary": "Business Bay apartments typically have 1 parking spot for 1BR and 2 spots for 2BR units, consistent with urban Dubai standards."
+    },
+    {
+      "id": "eval_026",
+      "question": "What is the completion year range for properties in Dubai Hills Estate?",
+      "expected_keywords": ["completion year", "Dubai Hills Estate", "new", "recent", "2018", "2025"],
+      "expected_answer_summary": "Dubai Hills Estate properties range from 2018 to 2025, with many recent completions reflecting its newer development status."
+    },
+    {
+      "id": "eval_027",
+      "question": "What furnishing options are available in Downtown Dubai?",
+      "expected_keywords": ["furnishing", "Downtown Dubai", "furnished", "unfurnished", "semi-furnished"],
+      "expected_answer_summary": "Downtown Dubai has 35% furnished, 45% unfurnished, and 20% semi-furnished units, reflecting its cosmopolitan tenant base."
+    },
+    {
+      "id": "eval_028",
+      "question": "How does the supply pipeline affect property prices in a community?",
+      "expected_keywords": ["supply pipeline", "prices", "impact", "construction", "new units", "oversupply"],
+      "expected_answer_summary": "Communities with >15% new supply in 24 months see 3.5% lower price growth due to oversupply risk and increased competition."
+    },
+    {
+      "id": "eval_029",
+      "question": "What is the recommended investment strategy for a AED 5M budget?",
+      "expected_keywords": ["investment strategy", "AED 5M", "portfolio", "diversification", "recommendation"],
+      "expected_answer_summary": "With AED 5M, consider diversifying: 1-2 units in prime areas (Downtown/Marina) for capital appreciation, plus 2-3 units in high-yield areas (JVC/International City) for rental income."
+    },
+    {
+      "id": "eval_030",
+      "question": "What are the Golden Visa requirements through property investment in Dubai?",
+      "expected_keywords": ["Golden Visa", "AED 2M", "property investment", "visa", "residency"],
+      "expected_answer_summary": "Golden Visa requires AED 2M property investment. This can be one property or multiple properties totaling AED 2M+, providing 10-year renewable residency."
     }
   ]
 }
