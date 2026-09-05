@@ -12,7 +12,7 @@ import chromadb
 from chromadb.config import Settings
 from openai import OpenAI
 
-from config import DB_PATH, CHROMA_DIR, DEFAULT_MODEL, LLM_TEMPERATURE, LLM_MAX_TOKENS
+from config import DB_PATH, CHROMA_DIR, LLM_TEMPERATURE, LLM_MAX_TOKENS
 
 # Initialize clients
 duck_conn = duckdb.connect(str(DB_PATH), read_only=True)
@@ -21,31 +21,71 @@ chroma_client = chromadb.PersistentClient(
     settings=Settings(anonymized_telemetry=False),
 )
 
+# Provider configs: base_url + default model
+PROVIDERS = {
+    "groq": {
+        "base_url": "https://api.groq.com/openai/v1",
+        "default_model": "openai/gpt-oss-120b",
+        "env_key": "GROQ_API_KEY",
+    },
+    "openai": {
+        "base_url": None,
+        "default_model": "gpt-4o-mini",
+        "env_key": "OPENAI_API_KEY",
+    },
+    "openrouter": {
+        "base_url": "https://openrouter.ai/api/v1",
+        "default_model": "openai/gpt-4o-mini",
+        "env_key": "OPENROUTER_API_KEY",
+    },
+}
 
-def get_llm_client() -> OpenAI:
-    """Get LLM client — supports Groq, OpenRouter, or OpenAI."""
-    groq_key = os.environ.get("GROQ_API_KEY")
-    openrouter_key = os.environ.get("OPENROUTER_API_KEY")
-    openai_key = os.environ.get("OPENAI_API_KEY")
 
-    if groq_key:
-        return OpenAI(api_key=groq_key, base_url="https://api.groq.com/openai/v1")
-    if openrouter_key:
-        return OpenAI(api_key=openrouter_key, base_url="https://openrouter.ai/api/v1")
-    if openai_key:
-        return OpenAI(api_key=openai_key)
+def get_llm_client(
+    provider: Optional[str] = None,
+    api_key: Optional[str] = None,
+) -> Optional[OpenAI]:
+    """Get LLM client for the given provider.
+
+    Priority: explicit api_key > provider env var > auto-detect from env vars.
+    """
+    # If provider specified, use it
+    if provider and provider in PROVIDERS:
+        cfg = PROVIDERS[provider]
+        key = api_key or os.environ.get(cfg["env_key"], "")
+        if key:
+            return OpenAI(api_key=key, base_url=cfg["base_url"])
+        return None
+
+    # If api_key given but no provider, auto-detect
+    if api_key:
+        # Try to detect provider from key prefix
+        if api_key.startswith("gsk_"):
+            return OpenAI(api_key=api_key, base_url=PROVIDERS["groq"]["base_url"])
+        return OpenAI(api_key=api_key)
+
+    # Auto-detect from env vars
+    for prov_name, cfg in PROVIDERS.items():
+        key = os.environ.get(cfg["env_key"])
+        if key:
+            return OpenAI(api_key=key, base_url=cfg["base_url"])
+
     return None
 
 
-def get_model() -> str:
-    """Get model name based on which API key is configured."""
+def get_model(provider: Optional[str] = None) -> str:
+    """Get default model for the given provider."""
+    if provider and provider in PROVIDERS:
+        return PROVIDERS[provider]["default_model"]
+
+    # Auto-detect
     if os.environ.get("GROQ_API_KEY"):
-        return "openai/gpt-oss-120b"
+        return PROVIDERS["groq"]["default_model"]
     if os.environ.get("OPENROUTER_API_KEY"):
-        return "openai/gpt-4o-mini"
+        return PROVIDERS["openrouter"]["default_model"]
     if os.environ.get("OPENAI_API_KEY"):
-        return "gpt-4o-mini"
-    return DEFAULT_MODEL
+        return PROVIDERS["openai"]["default_model"]
+    return PROVIDERS["groq"]["default_model"]
 
 
 def structured_search(
@@ -55,7 +95,6 @@ def structured_search(
     """Search DuckDB for structured data (transactions + community scores)."""
     results = {"transactions": [], "community_scores": [], "supply_info": []}
 
-    # Build WHERE clause
     where_parts = []
     params = []
     if filters:
@@ -77,7 +116,6 @@ def structured_search(
 
     where_clause = " AND ".join(where_parts) if where_parts else "1=1"
 
-    # Query transactions with net yield
     tx_query = f"""
         SELECT transaction_id, community, property_type, bedrooms,
                price_aed, size_sqft, roi_pct, floor_level, view_type,
@@ -101,7 +139,6 @@ def structured_search(
     ]
     results["transactions"] = [dict(zip(tx_cols, row)) for row in tx_rows]
 
-    # Query community investment scores
     score_query = """
         SELECT * FROM v_investment_scores
         ORDER BY composite_score DESC
@@ -118,7 +155,6 @@ def structured_search(
     ]
     results["community_scores"] = [dict(zip(score_cols, row)) for row in score_rows]
 
-    # Supply pipeline info
     supply_query = """
         SELECT * FROM supply_pipeline
         ORDER BY pipeline_pct_of_stock DESC
@@ -161,7 +197,6 @@ def build_context(
     """Build context string from both search results."""
     parts = []
 
-    # Community scores (most valuable for investment decisions)
     if structured["community_scores"]:
         parts.append("=== COMMUNITY INVESTMENT SCORES ===")
         for cs in structured["community_scores"][:8]:
@@ -181,7 +216,6 @@ def build_context(
                 f"Recommendation: {cs['recommendation']} (Score: {cs['composite_score']:.0f}/100)"
             )
 
-    # Filtered transactions
     if structured["transactions"]:
         parts.append("\n=== MATCHING TRANSACTIONS ===")
         for tx in structured["transactions"][:10]:
@@ -198,7 +232,6 @@ def build_context(
                 f"Developer: {tx['developer']}, {tx['handover_status']}"
             )
 
-    # Supply pipeline (risk context)
     high_supply = [s for s in structured["supply_info"] if s["supply_risk"] == "high"]
     if high_supply:
         parts.append("\n=== HIGH SUPPLY RISK COMMUNITIES ===")
@@ -210,7 +243,6 @@ def build_context(
                 f"Risk: HIGH"
             )
 
-    # Market reports (semantic)
     if semantic:
         parts.append("\n=== MARKET REPORTS ===")
         for doc in semantic:
@@ -226,19 +258,26 @@ def generate_answer(
     context: str,
     structured: Dict[str, Any],
     semantic: List[Dict[str, Any]],
-    model: str = None,
+    provider: Optional[str] = None,
+    api_key: Optional[str] = None,
+    model: Optional[str] = None,
 ) -> str:
     """Generate answer using LLM with retrieved context."""
-    client = get_llm_client()
+    client = get_llm_client(provider=provider, api_key=api_key)
     if not client:
+        providers_list = ", ".join(PROVIDERS.keys())
         return (
-            "LLM not configured. Add GROQ_API_KEY (free) to your .env file.\n\n"
-            "Based on the data retrieved:\n\n" + context[:1500]
+            f"LLM not configured. Add one of these API keys to your .env:\n"
+            f"  - GROQ_API_KEY (free: console.groq.com/keys)\n"
+            f"  - OPENAI_API_KEY (platform.openai.com)\n"
+            f"  - OPENROUTER_API_KEY (openrouter.ai)\n\n"
+            f"Or enter your key in the chat UI.\n\n"
+            f"Based on the data retrieved:\n\n" + context[:1500]
         )
-    if model is None:
-        model = get_model()
 
-    # Build citations
+    if model is None:
+        model = get_model(provider)
+
     citations = []
     if structured["community_scores"]:
         for cs in structured["community_scores"][:5]:
@@ -300,20 +339,18 @@ Answer the question using ONLY the data above. Cite specific sources."""
 def rag_query(
     query: str,
     filters: Optional[Dict[str, Any]] = None,
-    model: str = None,
+    provider: Optional[str] = None,
+    api_key: Optional[str] = None,
+    model: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Full RAG pipeline: structured + semantic search + generation."""
-    # Structured search (DuckDB)
     structured = structured_search(query, filters=filters)
-
-    # Semantic search (ChromaDB)
     semantic = semantic_search(query, n_results=3)
-
-    # Build context
     context = build_context(structured, semantic)
-
-    # Generate answer
-    answer = generate_answer(query, context, structured, semantic, model=model)
+    answer = generate_answer(
+        query, context, structured, semantic,
+        provider=provider, api_key=api_key, model=model,
+    )
 
     return {
         "answer": answer,
@@ -344,7 +381,11 @@ def health_check() -> Dict[str, bool]:
     except Exception:
         checks["chromadb_reports"] = False
 
-    api_key = os.environ.get("GROQ_API_KEY") or os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    api_key = (
+        os.environ.get("GROQ_API_KEY")
+        or os.environ.get("OPENROUTER_API_KEY")
+        or os.environ.get("OPENAI_API_KEY")
+    )
     checks["api_key"] = bool(api_key)
 
     return checks

@@ -12,8 +12,7 @@ PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 MANAGEMENT_FEE_RATE = 0.08  # 8% of annual rent
 VACANCY_RATE = 0.05  # ~2-3 weeks/year
 
-# LLM defaults (Groq — free tier, fast inference)
-DEFAULT_MODEL = "openai/gpt-oss-120b"
+# LLM defaults
 LLM_TEMPERATURE = 0.3
 LLM_MAX_TOKENS = 4000
 
