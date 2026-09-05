@@ -257,7 +257,7 @@ export default function Dashboard() {
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {t.size_sqft.toLocaleString()} sqft
-                      {t.developer ? ` • ${t.developer}` : ""}
+                      {t.developer && typeof t.developer === "string" ? ` • ${t.developer}` : ""}
                     </div>
                   </div>
                   <div className="text-right">
