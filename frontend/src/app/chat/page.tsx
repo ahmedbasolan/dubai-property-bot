@@ -4,7 +4,16 @@ import { useState, useRef, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { useDataSource } from "@/components/data-source-provider";
-import { Send, Bot, User, AlertCircle, Database, Key, Check } from "lucide-react";
+import {
+  Send,
+  Bot,
+  User,
+  AlertCircle,
+  Database,
+  Key,
+  Check,
+  ChevronDown,
+} from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -12,6 +21,12 @@ interface Message {
   communities?: string[];
   txCount?: number;
 }
+
+const PROVIDERS = [
+  { id: "groq", label: "Groq", models: ["openai/gpt-oss-120b", "qwen/qwen3.6-27b", "openai/gpt-oss-20b"], defaultModel: "openai/gpt-oss-120b", free: true },
+  { id: "openai", label: "OpenAI", models: ["gpt-4o-mini", "gpt-4o", "gpt-3.5-turbo"], defaultModel: "gpt-4o-mini", free: false },
+  { id: "openrouter", label: "OpenRouter", models: ["openai/gpt-4o-mini", "anthropic/claude-3-haiku", "meta-llama/llama-3.1-8b-instruct"], defaultModel: "openai/gpt-4o-mini", free: false },
+];
 
 const SUGGESTIONS = [
   "Which 1BR under AED 1.5M has the best net yield?",
@@ -27,11 +42,15 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [userApiKey, setUserApiKey] = useState("");
-  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [provider, setProvider] = useState("groq");
+  const [apiKey, setApiKey] = useState("");
+  const [model, setModel] = useState("");
   const [keySaved, setKeySaved] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const { useLive } = useDataSource();
+
+  const currentProvider = PROVIDERS.find((p) => p.id === provider)!;
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,7 +66,11 @@ export default function ChatPage() {
     setError(null);
 
     try {
-      const res = await api.chat(query.trim(), userApiKey || undefined);
+      const res = await api.chat(query.trim(), {
+        provider,
+        apiKey: apiKey || undefined,
+        model: model || undefined,
+      });
       const assistantMsg: Message = {
         role: "assistant",
         content: res.answer,
@@ -64,6 +87,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Header */}
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bot size={20} className="text-emerald-400" />
@@ -71,67 +95,105 @@ export default function ChatPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowKeyInput(!showKeyInput)}
+            onClick={() => setShowSettings(!showSettings)}
             className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-border hover:bg-accent/50 transition-colors"
           >
             <Key size={12} />
-            {userApiKey ? (
-              <span className="text-emerald-400 flex items-center gap-1">
-                <Check size={12} /> Custom Key
-              </span>
-            ) : (
-              <span className="text-muted-foreground">Use Your Key</span>
-            )}
+            <span className={apiKey ? "text-emerald-400" : "text-muted-foreground"}>
+              {currentProvider.label}
+              {apiKey ? " (Custom)" : ""}
+            </span>
+            <ChevronDown size={12} className={`transition-transform ${showSettings ? "rotate-180" : ""}`} />
           </button>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Database size={14} />
-            <span>Groq</span>
+            <span>LLM</span>
           </div>
         </div>
       </div>
 
-      {showKeyInput && (
-        <div className="px-4 pb-2">
-          <div className="p-3 rounded-lg bg-accent/30 border border-border">
-            <label className="text-xs text-muted-foreground block mb-1.5">
-              Your Groq API Key (optional — default key is pre-configured)
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="password"
-                value={userApiKey}
-                onChange={(e) => {
-                  setUserApiKey(e.target.value);
-                  setKeySaved(false);
-                }}
-                placeholder="gsk_..."
-                className="flex-1 bg-background border border-border rounded-lg px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-              />
-              <button
-                onClick={() => {
-                  setKeySaved(true);
-                  setTimeout(() => setKeySaved(false), 2000);
-                }}
-                className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm hover:bg-primary/90"
-              >
-                {keySaved ? <Check size={14} /> : "Save"}
-              </button>
+      {/* Settings Panel */}
+      {showSettings && (
+        <div className="px-4 pb-3">
+          <div className="p-4 rounded-lg bg-accent/30 border border-border space-y-3">
+            {/* Provider Selector */}
+            <div>
+              <label className="text-xs text-muted-foreground block mb-1.5">Provider</label>
+              <div className="flex gap-2">
+                {PROVIDERS.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => {
+                      setProvider(p.id);
+                      setModel("");
+                      setApiKey("");
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      provider === p.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-background border border-border hover:bg-accent/50"
+                    }`}
+                  >
+                    {p.label}
+                    {p.free && (
+                      <span className="ml-1.5 text-xs opacity-60">Free</span>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-1.5">
-              Get a free key at{" "}
-              <a
-                href="https://console.groq.com/keys"
-                target="_blank"
-                rel="noopener"
-                className="text-emerald-400 hover:underline"
+
+            {/* Model Selector */}
+            <div>
+              <label className="text-xs text-muted-foreground block mb-1.5">Model</label>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
               >
-                console.groq.com/keys
-              </a>
-            </p>
+                <option value="">Default ({currentProvider.defaultModel})</option>
+                {currentProvider.models.map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* API Key Input */}
+            <div>
+              <label className="text-xs text-muted-foreground block mb-1.5">
+                API Key {provider === "groq" && "(free at console.groq.com/keys)"}
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => {
+                    setApiKey(e.target.value);
+                    setKeySaved(false);
+                  }}
+                  placeholder={
+                    provider === "groq" ? "gsk_..." :
+                    provider === "openai" ? "sk-..." :
+                    "sk-or-..."
+                  }
+                  className="flex-1 bg-background border border-border rounded-lg px-3 py-1.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+                />
+                <button
+                  onClick={() => setKeySaved(true)}
+                  className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-sm hover:bg-primary/90"
+                >
+                  {keySaved ? <Check size={14} /> : "Save"}
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {apiKey ? "Using your custom key" : "Using server default (if configured)"}
+              </p>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-6">
@@ -238,6 +300,7 @@ export default function ChatPage() {
         <div ref={bottomRef} />
       </div>
 
+      {/* Input */}
       <div className="p-4 border-t border-border">
         <form
           onSubmit={(e) => {
@@ -264,15 +327,8 @@ export default function ChatPage() {
         </form>
         <p className="text-xs text-muted-foreground mt-2 text-center">
           {useLive ? "Live BayutAPI data" : "Mock data"} •{" "}
-          {userApiKey ? "Your Groq key" : "Default Groq key"} •{" "}
-          <a
-            href="https://console.groq.com/keys"
-            target="_blank"
-            rel="noopener"
-            className="text-emerald-400 hover:underline"
-          >
-            Get free key
-          </a>
+          {currentProvider.label} •{" "}
+          {apiKey ? "Your key" : "Server key"}
         </p>
       </div>
     </div>
