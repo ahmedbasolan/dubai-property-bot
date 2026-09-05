@@ -6,8 +6,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import streamlit as st
+import pandas as pd
 from rag import rag_query, health_check, structured_search
 from calculators import calculate_mortgage, calculate_str
+from price_trends import get_price_trend, get_all_trends, get_top_gainers, get_top_volume, HISTORICAL_DATA
 from config import REC_ICONS, MIN_BUDGET, MAX_BUDGET
 
 # Page config
@@ -177,8 +179,8 @@ def render_property_card(tx: dict, show_mortgage: bool = True):
 
 
 # --- Tabs ---
-tab_chat, tab_leaderboard, tab_compare, tab_map = st.tabs(
-    ["💬 Ask", "🏆 Leaderboard", "⚖️ Compare", "🗺️ Map"]
+tab_chat, tab_leaderboard, tab_compare, tab_trends, tab_map = st.tabs(
+    ["💬 Ask", "🏆 Leaderboard", "⚖️ Compare", "📈 Trends", "🗺️ Map"]
 )
 
 # --- Chat Tab ---
@@ -343,6 +345,80 @@ with tab_compare:
                     if str_est and str_est.annual_revenue > 0:
                         st.markdown(f"**STR Revenue:** AED {str_est.annual_revenue:,}/yr")
                         st.markdown(f"**STR Premium:** {str_est.str_premium_pct:+.1f}% vs long-term")
+
+# --- Trends Tab ---
+with tab_trends:
+    st.subheader("📈 Price Trends")
+    st.caption("Historical price per sqft and transaction volume by community")
+
+    # Top gainers
+    st.markdown("### 🚀 Top Price Gainers (YoY)")
+    gainers = get_top_gainers(5)
+    cols = st.columns(5)
+    for i, g in enumerate(gainers):
+        with cols[i]:
+            st.metric(
+                g.community,
+                f"AED {g.prices[-1]:,}/sqft",
+                f"{g.yoy_change_pct:+.1f}%",
+            )
+
+    st.markdown("---")
+
+    # Community selector for detailed view
+    all_communities = sorted(HISTORICAL_DATA.keys())
+    selected_comm = st.selectbox("Select community for detailed trend", all_communities)
+
+    if selected_comm:
+        trend = get_price_trend(selected_comm)
+
+        if trend.prices:
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.markdown("### Price per Sqft")
+                price_df = pd.DataFrame({
+                    "Quarter": trend.quarters,
+                    "AED/sqft": trend.prices,
+                })
+                st.line_chart(price_df.set_index("Quarter"))
+
+            with col2:
+                st.markdown("### Transaction Volume")
+                vol_df = pd.DataFrame({
+                    "Quarter": trend.quarters,
+                    "Transactions": trend.volumes,
+                })
+                st.bar_chart(vol_df.set_index("Quarter"))
+
+            # Summary stats
+            st.markdown("### Summary")
+            sc1, sc2, sc3, sc4 = st.columns(4)
+            with sc1:
+                st.metric("Current Price", f"AED {trend.prices[-1]:,}/sqft")
+            with sc2:
+                st.metric("YoY Change", f"{trend.yoy_change_pct:+.1f}%")
+            with sc3:
+                st.metric("Latest Volume", f"{trend.volumes[-1]} txns")
+            with sc4:
+                trend_icon = {"up": "📈", "down": "📉", "stable": "➡️"}
+                st.metric("Trend", f"{trend_icon.get(trend.trend_direction, '')} {trend.trend_direction.title()}")
+
+    # All communities comparison
+    st.markdown("---")
+    st.markdown("### All Communities — Q1 2024 Snapshot")
+    all_trends = get_all_trends()
+    snapshot_data = []
+    for comm, t in sorted(all_trends.items(), key=lambda x: x[1].prices[-1] if x[1].prices else 0, reverse=True):
+        if t.prices:
+            snapshot_data.append({
+                "Community": comm,
+                "Price/sqft (Q1 2024)": t.prices[-1],
+                "YoY Change": f"{t.yoy_change_pct:+.1f}%",
+                "Volume": t.volumes[-1] if t.volumes else 0,
+                "Trend": t.trend_direction,
+            })
+    st.dataframe(snapshot_data, use_container_width=True)
 
 # --- Map Tab ---
 with tab_map:
