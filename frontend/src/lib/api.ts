@@ -125,4 +125,8 @@ export const api = {
   getTopGainers: () => fetchApi<{ gainers: TrendPoint[] }>("/api/trends/top-gainers"),
   getTopVolume: () => fetchApi<{ volume: TrendPoint[] }>("/api/trends/top-volume"),
   getMapData: () => fetchApi<{ features: MapFeature[] }>("/api/map"),
+  chat: (q: string) =>
+    fetchApi<{ answer: string; communities: string[]; transaction_count: number }>(
+      `/api/chat?q=${encodeURIComponent(q)}`
+    ),
 };

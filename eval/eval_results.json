@@ -1,0 +1,312 @@
+{
+  "summary": {
+    "total": 30,
+    "successful": 0,
+    "errors": 30,
+    "avg_keyword_score": 0,
+    "number_accuracy": 0,
+    "community_accuracy": 0
+  },
+  "results": [
+    {
+      "id": "eval_001",
+      "question": "Which community has the best ROI for 1BR apartments under AED 1.5M?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_002",
+      "question": "What is the average price per sqft in Downtown Dubai?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_003",
+      "question": "Compare rental yields between Dubai Marina and JVC.",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_004",
+      "question": "What properties are available in Business Bay for under AED 2M?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_005",
+      "question": "Which developer has the most transactions in the dataset?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_006",
+      "question": "What is the ROI range for off-plan properties vs ready properties?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_007",
+      "question": "What are the risks of investing in DAMAC Hills 2 according to market reports?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_008",
+      "question": "Which communities have villas available and what are their price ranges?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_009",
+      "question": "What is the occupancy rate in Downtown Dubai according to the market report?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_010",
+      "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_011",
+      "question": "What is the net yield for a property in Dubai Marina with AED 1.35M price and AED 14/sqft service charges?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_012",
+      "question": "Which communities have HIGH supply risk?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_013",
+      "question": "What is the monthly mortgage payment for a AED 1.5M property with 20% down payment at 4.5% for 25 years?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_014",
+      "question": "What are the total acquisition costs for a AED 1M property including DLD fees and agency fees?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_015",
+      "question": "How much can I earn from short-term renting a 1BR in Downtown Dubai?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_016",
+      "question": "Is short-term rental better than long-term rental in Dubai Marina?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_017",
+      "question": "What is the service charge difference between Downtown Dubai and JVC?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_018",
+      "question": "Which developer has the best on-time delivery rate?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_019",
+      "question": "What is the ROI for a studio apartment in International City?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_020",
+      "question": "Compare the investment scores of Dubai Hills Estate and Business Bay.",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_021",
+      "question": "What view types are available in Palm Jumeirah and how do they affect price?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_022",
+      "question": "What is the price per sqft trend in Dubai Marina over the last 2 years?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_023",
+      "question": "Which communities have the highest transaction volume?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_024",
+      "question": "What is the floor level premium in Dubai buildings?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_025",
+      "question": "What parking spots are typical for apartments in Business Bay?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_026",
+      "question": "What is the completion year range for properties in Dubai Hills Estate?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_027",
+      "question": "What furnishing options are available in Downtown Dubai?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_028",
+      "question": "How does the supply pipeline affect property prices in a community?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_029",
+      "question": "What is the recommended investment strategy for a AED 5M budget?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    },
+    {
+      "id": "eval_030",
+      "question": "What are the Golden Visa requirements through property investment in Dubai?",
+      "answer": "",
+      "keyword_score": 0.0,
+      "number_accuracy": false,
+      "communities_valid": false,
+      "error": "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.",
+      "status": "error"
+    }
+  ]
+}
