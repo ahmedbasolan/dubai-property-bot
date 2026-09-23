@@ -142,7 +142,6 @@ def structured_search(
     score_query = """
         SELECT * FROM v_investment_scores
         ORDER BY composite_score DESC
-        LIMIT 10
     """
     score_rows = duck_conn.execute(score_query).fetchall()
     score_cols = [

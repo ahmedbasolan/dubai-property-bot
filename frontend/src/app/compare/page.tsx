@@ -82,7 +82,7 @@ export default function ComparePage() {
                 disabled={selectedIds.includes(t.transaction_id)}
               >
                 {t.transaction_id} — {t.bedrooms}BR {getCommunityName(t.community)} — AED{" "}
-                {(t.price_aed / 1000000).toFixed(2)}M
+                {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
               </SelectItem>
             ))}
           </SelectContent>
@@ -125,19 +125,19 @@ export default function ComparePage() {
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Price</span>
                     <span className="font-bold">
-                      AED {(t.price_aed / 1000000).toFixed(2)}M
+                      AED {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Size</span>
                     <span className="font-bold">
-                      {t.size_sqft.toLocaleString()} sqft
+                      {t.size_sqft != null ? t.size_sqft.toLocaleString() : "—"} sqft
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Price/sqft</span>
                     <span className="font-bold">
-                      AED {t.price_per_sqft.toLocaleString()}
+                      AED {t.price_per_sqft != null ? t.price_per_sqft.toLocaleString() : "—"}
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
@@ -149,20 +149,20 @@ export default function ComparePage() {
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">ROI</span>
                     <span className="font-bold text-emerald-400">
-                      {t.roi_pct}%
+                      {t.roi_pct != null ? `${t.roi_pct}%` : "—"}
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Floor</span>
-                    <span className="font-bold">{t.floor_level}</span>
+                    <span className="font-bold">{t.floor_level ?? "—"}</span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">View</span>
-                    <span className="font-bold">{t.view_type}</span>
+                    <span className="font-bold">{t.view_type ?? "—"}</span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Developer</span>
-                    <span className="font-bold">{t.developer}</span>
+                    <span className="font-bold">{t.developer ?? "—"}</span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Status</span>
@@ -173,7 +173,7 @@ export default function ComparePage() {
                           : "secondary"
                       }
                     >
-                      {t.handover_status}
+                      {t.handover_status ?? "—"}
                     </Badge>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
@@ -181,7 +181,7 @@ export default function ComparePage() {
                       Service Charge
                     </span>
                     <span className="font-bold">
-                      {t.service_charge_aed_sqft} AED/sqft
+                      {t.service_charge_aed_sqft ?? "—"} AED/sqft
                     </span>
                   </div>
                 </div>

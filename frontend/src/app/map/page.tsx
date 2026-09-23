@@ -121,11 +121,11 @@ export default function MapPage() {
                         stroke={recColors[selected.recommendation]}
                         strokeWidth="6"
                         strokeLinecap="round"
-                        strokeDasharray={`${(selected.composite_score / 100) * 264} 264`}
+                        strokeDasharray={`${((selected.composite_score ?? 0) / 100) * 264} 264`}
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-3xl font-bold">{selected.composite_score.toFixed(0)}</span>
+                      <span className="text-3xl font-bold">{(selected.composite_score ?? 0).toFixed(0)}</span>
                       <span className="text-xs text-muted-foreground">/ 100</span>
                     </div>
                   </div>
@@ -139,7 +139,7 @@ export default function MapPage() {
                       Net Yield
                     </div>
                     <div className="text-xl font-bold text-emerald-400">
-                      {selected.avg_net_yield.toFixed(1)}%
+                      {(selected.avg_net_yield ?? 0).toFixed(1)}%
                     </div>
                   </div>
                   <div className="p-3 rounded-lg bg-accent/50">
@@ -148,9 +148,9 @@ export default function MapPage() {
                       Avg Price
                     </div>
                     <div className="text-xl font-bold">
-                      {selected.avg_price >= 1000000
-                        ? `AED ${(selected.avg_price / 1000000).toFixed(1)}M`
-                        : `AED ${(selected.avg_price / 1000).toFixed(0)}K`
+                      {(selected.avg_price ?? 0) >= 1000000
+                        ? `AED ${((selected.avg_price ?? 0) / 1000000).toFixed(1)}M`
+                        : `AED ${((selected.avg_price ?? 0) / 1000).toFixed(0)}K`
                       }
                     </div>
                   </div>
@@ -189,7 +189,7 @@ export default function MapPage() {
             <CardContent>
               <div className="space-y-1 max-h-[300px] overflow-y-auto">
                 {features
-                  .sort((a, b) => b.composite_score - a.composite_score)
+                  .sort((a, b) => (b.composite_score ?? 0) - (a.composite_score ?? 0))
                   .map((f) => (
                     <button
                       key={f.community}
@@ -208,7 +208,7 @@ export default function MapPage() {
                         {f.community}
                       </span>
                       <span className="font-medium text-muted-foreground">
-                        {f.composite_score.toFixed(0)}
+                        {(f.composite_score ?? 0).toFixed(0)}
                       </span>
                     </button>
                   ))}

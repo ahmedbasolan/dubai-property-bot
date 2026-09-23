@@ -285,7 +285,10 @@ def map_data():
     score_map = {s["community"]: s for s in scores}
     features = []
     for name, coords in COMMUNITY_COORDS.items():
-        s = score_map.get(name, {})
+        s = score_map.get(name)
+        if not s:
+            # Skip communities with no investment score (e.g. DIFC not in dataset)
+            continue
         features.append({
             "community": name,
             "district": s.get("district", ""),
@@ -310,11 +313,73 @@ def chat(
 
     Supports Groq (free), OpenAI, and OpenRouter.
     Pass provider + api_key to use your own key, or leave empty for server defaults.
+    On LLM quota/config failure, returns a data-only markdown answer (HTTP 200).
     """
-    from rag import rag_query
-    result = rag_query(q, provider=provider, api_key=api_key, model=model)
+    from rag import rag_query, structured_search
+
+    try:
+        result = rag_query(q, provider=provider, api_key=api_key, model=model)
+        answer = result["answer"]
+        structured = result["structured"]
+    except Exception as e:
+        # Graceful degradation: never 500 the chat UI — answer from DuckDB only
+        structured = structured_search(q, filters=None)
+        answer = _data_only_answer(q, structured, str(e))
+        print(f"[CHAT] LLM unavailable, data-only fallback: {e}")
+
     return {
-        "answer": result["answer"],
-        "communities": [s["community"] for s in result["structured"]["community_scores"][:5]],
-        "transaction_count": len(result["structured"]["transactions"]),
+        "answer": answer,
+        "communities": [s["community"] for s in structured["community_scores"][:5]],
+        "transaction_count": len(structured["transactions"]),
     }
+
+
+def _data_only_answer(query: str, structured: dict, error: str) -> str:
+    """Build a readable markdown answer from DuckDB when the LLM is unavailable."""
+    scores = structured.get("community_scores", [])
+    txns = structured.get("transactions", [])
+    lines = [
+        f"**{query}**",
+        "",
+        "_Live LLM is temporarily unavailable (daily quota). Answer generated from DuckDB data only._",
+        "",
+    ]
+    if scores:
+        lines += [
+            "### Top communities by investment score",
+            "",
+            "| Community | Score | Net Yield | Signal |",
+            "|-----------|------:|----------:|--------|",
+        ]
+        for s in scores[:6]:
+            lines.append(
+                f"| {s['community']} | {s['composite_score']:.0f} | "
+                f"{s['avg_net_yield_pct']:.2f}% | {s['recommendation']} |"
+            )
+        lines.append("")
+        top = scores[0]
+        lines.append(
+            f"**Recommendation: {top['recommendation']}** - "
+            f"**{top['community']}** leads with a score of "
+            f"**{top['composite_score']:.0f}/100** and net yield "
+            f"**{top['avg_net_yield_pct']:.2f}%**."
+        )
+    if txns:
+        lines += [
+            "",
+            "### Matching transactions",
+            "",
+            "| ID | Community | Price | Net Yield |",
+            "|----|-----------|------:|----------:|",
+        ]
+        for t in txns[:5]:
+            lines.append(
+                f"| {t['transaction_id']} | {t['community']} | "
+                f"AED {t['price_aed']:,.0f} | {t['net_yield_pct']:.2f}% |"
+            )
+    lines += [
+        "",
+        "---",
+        "Data as of Q1 2024 — verify with DLD for current conditions.",
+    ]
+    return "\n".join(lines)

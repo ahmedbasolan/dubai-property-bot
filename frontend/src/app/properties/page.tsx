@@ -69,19 +69,21 @@ export default function PropertiesPage() {
 
   if (bedrooms !== "all") {
     filtered = filtered.filter(
-      (t) => t.bedrooms === parseInt(bedrooms)
+      (t) => t.bedrooms === parseInt(bedrooms, 10)
     );
   }
 
   if (sortBy === "yield") {
     filtered = [...filtered].sort(
-      (a, b) => b.net_yield_pct - a.net_yield_pct
+      (a, b) => (b.net_yield_pct ?? 0) - (a.net_yield_pct ?? 0)
     );
   } else if (sortBy === "price") {
-    filtered = [...filtered].sort((a, b) => a.price_aed - b.price_aed);
+    filtered = [...filtered].sort(
+      (a, b) => (a.price_aed ?? 0) - (b.price_aed ?? 0)
+    );
   } else if (sortBy === "sqft") {
     filtered = [...filtered].sort(
-      (a, b) => b.size_sqft - a.size_sqft
+      (a, b) => (b.size_sqft ?? 0) - (a.size_sqft ?? 0)
     );
   }
 
@@ -190,7 +192,7 @@ export default function PropertiesPage() {
                       : "secondary"
                   }
                 >
-                  {t.handover_status}
+                  {t.handover_status ?? "—"}
                 </Badge>
               </div>
             </CardHeader>
@@ -199,13 +201,13 @@ export default function PropertiesPage() {
                 <div>
                   <p className="text-muted-foreground">Price</p>
                   <p className="font-bold text-lg">
-                    AED {(t.price_aed / 1000000).toFixed(2)}M
+                    AED {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
                   </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground">Size</p>
                   <p className="font-bold text-lg">
-                    {t.size_sqft.toLocaleString()} sqft
+                    {t.size_sqft != null ? t.size_sqft.toLocaleString() : "—"} sqft
                   </p>
                 </div>
                 <div>
@@ -227,15 +229,15 @@ export default function PropertiesPage() {
                   <Bed size={12} />
                   {t.bedrooms}BR
                 </span>
-                <span>Floor {t.floor_level}</span>
-                <span>{t.view_type} view</span>
+                <span>Floor {t.floor_level ?? "—"}</span>
+                <span>{t.view_type ? `${t.view_type} view` : "—"}</span>
                 {typeof t.developer === "string" && <span>{t.developer}</span>}
               </div>
 
               <div className="text-xs text-muted-foreground">
                 <span>
-                  AED {t.price_per_sqft.toLocaleString()}/sqft •{" "}
-                  {t.service_charge_aed_sqft} AED/sqft service
+                  AED {t.price_per_sqft != null ? t.price_per_sqft.toLocaleString() : "—"}/sqft •{" "}
+                  {t.service_charge_aed_sqft ?? "—"} AED/sqft service
                 </span>
               </div>
             </CardContent>

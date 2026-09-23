@@ -2,7 +2,17 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 async function fetchApi<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`);
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  if (!res.ok) {
+    let detail = `API error: ${res.status}`;
+    try {
+      const body = await res.json();
+      if (body?.detail) detail = String(body.detail);
+      else if (body?.answer) return body as T; // chat fallback payloads
+    } catch {
+      /* keep status-only message */
+    }
+    throw new Error(detail);
+  }
   return res.json();
 }
 
