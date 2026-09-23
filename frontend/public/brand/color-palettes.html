@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dubai Property Bot — Color Palette Exploration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0B0F1A;
+    color: #E2E8F0;
+    line-height: 1.6;
+    padding: 60px 40px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: #F8FAFC;
+    margin-bottom: 12px;
+  }
+
+  .header p {
+    font-size: 16px;
+    color: #94A3B8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .palette-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .palette-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-4px);
+  }
+
+  .palette-card.current {
+    border-color: rgba(20, 184, 166, 0.5);
+    box-shadow: 0 0 40px rgba(20, 184, 166, 0.1);
+  }
+
+  .palette-header {
+    padding: 28px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .palette-name {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F8FAFC;
+  }
+
+  .palette-tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+
+  .palette-tag.current {
+    background: rgba(20, 184, 166, 0.2);
+    color: #14B8A6;
+  }
+
+  .palette-tag.luxury {
+    background: rgba(212, 175, 55, 0.2);
+    color: #D4AF37;
+  }
+
+  .palette-tag.modern {
+    background: rgba(139, 92, 246, 0.2);
+    color: #8B5CF6;
+  }
+
+  .palette-tag.bold {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+  }
+
+  .palette-tag.ocean {
+    background: rgba(6, 182, 212, 0.2);
+    color: #06B6D4;
+  }
+
+  .palette-tag.earth {
+    background: rgba(161, 98, 7, 0.2);
+    color: #D97706;
+  }
+
+  .palette-desc {
+    padding: 8px 28px 20px;
+    font-size: 13px;
+    color: #94A3B8;
+  }
+
+  .palette-colors {
+    display: flex;
+    height: 120px;
+  }
+
+  .palette-color {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .palette-color:hover {
+    filter: brightness(1.1);
+  }
+
+  .palette-color span {
+    font-family: 'Inter', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .palette-color:hover span {
+    opacity: 1;
+  }
+
+  .palette-details {
+    padding: 24px 28px;
+  }
+
+  .palette-section {
+    margin-bottom: 20px;
+  }
+
+  .palette-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .palette-section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #64748B;
+    margin-bottom: 10px;
+  }
+
+  .swatch-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .swatch-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .swatch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .swatch-name {
+    font-weight: 500;
+    color: #E2E8F0;
+  }
+
+  .swatch-hex {
+    font-family: 'Inter', monospace;
+    font-size: 10px;
+    color: #64748B;
+  }
+
+  /* Preview Sections */
+  .preview-section {
+    margin-top: 80px;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .preview-title {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #F8FAFC;
+    margin-bottom: 12px;
+  }
+
+  .preview-desc {
+    font-size: 14px;
+    color: #94A3B8;
+    margin-bottom: 32px;
+  }
+
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .preview-card {
+    border-radius: 16px;
+    padding: 32px;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .preview-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .preview-card p {
+    font-size: 13px;
+    opacity: 0.8;
+  }
+
+  .preview-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Glass Preview */
+  .glass-preview {
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .glass-preview h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .glass-preview p {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  /* Copy Button */
+  .copy-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 24px;
+    background: #14B8A6;
+    color: #0F172A;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 100;
+  }
+
+  .copy-btn:hover {
+    background: #2DD4BF;
+    transform: translateY(-2px);
+  }
+
+  .copy-toast {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    padding: 12px 20px;
+    background: #1E293B;
+    color: #F8FAFC;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 100;
+  }
+
+  .copy-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    body { padding: 40px 20px; }
+    .palette-grid { grid-template-columns: 1fr; }
+    .preview-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Color Palette Exploration</h1>
+  <p>6 palette options for Dubai Property Bot. Click any swatch to copy its hex code. Hover cards to preview.</p>
+</div>
+
+<div class="palette-grid">
+
+  <!-- Palette 1: Current (Trust Teal) -->
+  <div class="palette-card current" data-palette="current">
+    <div class="palette-header">
+      <div class="palette-name">Trust Teal</div>
+      <div class="palette-tag current">Current</div>
+    </div>
+    <div class="palette-desc">Current brand palette. Teal = trust, blue = technology. Professional, calming, fintech-appropriate.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #0F766E;" data-hex="#0F766E"><span>#0F766E</span></div>
+      <div class="palette-color" style="background: #14B8A6;" data-hex="#14B8A6"><span>#14B8A6</span></div>
+      <div class="palette-color" style="background: #0369A1;" data-hex="#0369A1"><span>#0369A1</span></div>
+      <div class="palette-color" style="background: #0EA5E9;" data-hex="#0EA5E9"><span>#0EA5E9</span></div>
+      <div class="palette-color" style="background: #0F172A;" data-hex="#0F172A"><span>#0F172A</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #10B981;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#10B981</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #F59E0B;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#F59E0B</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #EF4444;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#EF4444</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Trust, Precision, Calm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette 2: Luxury Gold -->
+  <div class="palette-card" data-palette="luxury">
+    <div class="palette-header">
+      <div class="palette-name">Luxury Gold</div>
+      <div class="palette-tag luxury">Premium</div>
+    </div>
+    <div class="palette-desc">High-end real estate. Black = exclusivity, gold = premium value. Aspirational, authoritative.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #D4AF37;" data-hex="#D4AF37"><span>#D4AF37</span></div>
+      <div class="palette-color" style="background: #B8860B;" data-hex="#B8860B"><span>#B8860B</span></div>
+      <div class="palette-color" style="background: #1A1A2E;" data-hex="#1A1A2E"><span>#1A1A2E</span></div>
+      <div class="palette-color" style="background: #16213E;" data-hex="#16213E"><span>#16213E</span></div>
+      <div class="palette-color" style="background: #0F0F0F;" data-hex="#0F0F0F"><span>#0F0F0F</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #22C55E;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#22C55E</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #EAB308;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#EAB308</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #DC2626;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#DC2626</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Exclusivity, Wealth, Prestige</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette 3: Modern Violet -->
+  <div class="palette-card" data-palette="modern">
+    <div class="palette-header">
+      <div class="palette-name">Modern Violet</div>
+      <div class="palette-tag modern">Tech</div>
+    </div>
+    <div class="palette-desc">AI-forward, futuristic. Violet = innovation, cyan = data. Appeals to tech-savvy investors.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #7C3AED;" data-hex="#7C3AED"><span>#7C3AED</span></div>
+      <div class="palette-color" style="background: #A78BFA;" data-hex="#A78BFA"><span>#A78BFA</span></div>
+      <div class="palette-color" style="background: #06B6D4;" data-hex="#06B6D4"><span>#06B6D4</span></div>
+      <div class="palette-color" style="background: #0EA5E9;" data-hex="#0EA5E9"><span>#0EA5E9</span></div>
+      <div class="palette-color" style="background: #0F0B1A;" data-hex="#0F0B1A"><span>#0F0B1A</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #34D399;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#34D399</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #FBBF24;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#FBBF24</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #F87171;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#F87171</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Innovation, Future, AI</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette 4: Bold Ember -->
+  <div class="palette-card" data-palette="bold">
+    <div class="palette-header">
+      <div class="palette-name">Bold Ember</div>
+      <div class="palette-tag bold">Dynamic</div>
+    </div>
+    <div class="palette-desc">High-energy, action-oriented. Red = urgency, orange = opportunity. Drives conversions.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #DC2626;" data-hex="#DC2626"><span>#DC2626</span></div>
+      <div class="palette-color" style="background: #EA580C;" data-hex="#EA580C"><span>#EA580C</span></div>
+      <div class="palette-color" style="background: #F97316;" data-hex="#F97316"><span>#F97316</span></div>
+      <div class="palette-color" style="background: #FBBF24;" data-hex="#FBBF24"><span>#FBBF24</span></div>
+      <div class="palette-color" style="background: #1C1917;" data-hex="#1C1917"><span>#1C1917</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #16A34A;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#16A34A</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #EAB308;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#EAB308</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #991B1B;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#991B1B</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Energy, Action, Opportunity</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette 5: Ocean Deep -->
+  <div class="palette-card" data-palette="ocean">
+    <div class="palette-header">
+      <div class="palette-name">Ocean Deep</div>
+      <div class="palette-tag ocean">Marine</div>
+    </div>
+    <div class="palette-desc">Dubai's coastal identity. Deep blue = depth, aqua = water. Natural, expansive, serene.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #0E7490;" data-hex="#0E7490"><span>#0E7490</span></div>
+      <div class="palette-color" style="background: #06B6D4;" data-hex="#06B6D4"><span>#06B6D4</span></div>
+      <div class="palette-color" style="background: #22D3EE;" data-hex="#22D3EE"><span>#22D3EE</span></div>
+      <div class="palette-color" style="background: #67E8F9;" data-hex="#67E8F9"><span>#67E8F9</span></div>
+      <div class="palette-color" style="background: #0C1222;" data-hex="#0C1222"><span>#0C1222</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #10B981;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#10B981</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #FCD34D;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#FCD34D</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #FB7185;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#FB7185</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Depth, Coast, Calm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Palette 6: Desert Earth -->
+  <div class="palette-card" data-palette="earth">
+    <div class="palette-header">
+      <div class="palette-name">Desert Earth</div>
+      <div class="palette-tag earth">Organic</div>
+    </div>
+    <div class="palette-desc">Dubai's desert landscape. Warm sand = heritage, terracotta = warmth. Grounded, authentic.</div>
+    <div class="palette-colors">
+      <div class="palette-color" style="background: #D97706;" data-hex="#D97706"><span>#D97706</span></div>
+      <div class="palette-color" style="background: #B45309;" data-hex="#B45309"><span>#B45309</span></div>
+      <div class="palette-color" style="background: #92400E;" data-hex="#92400E"><span>#92400E</span></div>
+      <div class="palette-color" style="background: #78350F;" data-hex="#78350F"><span>#78350F</span></div>
+      <div class="palette-color" style="background: #1C1410;" data-hex="#1C1410"><span>#1C1410</span></div>
+    </div>
+    <div class="palette-details">
+      <div class="palette-section">
+        <div class="palette-section-title">Semantic</div>
+        <div class="swatch-row">
+          <div class="swatch"><div class="swatch-dot" style="background: #65A30D;"></div><div class="swatch-info"><span class="swatch-name">Invest</span><span class="swatch-hex">#65A30D</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #CA8A04;"></div><div class="swatch-info"><span class="swatch-name">Hold</span><span class="swatch-hex">#CA8A04</span></div></div>
+          <div class="swatch"><div class="swatch-dot" style="background: #B91C1C;"></div><div class="swatch-info"><span class="swatch-name">Avoid</span><span class="swatch-hex">#B91C1C</span></div></div>
+        </div>
+      </div>
+      <div class="palette-section">
+        <div class="palette-section-title">Mood</div>
+        <div class="swatch-row">
+          <div class="swatch"><span class="swatch-name">Heritage, Warmth, Grounded</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Preview Section -->
+<div class="preview-section">
+  <h2 class="preview-title">Live Preview</h2>
+  <p class="preview-desc">Click a palette above to preview how it looks in UI components.</p>
+
+  <div class="preview-grid">
+    <div class="preview-card" id="preview-hero" style="background: linear-gradient(135deg, #0F766E, #0369A1); color: white;">
+      <div>
+        <h3>Dubai Property Bot</h3>
+        <p>AI-Powered Investment Intelligence</p>
+      </div>
+      <div>
+        <span class="preview-badge" style="background: rgba(255,255,255,0.2);">7-Factor Scoring</span>
+      </div>
+    </div>
+
+    <div class="preview-card" id="preview-glass" class="glass-preview" style="background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(20, 184, 166, 0.2); color: #E2E8F0;">
+      <div>
+        <h4 style="font-family: 'Cinzel', serif; margin-bottom: 8px;">Net Yield Calculator</h4>
+        <p style="font-size: 13px; color: #94A3B8;">Deterministic calculation from 4 data sources</p>
+      </div>
+      <div style="font-family: 'Inter', monospace; font-size: 24px; font-weight: 600; color: #14B8A6;">7.68%</div>
+    </div>
+
+    <div class="preview-card" id="preview-badge" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #E2E8F0;">
+      <div>
+        <h4 style="font-family: 'Cinzel', serif; margin-bottom: 12px;">Investment Signals</h4>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span class="preview-badge" id="badge-invest" style="background: rgba(16, 185, 129, 0.2); color: #10B981;">INVEST</span>
+          <span class="preview-badge" id="badge-hold" style="background: rgba(245, 158, 11, 0.2); color: #F59E0B;">HOLD</span>
+          <span class="preview-badge" id="badge-avoid" style="background: rgba(239, 68, 68, 0.2); color: #EF4444;">AVOID</span>
+        </div>
+      </div>
+      <div style="font-size: 12px; color: #64748B;">International City — Supply Risk: High</div>
+    </div>
+  </div>
+</div>
+
+<button class="copy-btn" onclick="copySelectedPalette()">Copy Selected Palette</button>
+<div class="copy-toast" id="toast">Copied to clipboard!</div>
+
+<script>
+  // Palette data
+  const palettes = {
+    current: {
+      primary: '#0F766E',
+      primaryLight: '#14B8A6',
+      secondary: '#0369A1',
+      secondaryLight: '#0EA5E9',
+      background: '#0F172A',
+      surface: '#1E293B',
+      invest: '#10B981',
+      hold: '#F59E0B',
+      avoid: '#EF4444',
+      hero: 'linear-gradient(135deg, #0F766E, #0369A1)',
+      accent: '#14B8A6'
+    },
+    luxury: {
+      primary: '#D4AF37',
+      primaryLight: '#E8C84A',
+      secondary: '#B8860B',
+      secondaryLight: '#D4A017',
+      background: '#0F0F0F',
+      surface: '#1A1A2E',
+      invest: '#22C55E',
+      hold: '#EAB308',
+      avoid: '#DC2626',
+      hero: 'linear-gradient(135deg, #D4AF37, #B8860B)',
+      accent: '#D4AF37'
+    },
+    modern: {
+      primary: '#7C3AED',
+      primaryLight: '#A78BFA',
+      secondary: '#06B6D4',
+      secondaryLight: '#22D3EE',
+      background: '#0F0B1A',
+      surface: '#1E1635',
+      invest: '#34D399',
+      hold: '#FBBF24',
+      avoid: '#F87171',
+      hero: 'linear-gradient(135deg, #7C3AED, #06B6D4)',
+      accent: '#A78BFA'
+    },
+    bold: {
+      primary: '#DC2626',
+      primaryLight: '#EF4444',
+      secondary: '#EA580C',
+      secondaryLight: '#F97316',
+      background: '#1C1917',
+      surface: '#292524',
+      invest: '#16A34A',
+      hold: '#EAB308',
+      avoid: '#991B1B',
+      hero: 'linear-gradient(135deg, #DC2626, #EA580C)',
+      accent: '#F97316'
+    },
+    ocean: {
+      primary: '#0E7490',
+      primaryLight: '#06B6D4',
+      secondary: '#0891B2',
+      secondaryLight: '#22D3EE',
+      background: '#0C1222',
+      surface: '#162033',
+      invest: '#10B981',
+      hold: '#FCD34D',
+      avoid: '#FB7185',
+      hero: 'linear-gradient(135deg, #0E7490, #0891B2)',
+      accent: '#06B6D4'
+    },
+    earth: {
+      primary: '#D97706',
+      primaryLight: '#F59E0B',
+      secondary: '#B45309',
+      secondaryLight: '#D97706',
+      background: '#1C1410',
+      surface: '#2A1F18',
+      invest: '#65A30D',
+      hold: '#CA8A04',
+      avoid: '#B91C1C',
+      hero: 'linear-gradient(135deg, #D97706, #B45309)',
+      accent: '#F59E0B'
+    }
+  };
+
+  let selectedPalette = 'current';
+
+  // Click handlers for palette cards
+  document.querySelectorAll('.palette-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.palette-card').forEach(c => c.classList.remove('current'));
+      card.classList.add('current');
+      selectedPalette = card.dataset.palette;
+      updatePreview();
+    });
+  });
+
+  // Click handlers for swatches (copy hex)
+  document.querySelectorAll('.palette-color').forEach(swatch => {
+    swatch.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const hex = swatch.dataset.hex;
+      navigator.clipboard.writeText(hex);
+      showToast(`Copied ${hex}`);
+    });
+  });
+
+  function updatePreview() {
+    const p = palettes[selectedPalette];
+
+    // Hero card
+    const hero = document.getElementById('preview-hero');
+    hero.style.background = p.hero;
+
+    // Glass card
+    const glass = document.getElementById('preview-glass');
+    glass.style.borderColor = `${p.accent}33`;
+    glass.querySelector('div:last-child').style.color = p.accent;
+
+    // Badges
+    document.getElementById('badge-invest').style.background = `${p.invest}33`;
+    document.getElementById('badge-invest').style.color = p.invest;
+    document.getElementById('badge-hold').style.background = `${p.hold}33`;
+    document.getElementById('badge-hold').style.color = p.hold;
+    document.getElementById('badge-avoid').style.background = `${p.avoid}33`;
+    document.getElementById('badge-avoid').style.color = p.avoid;
+  }
+
+  function copySelectedPalette() {
+    const p = palettes[selectedPalette];
+    const css = `:root {
+  --primary: ${p.primary};
+  --primary-light: ${p.primaryLight};
+  --secondary: ${p.secondary};
+  --secondary-light: ${p.secondaryLight};
+  --background: ${p.background};
+  --surface: ${p.surface};
+  --invest: ${p.invest};
+  --hold: ${p.hold};
+  --avoid: ${p.avoid};
+}`;
+    navigator.clipboard.writeText(css);
+    showToast('Palette CSS copied to clipboard!');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+</script>
+
+</body>
+</html>

@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Josefin_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { DataSourceProvider } from "@/components/data-source-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const josefinSans = Josefin_Sans({
+  variable: "--font-josefin",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -15,17 +22,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dubai Property Investor",
-  description: "AI-powered Dubai real estate investment analysis",
+  title: "Dubai Property Investment Assistant",
+  description: "AI-powered investment scoring and Q&A for Dubai real estate",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${cinzel.variable} ${josefinSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex bg-background text-foreground">
+      <body className="min-h-full flex bg-background text-foreground font-sans">
         <DataSourceProvider>
           <Sidebar />
           <main className="flex-1 overflow-auto">{children}</main>

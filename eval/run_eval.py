@@ -6,12 +6,19 @@ import re
 from pathlib import Path
 from typing import List, Dict, Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+# Load .env so LLM API keys are available (same as api/main.py)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(PROJECT_ROOT / ".env")
+except ImportError:
+    pass
 
 import duckdb
 from rag import rag_query
 
-PROJECT_ROOT = Path(__file__).parent.parent
 DB_PATH = PROJECT_ROOT / "data" / "dubai_properties.duckdb"
 
 
@@ -90,17 +97,28 @@ def check_number_accuracy(answer: str, db_conn) -> Dict[str, Any]:
     }
 
 
-def check_community_attribution(answer: str, expected_communities: List[str]) -> Dict[str, Any]:
-    """Check if community names mentioned are valid."""
+def _normalize_community(name: str) -> str:
+    """Strip parenthetical aliases: 'JVC (Jumeirah Village Circle)' -> 'jvc'."""
+    return re.sub(r"\s*\(.*\)", "", name).strip().lower()
+
+
+def check_community_attribution(answer: str, valid_communities: List[str]) -> Dict[str, Any]:
+    """Check if community names mentioned in the answer exist in the DB."""
     mentioned = extract_communities(answer)
+    valid_set = {_normalize_community(c) for c in valid_communities}
+    invalid = [c for c in mentioned if _normalize_community(c) not in valid_set]
     return {
         "communities_mentioned": mentioned,
-        "valid_communities": all(c in expected_communities for c in mentioned) if mentioned else True,
+        "invalid_communities": invalid,
+        "valid_communities": len(invalid) == 0,
     }
 
 
-def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
-    """Run full evaluation with correctness checks."""
+def run_eval(eval_path: str = None, model: str = None, resume: bool = True):
+    """Run full evaluation with correctness checks.
+
+    resume=True keeps previously successful results and only re-runs failures.
+    """
     if eval_path is None:
         eval_path = Path(__file__).parent / "eval_set.json"
     else:
@@ -108,19 +126,40 @@ def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
 
     eval_set = load_eval_set(eval_path)
     db_conn = duckdb.connect(str(DB_PATH), read_only=True)
+    output_path = eval_path.parent / "eval_results.json"
 
     # Get valid communities from DB
     valid_communities = [r[0] for r in db_conn.execute(
         "SELECT DISTINCT community FROM transactions"
     ).fetchall()]
 
+    # Resume: load prior successes so a rate-limited run can be completed later
+    prior_ok = {}
+    if resume and output_path.exists():
+        try:
+            with open(output_path, "r", encoding="utf-8") as f:
+                prior = json.load(f)
+            for r in prior.get("results", []):
+                if r.get("status") == "ok" and r.get("answer"):
+                    prior_ok[r["id"]] = r
+        except (json.JSONDecodeError, KeyError):
+            prior_ok = {}
+
     results = []
+    to_run = []
+    for item in eval_set:
+        if item["id"] in prior_ok:
+            results.append(prior_ok[item["id"]])
+        else:
+            to_run.append(item)
+
     print(f"Running evaluation with {len(eval_set)} questions...")
+    print(f"Resumed: {len(results)} prior successes | To run: {len(to_run)}")
     print(f"Model: {model}")
     print("=" * 80)
 
-    for i, item in enumerate(eval_set, 1):
-        print(f"\n[{i}/{len(eval_set)}] {item['question']}")
+    for i, item in enumerate(to_run, 1):
+        print(f"\n[{i}/{len(to_run)}] {item['question']}")
 
         try:
             result = rag_query(item["question"], model=model)
@@ -134,6 +173,10 @@ def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
 
             # Score 3: Community attribution
             community_check = check_community_attribution(answer, valid_communities)
+
+            # Courtesy delay to stay under Groq free-tier TPM limit
+            import time
+            time.sleep(1.5)
 
             results.append({
                 "id": item["id"],
@@ -152,6 +195,22 @@ def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
             print(f"  Keywords: {keyword_score:.0%} | Numbers: {'OK' if number_check['valid'] else 'ISSUES'} | Communities: {'OK' if community_check['valid_communities'] else 'INVALID'} | {status}")
 
         except Exception as e:
+            # Daily quota exhausted — stop early, keep what we have for resume
+            if "daily token quota" in str(e) or ("tokens per day" in str(e)):
+                results.append({
+                    "id": item["id"],
+                    "question": item["question"],
+                    "answer": "",
+                    "keyword_score": 0.0,
+                    "number_accuracy": False,
+                    "communities_valid": False,
+                    "error": str(e),
+                    "status": "error",
+                })
+                print(f"  QUOTA: {e}")
+                print("\nDaily LLM quota exhausted. Re-run `make eval` after reset to resume.")
+                break
+
             results.append({
                 "id": item["id"],
                 "question": item["question"],
@@ -163,6 +222,10 @@ def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
                 "status": "error",
             })
             print(f"  ERROR: {e}")
+
+    # Preserve eval_set order
+    order = {item["id"]: idx for idx, item in enumerate(eval_set)}
+    results.sort(key=lambda r: order.get(r["id"], 999))
 
     # Summary
     valid_results = [r for r in results if r["status"] == "ok"]
@@ -180,7 +243,6 @@ def run_eval(eval_path: str = None, model: str = "openai/gpt-4o-mini"):
     print(f"Number Accuracy: {number_accuracy:.0%}")
     print(f"Community Attribution: {community_accuracy:.0%}")
 
-    output_path = eval_path.parent / "eval_results.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump({
             "summary": {
@@ -202,6 +264,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--eval-path", type=str, default=None)
-    parser.add_argument("--model", type=str, default="openai/gpt-4o-mini")
+    parser.add_argument("--model", type=str, default=None, help="Override model (default: provider default from env)")
+    parser.add_argument("--fresh", action="store_true", help="Ignore prior results and re-run everything")
     args = parser.parse_args()
-    run_eval(eval_path=args.eval_path, model=args.model)
+    run_eval(eval_path=args.eval_path, model=args.model, resume=not args.fresh)

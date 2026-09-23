@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api, type MortgageResult, type STRResult } from "@/lib/api";
-import { Calculator, TrendingUp, DollarSign, Home } from "lucide-react";
+import { api, type MortgageResult } from "@/lib/api";
+import { Calculator, DollarSign, Home } from "lucide-react";
 
 export default function CalculatorPage() {
   const [price, setPrice] = useState("1500000");
@@ -13,7 +13,7 @@ export default function CalculatorPage() {
   const [rate, setRate] = useState("4.5");
   const [tenure, setTenure] = useState("25");
   const [mortgage, setMortgage] = useState<MortgageResult | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(true);
 
   const calculate = () => {
     setLoading(true);
@@ -29,11 +29,33 @@ export default function CalculatorPage() {
       .then((data) => {
         setMortgage(data);
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
-    calculate();
+    let stale = false;
+    api
+      .getMortgage({
+        property_price: price,
+        down_payment_pct: downPayment,
+        interest_rate: rate,
+        tenure_years: tenure,
+        size_sqft: "800",
+        service_charge_sqft: "15",
+      })
+      .then((data) => {
+        if (stale) return;
+        setMortgage(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!stale) setLoading(false);
+      });
+    return () => {
+      stale = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

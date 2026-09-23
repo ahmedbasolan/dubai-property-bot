@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Josefin+Sans:wght@300;400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1920px; overflow: hidden; }
+  .story {
+    width: 1080px; height: 1920px;
+    background: linear-gradient(180deg, #0B1120 0%, #0F172A 30%, #134E4A 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    font-family: 'Josefin Sans', sans-serif;
+    padding: 80px 60px;
+  }
+  .story::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 30%, rgba(20,184,166,0.1) 0%, transparent 50%);
+  }
+  .badge {
+    position: absolute; top: 80px;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.3);
+    border-radius: 100px; padding: 8px 18px;
+    font-size: 14px; color: #14B8A6; letter-spacing: 2px;
+  }
+  .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #14B8A6; }
+  .content { position: relative; z-index: 2; text-align: center; max-width: 800px; }
+  h1 {
+    font-family: 'Cinzel', serif; font-size: 64px; font-weight: 700;
+    color: #F0FDFA; line-height: 1.2; margin-bottom: 24px;
+  }
+  h1 span { color: #14B8A6; }
+  .subtitle {
+    font-size: 22px; color: #94A3B8; line-height: 1.5;
+    margin-bottom: 48px;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    width: 100%; max-width: 600px; margin: 0 auto 48px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 28px; text-align: center;
+  }
+  .stat-value { font-size: 36px; font-weight: 700; color: #14B8A6; }
+  .stat-label { font-size: 13px; color: #64748B; letter-spacing: 1px; margin-top: 6px; }
+  .cta {
+    background: linear-gradient(135deg, #D4AF37, #E8C84A);
+    color: #fff; padding: 18px 48px; border-radius: 14px;
+    font-size: 18px; font-weight: 600; border: none; cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .footer {
+    position: absolute; bottom: 80px;
+    font-size: 14px; color: #475569; letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="story">
+  <div class="badge"><div class="badge-dot"></div>AI-POWERED</div>
+  <div class="content">
+    <h1>Dubai Property<br><span>Investment</span> Bot</h1>
+    <p class="subtitle">7-factor scoring engine analyzing net yield, supply risk, and community metrics.</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value">6.8%</div><div class="stat-label">AVG NET YIELD</div></div>
+      <div class="stat-card"><div class="stat-value">25</div><div class="stat-label">COMMUNITIES</div></div>
+      <div class="stat-card"><div class="stat-value">73</div><div class="stat-label">TRANSACTIONS</div></div>
+      <div class="stat-card"><div class="stat-value">7</div><div class="stat-label">SCORING FACTORS</div></div>
+    </div>
+    <button class="cta">Start Analyzing</button>
+  </div>
+  <div class="footer">dubai-property-bot.vercel.app</div>
+</div>
+</body>
+</html>

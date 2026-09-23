@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dubai Property Bot — Brand Book</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+
+  :root {
+    --gold: #D4AF37;
+    --gold-bright: #E8C84A;
+    --gold-dim: #B8860B;
+    --navy: #0A0A0A;
+    --slate: #1A1A1A;
+    --muted: #666666;
+    --light: #A0A0A0;
+    --off-white: #F5F5F5;
+    --success: #22C55E;
+    --warning: #EAB308;
+    --danger: #DC2626;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Josefin Sans', sans-serif;
+    background: var(--navy);
+    color: #E2E8F0;
+    line-height: 1.6;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(212, 175, 55, 0.15);
+    padding: 32px 24px;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  .nav-logo svg { width: 40px; height: 40px; }
+
+  .nav-logo h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold-bright);
+  }
+
+  .nav-logo span {
+    font-size: 11px;
+    color: var(--light);
+    display: block;
+    margin-top: 2px;
+  }
+
+  .nav-section {
+    margin-bottom: 24px;
+  }
+
+  .nav-section h3 {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--light);
+    margin-bottom: 12px;
+  }
+
+  .nav a {
+    display: block;
+    padding: 8px 12px;
+    color: #CBD5E1;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .nav a:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold-bright);
+  }
+
+  /* Main Content */
+  .main {
+    margin-left: 280px;
+    padding: 60px 80px;
+    max-width: 1200px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 0 100px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    margin-bottom: 80px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: #F8FAFC;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .hero h1 span { color: var(--gold-bright); }
+
+  .hero p {
+    font-size: 20px;
+    color: var(--light);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Section */
+  section {
+    margin-bottom: 100px;
+    scroll-margin-top: 40px;
+  }
+
+  .section-number {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: #F8FAFC;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #F1F5F9;
+    margin: 40px 0 16px;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    color: var(--light);
+    max-width: 700px;
+    margin-bottom: 40px;
+  }
+
+  /* Logo Display */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .logo-card {
+    border-radius: 16px;
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo-card.light {
+    background: #FFFFFF;
+  }
+
+  .logo-card.dark {
+    background: var(--navy);
+    border-color: rgba(212, 175, 55, 0.2);
+  }
+
+  .logo-card.gradient {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+  }
+
+  .logo-card img, .logo-card svg {
+    max-width: 200px;
+    max-height: 80px;
+  }
+
+  .logo-card-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 16px;
+    color: var(--muted);
+  }
+
+  .logo-card.light .logo-card-label { color: var(--muted); }
+  .logo-card.dark .logo-card-label { color: var(--light); }
+  .logo-card.gradient .logo-card-label { color: rgba(255,255,255,0.8); }
+
+  /* Clear Space */
+  .clear-space-demo {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 24px 0;
+  }
+
+  .clear-space-box {
+    border: 2px dashed var(--gold-bright);
+    padding: 40px 60px;
+    position: relative;
+    border-radius: 8px;
+  }
+
+  .clear-space-label {
+    position: absolute;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--gold-bright);
+  }
+
+  .clear-space-label.top { top: -24px; left: 50%; transform: translateX(-50%); }
+  .clear-space-label.bottom { bottom: -24px; left: 50%; transform: translateX(-50%); }
+  .clear-space-label.left { left: -40px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+  .clear-space-label.right { right: -40px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+
+  /* Color Palette */
+  .color-section {
+    margin-bottom: 40px;
+  }
+
+  .color-section h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--light);
+    margin-bottom: 16px;
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .color-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .color-swatch {
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px 16px;
+  }
+
+  .color-swatch span {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+  }
+
+  .color-info {
+    padding: 16px;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .color-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #F1F5F9;
+    margin-bottom: 4px;
+  }
+
+  .color-usage {
+    font-size: 12px;
+    color: var(--light);
+  }
+
+  /* Typography */
+  .type-specimen {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 24px;
+  }
+
+  .type-specimen-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold-bright);
+    margin-bottom: 16px;
+  }
+
+  .type-specimen-sample {
+    margin-bottom: 16px;
+  }
+
+  .type-specimen-meta {
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--light);
+  }
+
+  .type-specimen-meta code {
+    font-family: 'Geist Mono', monospace;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--gold-bright);
+  }
+
+  .type-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .type-scale-row {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .type-scale-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--light);
+    min-width: 80px;
+  }
+
+  .type-scale-size {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--gold-bright);
+    min-width: 60px;
+  }
+
+  /* Icons */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+
+  .icon-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+
+  .icon-card:hover {
+    border-color: var(--gold-bright);
+    background: rgba(212, 175, 55, 0.05);
+  }
+
+  .icon-card svg {
+    width: 32px;
+    height: 32px;
+    color: var(--gold-bright);
+  }
+
+  .icon-card span {
+    font-size: 12px;
+    color: var(--light);
+    text-align: center;
+  }
+
+  /* Do/Don't */
+  .dodont-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .dodont-card {
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .dodont-card.do {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+
+  .dodont-card.dont {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .dodont-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .dodont-card.do .dodont-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+  }
+
+  .dodont-card.dont .dodont-badge {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+  }
+
+  .dodont-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dodont-card li {
+    font-size: 14px;
+    color: #CBD5E1;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .dodont-card.do li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+  }
+
+  .dodont-card.dont li::before {
+    content: '✗';
+    position: absolute;
+    left: 0;
+    color: var(--danger);
+    font-weight: 700;
+  }
+
+  /* Spacing & Tokens */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .token-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .token-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--gold-bright);
+    margin-bottom: 8px;
+  }
+
+  .token-value {
+    font-family: 'Geist Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: #F1F5F9;
+    margin-bottom: 8px;
+  }
+
+  .token-desc {
+    font-size: 12px;
+    color: var(--light);
+  }
+
+  .spacing-demo {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin: 24px 0;
+    padding: 32px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+  }
+
+  .spacing-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spacing-bar-block {
+    background: var(--gold);
+    border-radius: 4px;
+    width: 40px;
+  }
+
+  .spacing-bar-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+  }
+
+  /* Glass Effect */
+  .glass-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+
+  .glass-card {
+    border-radius: 16px;
+    padding: 32px;
+    min-height: 160px;
+  }
+
+  .glass-card.light-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.08);
+    color: var(--navy);
+  }
+
+  .glass-card.dark-glass {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    color: #E2E8F0;
+  }
+
+  .glass-card h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .glass-card p {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  /* Applications */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .app-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .app-card-preview {
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .app-card-info {
+    padding: 24px;
+  }
+
+  .app-card-info h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: #F1F5F9;
+    margin-bottom: 8px;
+  }
+
+  .app-card-info p {
+    font-size: 13px;
+    color: var(--light);
+    line-height: 1.5;
+  }
+
+  /* Business Card Mockup */
+  .biz-card {
+    width: 320px;
+    height: 192px;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .biz-card.front {
+    background: linear-gradient(135deg, var(--navy), var(--slate));
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .biz-card.front .biz-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .biz-card.front .biz-logo svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .biz-card.front .biz-logo span {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold-bright);
+  }
+
+  .biz-card.front .biz-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: #F8FAFC;
+  }
+
+  .biz-card.front .biz-title {
+    font-size: 11px;
+    color: var(--light);
+  }
+
+  .biz-card.back {
+    background: var(--gold);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  .biz-card.back .biz-tagline {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+  }
+
+  /* Letterhead Mockup */
+  .letterhead {
+    width: 300px;
+    height: 400px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 32px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .letterhead-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .letterhead-header svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .letterhead-header span {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .letterhead-lines {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .letterhead-line {
+    height: 6px;
+    background: #E2E8F0;
+    border-radius: 3px;
+  }
+
+  .letterhead-line:nth-child(1) { width: 60%; }
+  .letterhead-line:nth-child(2) { width: 100%; }
+  .letterhead-line:nth-child(3) { width: 90%; }
+  .letterhead-line:nth-child(4) { width: 95%; }
+  .letterhead-line:nth-child(5) { width: 70%; }
+  .letterhead-line:nth-child(6) { width: 85%; }
+  .letterhead-line:nth-child(7) { width: 100%; }
+  .letterhead-line:nth-child(8) { width: 60%; }
+
+  .letterhead-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #E2E8F0;
+    font-size: 9px;
+    color: #94A3B8;
+    text-align: center;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 80px;
+    padding: 40px 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    text-align: center;
+    color: var(--light);
+    font-size: 13px;
+  }
+
+  .footer span { color: var(--gold-bright); }
+
+  /* Skip Link */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 200;
+    background: var(--gold-bright);
+    color: var(--navy);
+    padding: 12px 24px;
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  /* Focus Styles */
+  *:focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 2px;
+  }
+
+  /* Mobile Nav Toggle */
+  .nav-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 150;
+    width: 44px;
+    height: 44px;
+    background: var(--slate);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--gold-bright);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile Overlay */
+  .nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-overlay.active {
+    opacity: 1;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .nav-toggle { display: flex; }
+    .nav-overlay { display: block; }
+    .nav {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .nav.open {
+      transform: translateX(0);
+    }
+    .main { margin-left: 0; padding: 80px 24px 40px; }
+    .logo-grid { grid-template-columns: 1fr; }
+    .icon-grid { grid-template-columns: repeat(3, 1fr); }
+    .dodont-grid { grid-template-columns: 1fr; }
+    .app-grid { grid-template-columns: 1fr; }
+    .glass-demo { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+    .type-scale-row { flex-direction: column; gap: 8px; }
+    .type-scale-row span:last-child { font-size: inherit !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Mobile Nav Toggle -->
+<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- Mobile Overlay -->
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="40" height="40" rx="10" fill="#D4AF37"/>
+      <path d="M12 28V16l8-6 8 6v12" stroke="#fff" stroke-width="2" fill="none"/>
+      <path d="M17 28v-6h6v6" stroke="#fff" stroke-width="2"/>
+      <circle cx="20" cy="17" r="2" fill="#E8C84A"/>
+    </svg>
+    <div>
+      <h2>Dubai Property</h2>
+      <span>Brand Book v2.0</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <h3>Foundation</h3>
+    <a href="#overview">Brand Overview</a>
+    <a href="#logo">Logo System</a>
+    <a href="#colors">Color Palette</a>
+    <a href="#typography">Typography</a>
+  </div>
+
+  <div class="nav-section">
+    <h3>System</h3>
+    <a href="#icons">Iconography</a>
+    <a href="#spacing">Spacing & Tokens</a>
+    <a href="#glass">Glass Effects</a>
+    <a href="#imagery">Imagery</a>
+  </div>
+
+  <div class="nav-section">
+    <h3>Application</h3>
+    <a href="#stationery">Stationery</a>
+    <a href="#digital">Digital</a>
+    <a href="#dodont">Do's & Don'ts</a>
+    <a href="#voice">Voice & Tone</a>
+    <a href="#data-viz">Data Visualization</a>
+    <a href="#motion">Motion</a>
+    <a href="#accessibility">Accessibility</a>
+    <a href="#files">File Naming</a>
+    <a href="luxury-gold.html" style="color: #D4AF37; font-weight: 600;">★ Luxury Gold</a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main" id="main-content">
+
+  <!-- Hero -->
+  <div class="hero" id="overview">
+    <div class="hero-badge">Brand Guidelines v2.0</div>
+    <h1>Dubai Property <span>Bot</span></h1>
+    <p>AI-powered investment intelligence for Dubai real estate. A comprehensive brand system built on trust, clarity, and data-driven precision.</p>
+  </div>
+
+  <!-- Brand Overview -->
+  <section id="brand-overview">
+    <div class="section-number">01 / Foundation</div>
+    <h2>Brand Overview</h2>
+    <p class="section-desc">Dubai Property Bot transforms complex real estate data into clear, actionable investment intelligence. Our brand reflects the intersection of technology and trust.</p>
+
+    <h3>Mission</h3>
+    <p style="color: #CBD5E1; max-width: 700px; margin-bottom: 32px;">Democratize Dubai real estate investment decisions by providing institutional-grade analytics, net yield calculations, and 7-factor scoring — previously available only to those paying AED 50,000+/year.</p>
+
+    <h3>Values</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Trust</div>
+        <div class="token-value" style="color: var(--gold-bright);">01</div>
+        <div class="token-desc">Transparent data, deterministic calculations, no hidden agendas</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Precision</div>
+        <div class="token-value" style="color: var(--gold-bright);">02</div>
+        <div class="token-desc">Net yield computed from 4 data sources, never by LLM</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Clarity</div>
+        <div class="token-value" style="color: var(--gold-bright);">03</div>
+        <div class="token-desc">Complex metrics presented with confidence scores and disclaimers</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Access</div>
+        <div class="token-value" style="color: var(--gold-bright);">04</div>
+        <div class="token-desc">Institutional-grade tools available to individual investors</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo System -->
+  <section id="logo">
+    <div class="section-number">02 / Identity</div>
+    <h2>Logo System</h2>
+    <p class="section-desc">The logo combines a building silhouette with a data node, representing the fusion of real estate and technology.</p>
+
+    <div class="logo-grid">
+      <div class="logo-card light">
+        <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="10" width="30" height="30" rx="6" fill="#D4AF37"/>
+          <path d="M8 32V20l7-5 7 5v12" stroke="#fff" stroke-width="1.5" fill="none"/>
+          <path d="M14 32v-4h4v4" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="15" cy="21" r="1.5" fill="#E8C84A"/>
+          <text x="40" y="23" font-family="Cinzel,serif" font-size="14" font-weight="600" fill="#D4AF37">DUBAI PROPERTY</text>
+          <text x="40" y="37" font-family="Josefin Sans,sans-serif" font-size="9" fill="#475569">INVESTMENT ASSISTANT</text>
+        </svg>
+        <div class="logo-card-label">Light Background</div>
+      </div>
+
+      <div class="logo-card dark">
+        <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="10" width="30" height="30" rx="6" fill="#D4AF37"/>
+          <path d="M8 32V20l7-5 7 5v12" stroke="#fff" stroke-width="1.5" fill="none"/>
+          <path d="M14 32v-4h4v4" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="15" cy="21" r="1.5" fill="#E8C84A"/>
+          <text x="40" y="23" font-family="Cinzel,serif" font-size="14" font-weight="600" fill="#F8FAFC">DUBAI PROPERTY</text>
+          <text x="40" y="37" font-family="Josefin Sans,sans-serif" font-size="9" fill="#94A3B8">INVESTMENT ASSISTANT</text>
+        </svg>
+        <div class="logo-card-label">Dark Background</div>
+      </div>
+
+      <div class="logo-card gradient">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="40" height="40" rx="10" fill="rgba(255,255,255,0.15)"/>
+          <path d="M22 42V26l8-6 8 6v16" stroke="#fff" stroke-width="2" fill="none"/>
+          <path d="M28 42v-6h6v6" stroke="#fff" stroke-width="2"/>
+          <circle cx="30" cy="27" r="2.5" fill="#fff"/>
+        </svg>
+        <div class="logo-card-label">Icon Only</div>
+      </div>
+    </div>
+
+    <h3>Clear Space</h3>
+    <p class="section-desc">Maintain minimum clear space equal to the height of the "D" in DUBAI around all sides of the logo.</p>
+
+    <div class="clear-space-demo">
+      <div class="clear-space-box">
+        <span class="clear-space-label top">1x</span>
+        <span class="clear-space-label bottom">1x</span>
+        <span class="clear-space-label left">1x</span>
+        <span class="clear-space-label right">1x</span>
+        <svg viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="8" width="24" height="24" rx="5" fill="#D4AF37"/>
+          <path d="M6 26V16l6-4.5 6 4.5v10" stroke="#fff" stroke-width="1.5" fill="none"/>
+          <circle cx="12" cy="17" r="1.5" fill="#E8C84A"/>
+          <text x="32" y="18" font-family="Cinzel,serif" font-size="11" font-weight="600" fill="#F8FAFC">DUBAI PROPERTY</text>
+          <text x="32" y="30" font-family="Josefin Sans,sans-serif" font-size="7" fill="#94A3B8">INVESTMENT ASSISTANT</text>
+        </svg>
+      </div>
+    </div>
+
+    <h3>Minimum Sizes</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Full Logo</div>
+        <div class="token-value">120px</div>
+        <div class="token-desc">Minimum width for full logo</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Icon Only</div>
+        <div class="token-value">24px</div>
+        <div class="token-desc">Minimum size for icon mark</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Favicon</div>
+        <div class="token-value">16px</div>
+        <div class="token-desc">Browser tab icon</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette -->
+  <section id="colors">
+    <div class="section-number">03 / Color</div>
+    <h2>Color Palette</h2>
+    <p class="section-desc">A color system built on gold (luxury) and black (exclusivity), with semantic colors for investment signals.</p>
+
+    <div class="color-section">
+      <h4>Primary Colors</h4>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #D4AF37;"><span>#D4AF37</span></div>
+          <div class="color-info">
+            <div class="color-name">Luxury Gold</div>
+            <div class="color-usage">Primary brand, CTAs, headers</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #E8C84A;"><span>#E8C84A</span></div>
+          <div class="color-info">
+            <div class="color-name">Gold Light</div>
+            <div class="color-usage">Hover states, highlights</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #B8860B;"><span>#B8860B</span></div>
+          <div class="color-info">
+            <div class="color-name">Gold Dim</div>
+            <div class="color-usage">Pressed states, depth</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #0A0A0A;"><span>#0A0A0A</span></div>
+          <div class="color-info">
+            <div class="color-name">Rich Black</div>
+            <div class="color-usage">Background, exclusivity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-section">
+      <h4>Neutral Colors</h4>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #0A0A0A;"><span>#0A0A0A</span></div>
+          <div class="color-info">
+            <div class="color-name">Rich Black</div>
+            <div class="color-usage">Dark mode background</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #1A1A1A;"><span>#1A1A1A</span></div>
+          <div class="color-info">
+            <div class="color-name">Surface</div>
+            <div class="color-usage">Cards, panels, surfaces</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #666666;"><span>#666666</span></div>
+          <div class="color-info">
+            <div class="color-name">Muted</div>
+            <div class="color-usage">Body text, secondary content</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #A0A0A0;"><span>#A0A0A0</span></div>
+          <div class="color-info">
+            <div class="color-name">Light</div>
+            <div class="color-usage">Captions, labels, placeholders</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #F5F5F5;"><span style="color: #0A0A0A;">#F5F5F5</span></div>
+          <div class="color-info">
+            <div class="color-name">Off White</div>
+            <div class="color-usage">Light mode background</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-section">
+      <h4>Semantic Colors</h4>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #22C55E;"><span>#22C55E</span></div>
+          <div class="color-info">
+            <div class="color-name">Success / INVEST</div>
+            <div class="color-usage">Positive metrics, buy signals</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #EAB308;"><span>#EAB308</span></div>
+          <div class="color-info">
+            <div class="color-name">Warning / HOLD</div>
+            <div class="color-usage">Neutral metrics, hold signals</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #DC2626;"><span>#DC2626</span></div>
+          <div class="color-info">
+            <div class="color-name">Danger / AVOID</div>
+            <div class="color-usage">Negative metrics, sell signals</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #D4AF37, #B8860B);"><span>#D4AF37 → #B8860B</span></div>
+          <div class="color-info">
+            <div class="color-name">Brand Gradient</div>
+            <div class="color-usage">Hero sections, primary CTAs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section id="typography">
+    <div class="section-number">04 / Typography</div>
+    <h2>Typography</h2>
+    <p class="section-desc">Two complementary typefaces: Cinzel for authoritative headings, Josefin Sans for clean, modern body text.</p>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Display — Cinzel</div>
+      <div class="type-specimen-sample" style="font-family: 'Cinzel', serif; font-size: 48px; font-weight: 700; color: #F8FAFC;">
+        Dubai Property Investment
+      </div>
+      <div class="type-specimen-meta">
+        <span>Weights: <code>400</code> <code>500</code> <code>600</code> <code>700</code></span>
+        <span>Use: <code>Headings, Hero, Titles</code></span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Body — Josefin Sans</div>
+      <div class="type-specimen-sample" style="font-family: 'Josefin Sans', sans-serif; font-size: 18px; color: #CBD5E1;">
+        Calculate net yield, flag supply risk, and score communities on 7 metrics that explain 85% of investment returns.
+      </div>
+      <div class="type-specimen-meta">
+        <span>Weights: <code>300</code> <code>400</code> <code>500</code> <code>600</code> <code>700</code></span>
+        <span>Use: <code>Body, UI, Data</code></span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Monospace — Geist Mono</div>
+      <div class="type-specimen-sample" style="font-family: 'Geist Mono', monospace; font-size: 16px; color: var(--gold-bright);">
+        Net Yield = (Annual Rent - Service Charges - Management Fees - Vacancy Loss) / Price × 100
+      </div>
+      <div class="type-specimen-meta">
+        <span>Use: <code>Code, Numbers, Tabular Data</code></span>
+      </div>
+    </div>
+
+    <h3>Type Scale</h3>
+    <div class="type-scale">
+      <div class="type-scale-row">
+        <span class="type-scale-label">Display</span>
+        <span class="type-scale-size">56px</span>
+        <span style="font-family: 'Cinzel', serif; font-size: 56px; color: #F8FAFC; line-height: 1.1;">Investment Intelligence</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">H1</span>
+        <span class="type-scale-size">40px</span>
+        <span style="font-family: 'Cinzel', serif; font-size: 40px; color: #F8FAFC; line-height: 1.2;">Community Leaderboard</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">H2</span>
+        <span class="type-scale-size">32px</span>
+        <span style="font-family: 'Cinzel', serif; font-size: 32px; color: #F1F5F9; line-height: 1.2;">Investment Scoring</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">H3</span>
+        <span class="type-scale-size">24px</span>
+        <span style="font-family: 'Cinzel', serif; font-size: 24px; color: #F1F5F9; line-height: 1.3;">Net Yield Calculator</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">Body</span>
+        <span class="type-scale-size">16px</span>
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 16px; color: #CBD5E1;">Every community gets a composite score based on 7 factors.</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">Small</span>
+        <span class="type-scale-size">14px</span>
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 14px; color: #CBD5E1;">Data as of Q1 2024</span>
+      </div>
+      <div class="type-scale-row">
+        <span class="type-scale-label">Caption</span>
+        <span class="type-scale-size">12px</span>
+        <span style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; color: #94A3B8;">Verify with DLD for current conditions</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Iconography -->
+  <section id="icons">
+    <div class="section-number">05 / Icons</div>
+    <h2>Iconography</h2>
+    <p class="section-desc">Custom SVG icon set with consistent 1.5px stroke weight, 24x24 default size, and outlined style.</p>
+
+    <div class="icon-grid">
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><path d="M9 20v-5h6v5"/><path d="M12 3v2"/><path d="M3 12h18"/></svg>
+        <span>Property</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Location</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/><circle cx="12" cy="18" r="2"/><path d="M3 3v18"/></svg>
+        <span>Yield Chart</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M16.24 7.76l2.12-2.12"/></svg>
+        <span>Market Clock</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span>Layers</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M6 10l4-4 4 4"/><path d="M14 10l4-4"/></svg>
+        <span>Dashboard</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>Currency</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+        <span>User Plus</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        <span>Trophy</span>
+      </div>
+      <div class="icon-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M10 9h4"/><path d="M10 13h4"/></svg>
+        <span>Building</span>
+      </div>
+    </div>
+
+    <h3>Icon Guidelines</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Stroke Width</div>
+        <div class="token-value">1.5px</div>
+        <div class="token-desc">Consistent across all icons</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Default Size</div>
+        <div class="token-value">24×24</div>
+        <div class="token-desc">Scale proportionally</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Color</div>
+        <div class="token-value">currentColor</div>
+        <div class="token-desc">Inherit from parent</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Style</div>
+        <div class="token-value">Outlined</div>
+        <div class="token-desc">Linear/stroke-based</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing & Tokens -->
+  <section id="spacing">
+    <div class="section-number">06 / System</div>
+    <h2>Spacing & Design Tokens</h2>
+    <p class="section-desc">A consistent spacing scale and token system ensures visual harmony across all touchpoints.</p>
+
+    <h3>Spacing Scale</h3>
+    <div class="spacing-demo">
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 4px;"></div>
+        <span class="spacing-bar-label">xs: 4px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 8px;"></div>
+        <span class="spacing-bar-label">sm: 8px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 16px;"></div>
+        <span class="spacing-bar-label">md: 16px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 24px;"></div>
+        <span class="spacing-bar-label">lg: 24px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 32px;"></div>
+        <span class="spacing-bar-label">xl: 32px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 48px;"></div>
+        <span class="spacing-bar-label">2xl: 48px</span>
+      </div>
+      <div class="spacing-bar">
+        <div class="spacing-bar-block" style="height: 64px;"></div>
+        <span class="spacing-bar-label">3xl: 64px</span>
+      </div>
+    </div>
+
+    <h3>Border Radius</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">--radius-sm</div>
+        <div class="token-value">6px</div>
+        <div class="token-desc">Buttons, inputs</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">--radius-md</div>
+        <div class="token-value">8px</div>
+        <div class="token-desc">Cards, small panels</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">--radius-lg</div>
+        <div class="token-value">12px</div>
+        <div class="token-desc">Modals, large cards</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">--radius-xl</div>
+        <div class="token-value">16px</div>
+        <div class="token-desc">Feature sections</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">--radius-2xl</div>
+        <div class="token-value">24px</div>
+        <div class="token-desc">Hero containers</div>
+      </div>
+    </div>
+
+    <h3>Shadows</h3>
+    <div class="token-grid">
+      <div class="token-card" style="box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <div class="token-name">--shadow-sm</div>
+        <div class="token-value">Sm</div>
+        <div class="token-desc">Subtle lift</div>
+      </div>
+      <div class="token-card" style="box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div class="token-name">--shadow-md</div>
+        <div class="token-value">Md</div>
+        <div class="token-desc">Card elevation</div>
+      </div>
+      <div class="token-card" style="box-shadow: 0 10px 15px rgba(0,0,0,0.1);">
+        <div class="token-name">--shadow-lg</div>
+        <div class="token-value">Lg</div>
+        <div class="token-desc">Dropdowns, popovers</div>
+      </div>
+      <div class="token-card" style="box-shadow: 0 20px 25px rgba(0,0,0,0.15);">
+        <div class="token-name">--shadow-xl</div>
+        <div class="token-value">Xl</div>
+        <div class="token-desc">Modals, overlays</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Glass Effects -->
+  <section id="glass">
+    <div class="section-number">07 / Effects</div>
+    <h2>Glassmorphism</h2>
+    <p class="section-desc">Frosted glass effects create depth and hierarchy while maintaining the dark, premium aesthetic.</p>
+
+    <div class="glass-demo">
+      <div class="glass-card light-glass">
+        <h4>Light Glass</h4>
+        <p>Used on light backgrounds for overlay cards, modals, and navigation panels.</p>
+        <div style="margin-top: 16px; font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--muted);">
+          background: rgba(255, 255, 255, 0.7);<br>
+          backdrop-filter: blur(16px);<br>
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        </div>
+      </div>
+      <div class="glass-card dark-glass">
+        <h4>Dark Glass</h4>
+        <p>Primary UI pattern. Used for sidebar navigation, cards, and data panels.</p>
+        <div style="margin-top: 16px; font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--light);">
+          background: rgba(10, 10, 10, 0.95);<br>
+          backdrop-filter: blur(20px);<br>
+          border: 1px solid rgba(212, 175, 55, 0.15);
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Imagery -->
+  <section id="imagery">
+    <div class="section-number">08 / Imagery</div>
+    <h2>Imagery Guidelines</h2>
+    <p class="section-desc">Photography and illustration style that reflects Dubai's modern, aspirational real estate market.</p>
+
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Subject</div>
+        <div class="token-value" style="font-size: 16px;">Dubai skyline, modern interiors, data visualizations</div>
+        <div class="token-desc">Architecture, not people-focused</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Color Treatment</div>
+        <div class="token-value" style="font-size: 16px;">Desaturated with gold accent overlay</div>
+        <div class="token-desc">Cool tones, never warm/orange</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Composition</div>
+        <div class="token-value" style="font-size: 16px;">Clean, geometric, minimal</div>
+        <div class="token-desc">Lots of negative space</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Avoid</div>
+        <div class="token-value" style="font-size: 16px;">Stock photos of people shaking hands</div>
+        <div class="token-desc">No cliché business imagery</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stationery -->
+  <section id="stationery">
+    <div class="section-number">09 / Applications</div>
+    <h2>Stationery</h2>
+    <p class="section-desc">Physical touchpoints that reinforce brand credibility in face-to-face meetings.</p>
+
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-card-preview">
+          <div class="biz-card front">
+            <div class="biz-logo">
+              <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#D4AF37"/><path d="M7 21v-9l7-5 7 5v9" stroke="#fff" stroke-width="1.2" fill="none"/><circle cx="14" cy="12" r="1.5" fill="#E8C84A"/></svg>
+              <span>DUBAI PROPERTY</span>
+            </div>
+            <div>
+              <div class="biz-name">Ahmed Al-Rashid</div>
+              <div class="biz-title">Investment Analyst</div>
+            </div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Business Card — Front</h4>
+          <p>3.5×2 inches / 85×55mm. 300gsm matte stock with spot UV on logo. Rich black background with gold accents.</p>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-card-preview">
+          <div class="biz-card back">
+            <svg viewBox="0 0 40 40" fill="none" style="width: 48px; height: 48px; margin-bottom: 12px;"><rect width="40" height="40" rx="10" fill="rgba(255,255,255,0.2)"/><path d="M12 28V16l8-6 8 6v12" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="20" cy="17" r="2" fill="#fff"/></svg>
+            <div class="biz-tagline">AI-Powered Investment Intelligence</div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Business Card — Back</h4>
+          <p>Gold gradient background. Centered icon with tagline. Clean, memorable reverse side.</p>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-card-preview">
+          <div class="letterhead">
+            <div class="letterhead-header">
+              <svg viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="5" fill="#D4AF37"/><path d="M7 17v-7l5-4 5 4v7" stroke="#fff" stroke-width="1.2" fill="none"/><circle cx="12" cy="10" r="1.2" fill="#E8C84A"/></svg>
+              <span>DUBAI PROPERTY BOT</span>
+            </div>
+            <div class="letterhead-lines">
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+              <div class="letterhead-line"></div>
+            </div>
+            <div class="letterhead-footer">dubaiproperty.bot | info@dubaiproperty.bot | +971 4 XXX XXXX</div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Letterhead</h4>
+          <p>A4 size. Gold accent line under header. Clean body area with footer containing contact details.</p>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-card-preview" style="flex-direction: column; gap: 12px;">
+          <div style="width: 280px; height: 60px; background: var(--navy); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 8px; display: flex; align-items: center; padding: 0 20px; gap: 12px;">
+            <svg viewBox="0 0 24 24" fill="none" style="width: 20px; height: 20px;"><rect width="24" height="24" rx="5" fill="#D4AF37"/><path d="M7 17v-7l5-4 5 4v7" stroke="#fff" stroke-width="1.2" fill="none"/></svg>
+            <div>
+              <div style="font-size: 11px; color: #F8FAFC; font-weight: 600;">Ahmed Al-Rashid</div>
+              <div style="font-size: 9px; color: #94A3B8;">Investment Analyst | dubaiproperty.bot</div>
+            </div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Email Signature</h4>
+          <p>HTML responsive, max 600px width. Dark card with gold accent. Essential contact info only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Digital -->
+  <section id="digital">
+    <div class="section-number">10 / Digital</div>
+    <h2>Digital Applications</h2>
+    <p class="section-desc">Platform-specific assets for web, social media, and marketing channels.</p>
+
+    <div class="app-grid">
+      <div class="app-card">
+        <div class="app-card-preview" style="background: linear-gradient(135deg, var(--navy), var(--slate));">
+          <div style="text-align: center;">
+            <div style="font-family: 'Cinzel', serif; font-size: 20px; font-weight: 600; color: #F8FAFC; margin-bottom: 4px;">Dubai Property Bot</div>
+            <div style="font-size: 11px; color: var(--gold-bright);">AI-Powered Investment Intelligence</div>
+            <div style="margin-top: 16px; display: flex; gap: 8px; justify-content: center;">
+              <div style="padding: 6px 16px; background: var(--gold); border-radius: 6px; font-size: 10px; color: white;">Dashboard</div>
+              <div style="padding: 6px 16px; border: 1px solid var(--gold-bright); border-radius: 6px; font-size: 10px; color: var(--gold-bright);">Learn More</div>
+            </div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Website Hero</h4>
+          <p>1920×800px. Dark gradient background, centered content, dual CTAs (primary filled, secondary outlined).</p>
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-card-preview" style="background: linear-gradient(135deg, #D4AF37, #B8860B); padding: 32px;">
+          <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 12px; padding: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.2);">
+            <div style="font-family: 'Cinzel', serif; font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">Net Yield: 7.68%</div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.8);">International City — HOLD</div>
+          </div>
+        </div>
+        <div class="app-card-info">
+          <h4>Social Media Post</h4>
+          <p>1200×630px (OG). Gold gradient. Glassmorphism card overlay with key metric highlight.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Do's and Don'ts -->
+  <section id="dodont">
+    <div class="section-number">11 / Guidelines</div>
+    <h2>Do's & Don'ts</h2>
+    <p class="section-desc">Maintain brand consistency by following these essential rules.</p>
+
+    <div class="dodont-grid">
+      <div class="dodont-card do">
+        <div class="dodont-badge">Do</div>
+        <ul>
+          <li>Use Cinzel for all headings and display text</li>
+          <li>Maintain clear space around the logo</li>
+          <li>Use semantic colors (green/yellow/red) for investment signals</li>
+          <li>Apply glassmorphism effects on dark backgrounds</li>
+          <li>Use the spacing scale consistently (4/8/16/24/32/48/64px)</li>
+          <li>Include data freshness disclaimers on all metrics</li>
+          <li>Use 1.5px stroke weight for all custom icons</li>
+          <li>Test contrast ratios (minimum 4.5:1 for text)</li>
+        </ul>
+      </div>
+
+      <div class="dodont-card dont">
+        <div class="dodont-badge">Don't</div>
+        <ul>
+          <li>Use emojis as icons or decorative elements</li>
+          <li>Skip hover/focus transitions on interactive elements</li>
+          <li>Use random spacing — follow the token scale</li>
+          <li>Hardcode colors — always use CSS variables</li>
+          <li>Use low-contrast text (below 4.5:1 ratio)</li>
+          <li>Present LLM-computed yield as deterministic data</li>
+          <li>Use warm/orange tones in imagery</li>
+          <li>Apply glassmorphism on light backgrounds</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Voice & Tone -->
+  <section id="voice">
+    <div class="section-number">12 / Voice</div>
+    <h2>Voice & Tone</h2>
+    <p class="section-desc">How we communicate reflects our brand: authoritative but accessible, data-driven but human.</p>
+
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Brand Voice</div>
+        <div class="token-value" style="font-size: 16px;">Expert Advisor</div>
+        <div class="token-desc">Confident, knowledgeable, trustworthy. Never condescending or overly technical.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Tone</div>
+        <div class="token-value" style="font-size: 16px;">Professional + Warm</div>
+        <div class="token-desc">Formal enough for investors, friendly enough for first-time buyers.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Vocabulary</div>
+        <div class="token-value" style="font-size: 16px;">Domain-Specific</div>
+        <div class="token-desc">Use real estate terms (yield, ROI, DLD) but explain them on first use.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Confidence</div>
+        <div class="token-value" style="font-size: 16px;">Always Cited</div>
+        <div class="token-desc">Every claim backed by data. Always include confidence scores.</div>
+      </div>
+    </div>
+
+    <h3>Writing Examples</h3>
+    <div class="glass-demo">
+      <div class="glass-card dark-glass">
+        <h4 style="color: var(--success); font-size: 13px; margin-bottom: 8px;">✓ DO</h4>
+        <p>"International City shows a <strong>7.68% net yield</strong> — above the market average of 6.2%. However, high supply pipeline (15.5%) warrants caution. <strong>Confidence: High.</strong>"</p>
+      </div>
+      <div class="glass-card dark-glass">
+        <h4 style="color: var(--danger); font-size: 13px; margin-bottom: 8px;">✗ DON'T</h4>
+        <p>"This area is really good for investment!! You should definitely buy here before it's too late!"</p>
+      </div>
+    </div>
+
+    <h3>UI Copy Guidelines</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Buttons</div>
+        <div class="token-value" style="font-size: 14px;">Action + Context</div>
+        <div class="token-desc">"Calculate Yield" not "Submit". "Compare Communities" not "Click Here".</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Empty States</div>
+        <div class="token-value" style="font-size: 14px;">Helpful + Direct</div>
+        <div class="token-desc">"No transactions match your filters. Try adjusting price or bedroom count."</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Errors</div>
+        <div class="token-value" style="font-size: 14px;">Clear + Actionable</div>
+        <div class="token-desc">"Could not load data. Check your connection and try again."</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Loading</div>
+        <div class="token-value" style="font-size: 14px;">Progressive</div>
+        <div class="token-desc">"Analyzing 73 transactions across 24 communities..."</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Visualization -->
+  <section id="data-viz">
+    <div class="section-number">13 / Data</div>
+    <h2>Data Visualization</h2>
+    <p class="section-desc">Consistent chart and graph styling that communicates data clearly and beautifully.</p>
+
+    <h3>Chart Colors</h3>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: #E8C84A;"><span>#E8C84A</span></div>
+        <div class="color-info">
+          <div class="color-name">Primary Series</div>
+          <div class="color-usage">Main data line, primary bars</div>
+        </div>
+      </div>
+      <div class="color-card">
+          <div class="color-swatch" style="background: #B8860B;"><span>#B8860B</span></div>
+          <div class="color-info">
+            <div class="color-name">Secondary Series</div>
+            <div class="color-usage">Comparison data, secondary bars</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: #8B5CF6;"><span>#8B5CF6</span></div>
+        <div class="color-info">
+          <div class="color-name">Tertiary Series</div>
+          <div class="color-usage">Third data set, trend lines</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background: rgba(148, 163, 184, 0.2);"><span style="color: #94A3B8;">rgba(148,163,184,0.2)</span></div>
+        <div class="color-info">
+          <div class="color-name">Grid Lines</div>
+          <div class="color-usage">Axis lines, reference lines</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Chart Specifications</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Line Charts</div>
+        <div class="token-value">2px</div>
+        <div class="token-desc">Stroke width. Circular points, 4px radius.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Bar Charts</div>
+        <div class="token-value">8px</div>
+        <div class="token-desc">Border radius. 60% opacity on hover.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Pie/Donut</div>
+        <div class="token-value">3px</div>
+        <div class="token-desc">Gap between segments. Donut width: 60%.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Tooltip</div>
+        <div class="token-value">Dark</div>
+        <div class="token-desc">Background: var(--slate). 12px radius. 8px padding.</div>
+      </div>
+    </div>
+
+    <h3>Semantic Mappings</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">INVEST</div>
+        <div class="token-value" style="color: var(--success);">Green</div>
+        <div class="token-desc">Bars, badges, indicators for INVEST recommendations</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">HOLD</div>
+        <div class="token-value" style="color: var(--warning);">Amber</div>
+        <div class="token-desc">Bars, badges, indicators for HOLD recommendations</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">AVOID</div>
+        <div class="token-value" style="color: var(--danger);">Red</div>
+        <div class="token-desc">Bars, badges, indicators for AVOID recommendations</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Grade Scale</div>
+        <div class="token-value" style="font-size: 14px;">A → F</div>
+        <div class="token-desc">Green (A) → Yellow (C) → Red (F) gradient</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section id="motion">
+    <div class="section-number">14 / Motion</div>
+    <h2>Motion & Animation</h2>
+    <p class="section-desc">Subtle, purposeful animations that guide attention without distracting from data.</p>
+
+    <h3>Timing</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Micro-interactions</div>
+        <div class="token-value">150ms</div>
+        <div class="token-desc">Button hover, focus, toggle</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Transitions</div>
+        <div class="token-value">200ms</div>
+        <div class="token-desc">Card hover, menu open</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Page Elements</div>
+        <div class="token-value">300ms</div>
+        <div class="token-desc">Sidebar slide, modal fade</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Charts</div>
+        <div class="token-value">500ms</div>
+        <div class="token-desc">Data points, bar growth</div>
+      </div>
+    </div>
+
+    <h3>Easing Curves</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Standard</div>
+        <div class="token-value" style="font-size: 12px;">cubic-bezier(0.4, 0, 0.2, 1)</div>
+        <div class="token-desc">Default for most transitions</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Decelerate</div>
+        <div class="token-value" style="font-size: 12px;">cubic-bezier(0, 0, 0.2, 1)</div>
+        <div class="token-desc">Elements entering screen</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Accelerate</div>
+        <div class="token-value" style="font-size: 12px;">cubic-bezier(0.4, 0, 1, 1)</div>
+        <div class="token-desc">Elements exiting screen</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Spring</div>
+        <div class="token-value" style="font-size: 12px;">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+        <div class="token-desc">Playful bounce (use sparingly)</div>
+      </div>
+    </div>
+
+    <h3>Animation Rules</h3>
+    <div class="dodont-grid">
+      <div class="dodont-card do">
+        <div class="dodont-badge">Do</div>
+        <ul>
+          <li>Fade in content on page load (stagger children)</li>
+          <li>Slide sidebar from left on mobile</li>
+          <li>Animate chart data points on load</li>
+          <li>Scale buttons slightly on hover (1.02)</li>
+          <li>Use skeleton loaders for async content</li>
+        </ul>
+      </div>
+      <div class="dodont-card dont">
+        <div class="dodont-badge">Don't</div>
+        <ul>
+          <li>Auto-play videos or animations</li>
+          <li>Use bounce or elastic on data elements</li>
+          <li>Spin or rotate UI elements</li>
+          <li>Flash or strobe any element</li>
+          <li>Animate more than 3 elements simultaneously</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accessibility -->
+  <section id="accessibility">
+    <div class="section-number">15 / A11y</div>
+    <h2>Accessibility</h2>
+    <p class="section-desc">Inclusive design ensures every investor can use our platform effectively.</p>
+
+    <h3>WCAG 2.1 AA Compliance</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Contrast Ratio</div>
+        <div class="token-value">4.5:1</div>
+        <div class="token-desc">Minimum for normal text. 3:1 for large text.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Focus Indicators</div>
+        <div class="token-value">2px ring</div>
+        <div class="token-desc">Visible focus ring on all interactive elements.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Touch Targets</div>
+        <div class="token-value">44×44px</div>
+        <div class="token-desc">Minimum size for all clickable elements.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Text Scaling</div>
+        <div class="token-value">200%</div>
+        <div class="token-desc">Content must reflow at 200% zoom.</div>
+      </div>
+    </div>
+
+    <h3>Keyboard Navigation</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Tab Order</div>
+        <div class="token-value" style="font-size: 14px;">Logical + Sequential</div>
+        <div class="token-desc">Follow visual layout. Skip hidden elements.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Skip Link</div>
+        <div class="token-value" style="font-size: 14px;">First Element</div>
+        <div class="token-desc">"Skip to main content" on every page.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Escape Key</div>
+        <div class="token-value" style="font-size: 14px;">Close Modals</div>
+        <div class="token-desc">All overlays dismissible with Escape.</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Arrow Keys</div>
+        <div class="token-value" style="font-size: 14px;">Navigate Lists</div>
+        <div class="token-desc">Up/Down in menus, tables, charts.</div>
+      </div>
+    </div>
+
+    <h3>Screen Reader Support</h3>
+    <div class="dodont-grid">
+      <div class="dodont-card do">
+        <div class="dodont-badge">Do</div>
+        <ul>
+          <li>Use semantic HTML (nav, main, section, article)</li>
+          <li>Add aria-labels to icon-only buttons</li>
+          <li>Announce dynamic content with aria-live</li>
+          <li>Provide alt text for all images</li>
+          <li>Use aria-describedby for complex data</li>
+        </ul>
+      </div>
+      <div class="dodont-card dont">
+        <div class="dodont-badge">Don't</div>
+        <ul>
+          <li>Use divs for interactive elements</li>
+          <li>Hide focus indicators with outline: none</li>
+          <li>Use color alone to convey information</li>
+          <li>Auto-focus elements without user action</li>
+          <li>Use aria-hidden on focusable elements</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Reduced Motion</h3>
+    <div class="glass-demo">
+      <div class="glass-card dark-glass">
+        <h4>@media (prefers-reduced-motion: reduce)</h4>
+        <p style="margin-top: 8px; font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--light);">
+          * { animation: none !important; transition: none !important; }
+        </p>
+        <p style="margin-top: 12px; font-size: 13px;">Respect user preference. Disable all non-essential animations.</p>
+      </div>
+      <div class="glass-card dark-glass">
+        <h4>Data Animations</h4>
+        <p style="margin-top: 8px; font-size: 13px;">Charts should still render data, but skip the entrance animation. Numbers should appear instantly, not count up.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- File Naming -->
+  <section id="files">
+    <div class="section-number">16 / Organization</div>
+    <h2>File Naming & Organization</h2>
+    <p class="section-desc">Consistent file structure ensures assets are easy to find and maintain.</p>
+
+    <h3>Brand Asset Structure</h3>
+    <div class="type-specimen">
+      <div class="type-specimen-label">Directory Layout</div>
+      <pre style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #CBD5E1; line-height: 1.8;">
+brand/
+├── logo.svg                  # Full logo (light background)
+├── logo-dark.svg             # Full logo (dark background)
+├── logo-icon.svg             # Icon only
+├── BRAND-IDENTITY.md         # Brand guidelines (markdown)
+├── brand-book.html           # This file (interactive brand book)
+├── icons/                    # Custom SVG icon set (10 icons)
+│   ├── building.svg
+│   ├── currency.svg
+│   ├── dashboard.svg
+│   ├── layers.svg
+│   ├── location-pin.svg
+│   ├── market-clock.svg
+│   ├── property.svg
+│   ├── trophy.svg
+│   ├── user-plus.svg
+│   └── yield-chart.svg
+├── banner-hero-1920x800.html
+├── banner-social-1200x630.html
+└── banner-story-1080x1920.html
+      </pre>
+    </div>
+
+    <h3>Naming Conventions</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">Icons</div>
+        <div class="token-value" style="font-size: 14px;">kebab-case</div>
+        <div class="token-desc">building.svg, yield-chart.svg, location-pin.svg</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Banners</div>
+        <div class="token-value" style="font-size: 14px;">prefix-dimensions</div>
+        <div class="token-desc">banner-hero-1920x800.html</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">Logos</div>
+        <div class="token-value" style="font-size: 14px;">logo-variant</div>
+        <div class="token-desc">logo.svg, logo-dark.svg, logo-icon.svg</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">CSS Classes</div>
+        <div class="token-value" style="font-size: 14px;">kebab-case</div>
+        <div class="token-desc">.glass-card, .btn-primary, .nav-link</div>
+      </div>
+    </div>
+
+    <h3>Export Formats</h3>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="token-name">SVG</div>
+        <div class="token-value" style="font-size: 14px;">Icons, Logos</div>
+        <div class="token-desc">Vector, scalable, small file size</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">PNG</div>
+        <div class="token-value" style="font-size: 14px;">Social, Email</div>
+        <div class="token-desc">2x devicePixelFactor for retina</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">HTML</div>
+        <div class="token-value" style="font-size: 14px;">Banners, Mockups</div>
+        <div class="token-desc">Single-file, portable, interactive</div>
+      </div>
+      <div class="token-card">
+        <div class="token-name">MD</div>
+        <div class="token-value" style="font-size: 14px;">Documentation</div>
+        <div class="token-desc">Brand guidelines, README files</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Dubai Property Bot — Brand Book v2.0</p>
+    <p style="margin-top: 8px;">Designed for <span>AI-Powered Investment Intelligence</span></p>
+    <p style="margin-top: 4px; font-size: 11px; color: var(--muted);">This document is confidential. For internal use only.</p>
+  </div>
+
+</div>
+
+<script>
+  // Mobile Navigation
+  const navToggle = document.getElementById('navToggle');
+  const navOverlay = document.getElementById('navOverlay');
+  const nav = document.querySelector('.nav');
+
+  function toggleNav() {
+    const isOpen = nav.classList.toggle('open');
+    navToggle.classList.toggle('active');
+    navOverlay.classList.toggle('active');
+    navToggle.setAttribute('aria-expanded', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  navToggle.addEventListener('click', toggleNav);
+  navOverlay.addEventListener('click', toggleNav);
+
+  // Close nav on link click
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (nav.classList.contains('open')) toggleNav();
+    });
+  });
+
+  // Close nav on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) toggleNav();
+  });
+</script>
+
+</body>
+</html>

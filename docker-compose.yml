@@ -1,20 +1,37 @@
-version: "3.8"
-
 services:
-  app:
+  api:
     build: .
     ports:
-      - "8501:8501"
+      - "8000:8000"
     environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - BAYUT_API_KEY=${BAYUT_API_KEY}
     volumes:
       - ./chroma_db:/app/chroma_db
       - ./data:/app/data
+      - ./.env:/.env
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 30s
+    restart: unless-stopped
+
+  web:
+    image: node:22-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm ci && npm run start"
+    depends_on:
+      api:
+        condition: service_healthy
     restart: unless-stopped

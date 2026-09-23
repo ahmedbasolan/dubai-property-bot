@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -14,7 +13,16 @@ import {
 } from "@/components/ui/select";
 import { api, type Transaction } from "@/lib/api";
 import { useDataSource } from "@/components/data-source-provider";
-import { Search, Bed, Bath, Radio } from "lucide-react";
+import { Search, Bed, Radio } from "lucide-react";
+
+function getCommunityName(community: unknown): string {
+  if (typeof community === "string") return community;
+  if (community && typeof community === "object") {
+    const c = community as Record<string, unknown>;
+    return (c.name || c.name_l1 || c.name_l2 || c.name_l3) as string || "Unknown";
+  }
+  return "Unknown";
+}
 
 export default function PropertiesPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -27,16 +35,20 @@ export default function PropertiesPage() {
   const [dataSource, setDataSource] = useState("mock");
 
   useEffect(() => {
-    setLoading(true);
+    let stale = false;
     const params: Record<string, string> = {};
     if (community !== "all") params.community = community;
     if (bedrooms !== "all") params.bedrooms = bedrooms;
 
     api.getTransactions(params, useLive).then((data) => {
+      if (stale) return;
       setTransactions(data.transactions);
       setDataSource(data.source);
       setLoading(false);
     });
+    return () => {
+      stale = true;
+    };
   }, [useLive, community, bedrooms]);
 
   let filtered = transactions;
@@ -45,14 +57,14 @@ export default function PropertiesPage() {
     const q = search.toLowerCase();
     filtered = filtered.filter(
       (t) =>
-        t.community.toLowerCase().includes(q) ||
+        getCommunityName(t.community).toLowerCase().includes(q) ||
         t.transaction_id.toLowerCase().includes(q) ||
         (typeof t.developer === "string" && t.developer.toLowerCase().includes(q))
     );
   }
 
   if (community !== "all") {
-    filtered = filtered.filter((t) => t.community === community);
+    filtered = filtered.filter((t) => getCommunityName(t.community) === community);
   }
 
   if (bedrooms !== "all") {
@@ -73,7 +85,7 @@ export default function PropertiesPage() {
     );
   }
 
-  const communities = [...new Set(transactions.map((t) => t.community))].sort();
+  const communities = [...new Set(transactions.map((t) => getCommunityName(t.community)))].sort();
 
   if (loading) {
     return (
@@ -168,7 +180,7 @@ export default function PropertiesPage() {
                       : `${t.bedrooms} Bedroom`}
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    {t.community}
+                    {getCommunityName(t.community)}
                   </p>
                 </div>
                 <Badge

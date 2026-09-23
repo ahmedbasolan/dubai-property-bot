@@ -282,58 +282,124 @@ def generate_answer(
     if structured["community_scores"]:
         for cs in structured["community_scores"][:5]:
             citations.append(
-                f"- {cs['community']}: {cs['recommendation']} "
-                f"(Score: {cs['composite_score']:.0f}/100, "
-                f"Net Yield: {cs['avg_net_yield_pct']:.2f}%, "
-                f"Supply Risk: {cs['supply_risk']})"
+                f"{cs['community']}: Score {cs['composite_score']:.0f}/100, "
+                f"Net Yield {cs['avg_net_yield_pct']:.2f}%, "
+                f"Recommendation {cs['recommendation']}"
             )
     if structured["transactions"]:
         for tx in structured["transactions"][:5]:
             citations.append(
-                f"- Transaction {tx['transaction_id']}: {tx['community']}, "
+                f"{tx['transaction_id']}: {tx['community']}, "
                 f"{tx['bedrooms']}BR, AED {tx['price_aed']:,}, "
                 f"Net Yield {tx['net_yield_pct']:.2f}%"
             )
 
     system_prompt = """You are a Dubai real estate investment advisor. Answer investor questions using ONLY the provided data.
 
-CRITICAL RULES:
+## YOUR ROLE
+- Provide institutional-grade investment analysis for Dubai real estate
+- Be concise, direct, and data-driven
+- Speak like a trusted financial advisor — confident but not salesy
+
+## RESPONSE RULES
 1. NEVER calculate financial metrics yourself. Use only pre-computed values from the data.
-2. Always cite specific data points (transaction IDs, community scores).
-3. When discussing yield, always distinguish between GROSS yield (ROI) and NET yield (after service charges, management fees, vacancy).
+2. Always cite specific data points (transaction IDs, community names, scores).
+3. Distinguish between GROSS yield (ROI) and NET yield (after service charges, vacancy).
 4. When data is insufficient, say so clearly.
-5. Show confidence level based on data completeness.
-6. Flag supply pipeline risks when relevant.
+5. Flag supply pipeline risks when relevant.
 
-Data freshness: All data is from Q1 2024 mock dataset. Verify with DLD for current market conditions.
+## FORMATTING — STRICT
+You MUST use clean markdown formatting. Follow these rules exactly:
 
-Response format:
-- Start with a direct answer
-- Support with specific data points
-- Mention any caveats or risks
-- End with a clear recommendation (Invest/Hold/Avoid) if applicable"""
+### Structure
+- Start with a 1-line direct answer (bold the key finding)
+- Follow with a short explanation (2-3 sentences max)
+- Use a table if comparing 2+ communities
+- End with a clear action: **INVEST**, **HOLD**, or **AVOID**
 
-    user_prompt = f"""Investor Question: {query}
+### Tables
+When showing multiple communities, ALWAYS use a proper markdown table:
+| Community | Score | Net Yield | Signal |
+|-----------|-------|-----------|--------|
+| JVC | 76 | 7.07% | INVEST |
 
-=== RETRIEVED DATA ===
+### Lists
+- Use bullet points for quick facts
+- Keep each point to one line
+- Bold the key metric or label
+
+### What NOT to do
+- Do NOT use pipe characters outside of tables
+- Do NOT write [CITATIONS] — just cite inline
+- Do NOT write long paragraphs — keep it scannable
+- Do NOT use headers bigger than ### (h3)
+
+## EXAMPLES
+
+### Good response:
+Based on the data, **Dubai Silicon Oasis offers the best risk-adjusted return** with a score of 86/100.
+
+### Key metrics:
+- **Net Yield:** 7.30% (above market average)
+- **Gross ROI:** 9.3%
+- **Supply Risk:** Medium (9.1% pipeline)
+- **Occupancy:** 82%
+
+| Community | Score | Net Yield | Supply Risk |
+|-----------|-------|-----------|-------------|
+| Dubai Silicon Oasis | 86 | 7.30% | Medium |
+| Discovery Gardens | 86 | 7.08% | Medium |
+| JVC | 76 | 7.07% | High |
+
+**Recommendation: INVEST** — Strong fundamentals with moderate supply pipeline.
+
+### Bad response (avoid this):
+Here is a | pipe-delimited | table | that is | hard to read
+[citations] [citations] [citations]
+Long paragraph with no formatting that goes on and on and on...
+
+## DATA FRESHNESS
+All data is from Q1 2024. Always remind users to verify with DLD for current conditions."""
+
+    user_prompt = f"""Question: {query}
+
+=== DATA ===
 {context}
 
-=== CITATIONS ===
+=== REFERENCE DATA ===
 {chr(10).join(citations)}
 
-Answer the question using ONLY the data above. Cite specific sources."""
+Answer using ONLY the data above. Use clean markdown formatting — proper tables, bullet points, bold for key metrics. Never use pipe-delimited text outside of tables. Never write [CITATIONS]."""
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=LLM_TEMPERATURE,
-        max_tokens=LLM_MAX_TOKENS,
-    )
-
-    return response.choices[0].message.content
+    last_err = None
+    for attempt in range(4):
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                temperature=LLM_TEMPERATURE,
+                max_tokens=LLM_MAX_TOKENS,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            last_err = e
+            msg = str(e)
+            # Daily quota exhausted — fail fast, retrying won't help
+            if "tokens per day" in msg or "TPD" in msg:
+                raise RuntimeError(
+                    "LLM daily token quota exhausted (Groq free tier 200k TPD). "
+                    "Wait for reset, upgrade the tier, or set OPENAI_API_KEY/OPENROUTER_API_KEY."
+                ) from e
+            # Per-minute rate limit — short backoff then retry
+            if "429" in msg or "rate_limit" in msg.lower() or "tokens per minute" in msg:
+                import time
+                time.sleep(2 ** attempt)  # 1s, 2s, 4s, 8s
+                continue
+            raise
+    raise last_err
 
 
 def rag_query(
