@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <defs>
+    <linearGradient id="goldGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37"/>
+      <stop offset="100%" style="stop-color:#E8C84A"/>
+    </linearGradient>
+    <linearGradient id="goldDimGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#B8860B"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon: Abstract skyline with growth arrow -->
+  <g transform="translate(8, 8)">
+    <!-- Buildings -->
+    <rect x="4" y="28" width="10" height="32" rx="2" fill="url(#goldGradDark)" opacity="0.9"/>
+    <rect x="18" y="18" width="10" height="42" rx="2" fill="url(#goldDimGradDark)" opacity="0.85"/>
+    <rect x="32" y="24" width="10" height="36" rx="2" fill="url(#goldGradDark)" opacity="0.8"/>
+    <rect x="46" y="12" width="10" height="48" rx="2" fill="url(#goldDimGradDark)" opacity="0.9"/>
+    <rect x="60" y="20" width="10" height="40" rx="2" fill="url(#goldGradDark)" opacity="0.75"/>
+    <!-- Growth arrow -->
+    <path d="M8 48 L28 28 L48 36 L68 8" stroke="#E8C84A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <polygon points="68,8 62,14 74,14" fill="#E8C84A"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="96" y="38" font-family="Cinzel, serif" font-size="24" font-weight="700" fill="#D4AF37" letter-spacing="1">DUBAI</text>
+  <text x="96" y="62" font-family="Josefin Sans, sans-serif" font-size="16" font-weight="400" fill="#A0A0A0" letter-spacing="3">PROPERTY BOT</text>
+</svg>

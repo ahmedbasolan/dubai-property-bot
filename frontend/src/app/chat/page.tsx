@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { useDataSource } from "@/components/data-source-provider";
 import {
@@ -14,6 +13,8 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
   role: "user" | "assistant";
@@ -78,8 +79,8 @@ export default function ChatPage() {
         txCount: res.transaction_count,
       };
       setMessages((prev) => [...prev, assistantMsg]);
-    } catch (err: any) {
-      setError(err.message || "Failed to get response");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to get response");
     } finally {
       setLoading(false);
     }
@@ -90,7 +91,7 @@ export default function ChatPage() {
       {/* Header */}
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Bot size={20} className="text-emerald-400" />
+          <Bot size={20} className="text-primary" />
           <h1 className="text-lg font-bold">Investment Advisor</h1>
         </div>
         <div className="flex items-center gap-3">
@@ -99,7 +100,7 @@ export default function ChatPage() {
             className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-border hover:bg-accent/50 transition-colors"
           >
             <Key size={12} />
-            <span className={apiKey ? "text-emerald-400" : "text-muted-foreground"}>
+            <span className={apiKey ? "text-primary" : "text-muted-foreground"}>
               {currentProvider.label}
               {apiKey ? " (Custom)" : ""}
             </span>
@@ -201,8 +202,8 @@ export default function ChatPage() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-6">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
-              <Bot size={32} className="text-emerald-400" />
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Bot size={32} className="text-primary" />
             </div>
             <div className="text-center">
               <h2 className="text-xl font-bold">Dubai Property Advisor</h2>
@@ -231,8 +232,8 @@ export default function ChatPage() {
             className={`flex gap-3 message-enter ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
             {msg.role === "assistant" && (
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                <Bot size={16} className="text-emerald-400" />
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Bot size={16} className="text-primary" />
               </div>
             )}
             <div
@@ -243,8 +244,10 @@ export default function ChatPage() {
               }`}
             >
               {msg.role === "assistant" ? (
-                <div className="text-sm whitespace-pre-wrap leading-relaxed">
-                  {msg.content}
+                <div className="text-sm leading-relaxed chat-markdown">
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {msg.content.replace(/\[CITATIONS?\]/g, "").replace(/\\\|/g, "|")}
+                  </Markdown>
                 </div>
               ) : (
                 <div className="text-sm">{msg.content}</div>
@@ -254,7 +257,7 @@ export default function ChatPage() {
                   {msg.communities.map((c) => (
                     <span
                       key={c}
-                      className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400"
+                      className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary"
                     >
                       {c}
                     </span>
@@ -277,14 +280,14 @@ export default function ChatPage() {
 
         {loading && (
           <div className="flex gap-3 message-enter">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-              <Bot size={16} className="text-emerald-400" />
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Bot size={16} className="text-primary" />
             </div>
             <div className="bg-accent/50 rounded-xl px-4 py-3">
               <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_infinite_alternate]" />
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_0.2s_infinite_alternate]" />
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/60 animate-[fadeIn_0.6s_ease-in-out_0.4s_infinite_alternate]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-[fadeIn_0.6s_ease-in-out_infinite_alternate]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-[fadeIn_0.6s_ease-in-out_0.2s_infinite_alternate]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-[fadeIn_0.6s_ease-in-out_0.4s_infinite_alternate]" />
               </div>
             </div>
           </div>

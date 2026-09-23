@@ -34,7 +34,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const { useLive, setUseLive, source, bayutConfigured } = useDataSource();
+  const { useLive, setUseLive, bayutConfigured } = useDataSource();
 
   return (
     <>
@@ -56,12 +56,12 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          "fixed md:static inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-all duration-300 ease-out",
+          "fixed md:static inset-y-0 left-0 z-50 w-64 glass-nav flex flex-col transition-all duration-300 ease-out",
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
-        <div className="p-6 border-b border-border">
-          <h1 className="text-lg font-bold tracking-tight">
+        <div className="p-6 border-b border-sidebar-border">
+          <h1 className="text-lg font-bold tracking-tight font-[family-name:var(--font-cinzel)]">
             Dubai Property
           </h1>
           <p className="text-xs text-muted-foreground mt-1">

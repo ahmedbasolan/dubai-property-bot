@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { api, type MapFeature } from "@/lib/api";
-import { MapPin, TrendingUp, Building2, DollarSign } from "lucide-react";
+import { MapPin, TrendingUp, DollarSign } from "lucide-react";
 
 const LeafletMap = dynamic(
   () => import("@/components/leaflet-map").then((m) => m.LeafletMap),
@@ -25,6 +26,7 @@ const recBg: Record<string, string> = {
 };
 
 export default function MapPage() {
+  const router = useRouter();
   const [features, setFeatures] = useState<MapFeature[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<MapFeature | null>(null);
@@ -156,7 +158,7 @@ export default function MapPage() {
 
                 {/* Action Button */}
                 <button
-                  onClick={() => window.location.href = `/properties?community=${encodeURIComponent(selected.community)}`}
+                  onClick={() => router.push(`/properties?community=${encodeURIComponent(selected.community)}`)}
                   className="w-full py-2.5 rounded-lg font-medium text-sm transition-colors"
                   style={{
                     backgroundColor: recColors[selected.recommendation] + "20",

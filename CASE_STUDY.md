@@ -82,16 +82,20 @@ Every response includes:
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
+| Frontend | Next.js 16, React 19, Tailwind 4, shadcn/ui | Dashboard, chat, charts, map |
+| Charts / Map | Recharts, Leaflet | Trends, scores, community map |
+| Backend | FastAPI (Python) | REST API + RAG orchestration |
 | Structured Analytics | DuckDB | Transaction queries, net yield, scoring |
 | Semantic Search | ChromaDB | Market report retrieval |
 | Embeddings | all-MiniLM-L6-v2 | Report chunk embedding |
-| LLM | GPT-4o-mini | Answer generation |
-| UI | Streamlit | Chat interface |
+| LLM | Groq gpt-oss-120b (default), OpenAI, OpenRouter | Answer generation |
+| Live Data | Bayut API | Listings, sale prices |
+| Design | Luxury Gold design system | Brand book, logos, banners |
 | Container | Docker | Deployment |
 
 ## Data Model
 
-**60+ transactions** across 25 communities with 16 fields:
+**73 transactions** across 24 communities with 16 fields:
 - Original: community, property_type, bedrooms, price, size, date, ROI, developer, handover_status
 - Added: floor_level, view_type, service_charge_aed_sqft, parking_spots, completion_year, furnishing, amenities
 
@@ -99,13 +103,29 @@ Every response includes:
 
 **Supply pipeline table:** existing_stock, under_construction, completed_12m, expected_24m, pipeline_pct, risk_level
 
+**ChromaDB:** 28 market-report chunks for semantic retrieval (risks, occupancy, pipeline commentary).
+
+## Evaluation
+
+30-question suite (`eval/run_eval.py`) scored against DuckDB as ground truth:
+
+| Metric | Result (Groq gpt-oss-120b) |
+|--------|----------------------------|
+| Successful answers | 8 / 30 on latest run (22 deferred — free-tier 200k daily token quota; runner **resumes** on next run) |
+| Avg keyword score | 41% (on successful) |
+| Number accuracy (claims in valid DB range) | **100%** |
+| Community attribution (entities exist in DB) | **100%** |
+
+Number accuracy at 100% means the LLM never invented a yield/price outside the dataset's range — financial figures come from SQL views, not generation. Community attribution at 100% (on scored answers) means every named community exists in the DB (alias-normalized, e.g. `JVC` ↔ `JVC (Jumeirah Village Circle)`).
+
 ## What This Proves
 
 1. **Polyglot Persistence** — Right tool for the right query type (DuckDB for analytics, ChromaDB for semantic)
 2. **Domain-Specific AI** — Net yield calculation, investment scoring, supply risk flagging
 3. **Data Engineering** — Realistic mock data with community-specific distributions
-4. **Production Thinking** — Docker deployment, health checks, confidence scoring, disclaimers
+4. **Production Thinking** — FastAPI + Next.js split, health checks, multi-provider LLM with retry, Docker path
 5. **Business Understanding** — 7 metrics that explain 85% of returns, not just "RAG over data"
+6. **Full-Stack Delivery** — Designed brand system (Luxury Gold), 8-page app, eval loop with automated checks
 
 ## Market Context
 
@@ -116,8 +136,8 @@ Every response includes:
 
 ## Future Enhancements
 
-1. **Live DLD API integration** for real transaction data
+1. **Live DLD API integration** for real transaction data (Bayut partial — sale + listings live)
 2. **Price predictor** (ML model trained on same data) — Project 2
-3. **Market trend dashboard** (time series visualization) — Project 3
+3. **Market trend dashboard** (time series visualization) — Project 3 ✅ shipped (`/trends`)
 4. **Multi-turn conversation** with portfolio tracking
 5. **Stress test calculator** (what-if scenarios for price decline, vacancy, rent reduction)

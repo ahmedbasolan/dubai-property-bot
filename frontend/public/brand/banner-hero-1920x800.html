@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Josefin+Sans:wght@300;400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 800px; overflow: hidden; }
+  .hero {
+    width: 1920px; height: 800px;
+    background: linear-gradient(135deg, #0B1120 0%, #0F172A 40%, #134E4A 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(20,184,166,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 80%, rgba(3,105,161,0.1) 0%, transparent 50%);
+  }
+  .glass-panel {
+    position: absolute; right: 120px; top: 50%; transform: translateY(-50%);
+    width: 520px; height: 400px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 48px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .glass-panel h3 {
+    font-family: 'Cinzel', serif; color: #14B8A6;
+    font-size: 18px; letter-spacing: 2px; margin-bottom: 24px;
+  }
+  .stat-row { display: flex; gap: 32px; margin-bottom: 20px; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 36px; font-weight: 700; color: #F0FDFA; }
+  .stat-label { font-size: 13px; color: #94A3B8; margin-top: 4px; letter-spacing: 1px; }
+  .stat-value.green { color: #14B8A6; }
+  .stat-value.blue { color: #0EA5E9; }
+  .content { position: relative; z-index: 2; max-width: 700px; margin-left: 140px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.3);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 24px;
+    font-size: 13px; color: #14B8A6; letter-spacing: 1px;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #14B8A6; }
+  h1 {
+    font-family: 'Cinzel', serif; font-size: 56px; font-weight: 700;
+    color: #F0FDFA; line-height: 1.15; margin-bottom: 20px;
+  }
+  h1 span { color: #14B8A6; }
+  .subtitle {
+    font-size: 18px; color: #94A3B8; line-height: 1.6;
+    max-width: 520px; margin-bottom: 36px;
+  }
+  .cta-group { display: flex; gap: 16px; }
+  .btn-primary {
+    background: linear-gradient(135deg, #D4AF37, #E8C84A);
+    color: #fff; padding: 14px 32px; border-radius: 12px;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.5px;
+    border: none; cursor: pointer;
+  }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: #F0FDFA; padding: 14px 32px; border-radius: 12px;
+    font-size: 15px; font-weight: 500; border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+  }
+  /* Grid pattern overlay */
+  .grid-overlay {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(20,184,166,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(20,184,166,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="grid-overlay"></div>
+  <div class="content">
+    <div class="badge"><div class="badge-dot"></div>AI-POWERED ANALYTICS</div>
+    <h1>Dubai Property<br><span>Investment</span> Assistant</h1>
+    <p class="subtitle">7-factor scoring engine analyzing net yield, supply risk, and community metrics across 25 Dubai neighborhoods.</p>
+    <div class="cta-group">
+      <button class="btn-primary">Explore Investments</button>
+      <button class="btn-secondary">View Leaderboard</button>
+    </div>
+  </div>
+  <div class="glass-panel">
+    <h3>MARKET SNAPSHOT</h3>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-value green">6.8%</div><div class="stat-label">AVG NET YIELD</div></div>
+      <div class="stat"><div class="stat-value blue">25</div><div class="stat-label">COMMUNITIES</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-value">73</div><div class="stat-label">TRANSACTIONS</div></div>
+      <div class="stat"><div class="stat-value green">7</div><div class="stat-label">SCORING FACTORS</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

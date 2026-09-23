@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Josefin+Sans:wght@300;400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; }
+  .banner {
+    width: 1200px; height: 630px;
+    background: linear-gradient(135deg, #0B1120 0%, #0F172A 50%, #134E4A 100%);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+  .banner::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 50%, rgba(20,184,166,0.12) 0%, transparent 50%);
+  }
+  .content { position: relative; z-index: 2; padding: 60px 80px; max-width: 700px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(20,184,166,0.15); border: 1px solid rgba(20,184,166,0.3);
+    border-radius: 100px; padding: 6px 14px; margin-bottom: 20px;
+    font-size: 12px; color: #14B8A6; letter-spacing: 1px;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #14B8A6; }
+  h1 {
+    font-family: 'Cinzel', serif; font-size: 42px; font-weight: 700;
+    color: #F0FDFA; line-height: 1.2; margin-bottom: 16px;
+  }
+  h1 span { color: #14B8A6; }
+  .subtitle { font-size: 16px; color: #94A3B8; line-height: 1.5; margin-bottom: 28px; }
+  .stats { display: flex; gap: 40px; }
+  .stat-value { font-size: 28px; font-weight: 700; color: #14B8A6; }
+  .stat-label { font-size: 11px; color: #64748B; letter-spacing: 1px; margin-top: 2px; }
+  .visual {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    width: 360px; height: 360px;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .chart-bars { display: flex; gap: 12px; align-items: flex-end; height: 180px; }
+  .bar { border-radius: 6px 6px 0 0; width: 40px; }
+  .bar:nth-child(1) { height: 80px; background: rgba(15,118,110,0.6); }
+  .bar:nth-child(2) { height: 120px; background: rgba(20,184,166,0.7); }
+  .bar:nth-child(3) { height: 100px; background: rgba(3,105,161,0.6); }
+  .bar:nth-child(4) { height: 160px; background: rgba(20,184,166,0.8); }
+  .bar:nth-child(5) { height: 140px; background: rgba(14,165,233,0.7); }
+  .bar:nth-child(6) { height: 180px; background: linear-gradient(to top, #D4AF37, #E8C84A); }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="content">
+    <div class="badge"><div class="badge-dot"></div>DUBAI REAL ESTATE</div>
+    <h1>Smart <span>Investment</span> Decisions</h1>
+    <p class="subtitle">AI-powered scoring across 7 metrics that explain 85% of investment returns in Dubai.</p>
+    <div class="stats">
+      <div><div class="stat-value">6.8%</div><div class="stat-label">AVG NET YIELD</div></div>
+      <div><div class="stat-value">25</div><div class="stat-label">COMMUNITIES</div></div>
+      <div><div class="stat-value">7</div><div class="stat-label">FACTORS</div></div>
+    </div>
+  </div>
+  <div class="visual">
+    <div class="chart-bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

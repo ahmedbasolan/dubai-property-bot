@@ -6,10 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { api, type CommunityScore } from "@/lib/api";
 import {
   Trophy,
-  TrendingUp,
-  TrendingDown,
-  ArrowUpRight,
-  ArrowDownRight,
 } from "lucide-react";
 
 export default function CommunitiesPage() {

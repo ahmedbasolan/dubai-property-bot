@@ -9,3 +9,8 @@ chroma_db/
 frontend/node_modules/
 frontend/.next/
 frontend/out/
+api.log
+frontend.log
+eval/eval_run.log
+eval/eval_err.log
+

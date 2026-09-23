@@ -11,7 +11,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api, type Transaction } from "@/lib/api";
-import { GitCompare, Plus, X } from "lucide-react";
+import { GitCompare, X } from "lucide-react";
+
+function getCommunityName(community: unknown): string {
+  if (typeof community === "string") return community;
+  if (community && typeof community === "object") {
+    const c = community as Record<string, unknown>;
+    return (c.name || c.name_l1 || c.name_l2 || c.name_l3) as string || "Unknown";
+  }
+  return "Unknown";
+}
 
 export default function ComparePage() {
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
@@ -72,7 +81,7 @@ export default function ComparePage() {
                 value={t.transaction_id}
                 disabled={selectedIds.includes(t.transaction_id)}
               >
-                {t.transaction_id} — {t.bedrooms}BR {t.community} — AED{" "}
+                {t.transaction_id} — {t.bedrooms}BR {getCommunityName(t.community)} — AED{" "}
                 {(t.price_aed / 1000000).toFixed(2)}M
               </SelectItem>
             ))}
@@ -108,7 +117,7 @@ export default function ComparePage() {
                   {t.bedrooms === 0
                     ? "Studio"
                     : `${t.bedrooms} Bedroom`}{" "}
-                  — {t.community}
+                  — {getCommunityName(t.community)}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
