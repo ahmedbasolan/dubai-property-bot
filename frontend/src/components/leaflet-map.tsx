@@ -40,7 +40,7 @@ function createCircleMarker(f: MapFeature, map: L.Map, onSelect: (f: MapFeature)
         text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s;
-      ">${f.composite_score.toFixed(0)}</div>
+      ">${(f.composite_score ?? 0).toFixed(0)}</div>
     `,
     iconSize: [radius * 2, radius * 2],
     iconAnchor: [radius, radius],
@@ -55,11 +55,11 @@ function createCircleMarker(f: MapFeature, map: L.Map, onSelect: (f: MapFeature)
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px;">
         <div>
           <div style="color: #888;">Score</div>
-          <div style="font-weight: 700; font-size: 16px;">${f.composite_score.toFixed(0)}<span style="font-size: 11px; color: #888;">/100</span></div>
+          <div style="font-weight: 700; font-size: 16px;">${(f.composite_score ?? 0).toFixed(0)}<span style="font-size: 11px; color: #888;">/100</span></div>
         </div>
         <div>
           <div style="color: #888;">Net Yield</div>
-          <div style="font-weight: 700; font-size: 16px; color: ${color};">${f.avg_net_yield.toFixed(1)}%</div>
+          <div style="font-weight: 700; font-size: 16px; color: ${color};">${(f.avg_net_yield ?? 0).toFixed(1)}%</div>
         </div>
       </div>
       <div style="margin-top: 8px; padding: 4px 8px; border-radius: 6px; text-align: center; font-weight: 700; font-size: 12px; background: ${color}20; color: ${color};">

@@ -113,10 +113,10 @@ export default function Dashboard() {
     (c) => c.recommendation === "AVOID"
   ).length;
   const avgYield =
-    communities.reduce((s, c) => s + c.avg_net_yield_pct, 0) /
+    communities.reduce((s, c) => s + (c.avg_net_yield_pct ?? 0), 0) /
     (communities.length || 1);
   const avgScore =
-    communities.reduce((s, c) => s + c.composite_score, 0) /
+    communities.reduce((s, c) => s + (c.composite_score ?? 0), 0) /
     (communities.length || 1);
 
   return (
@@ -241,22 +241,22 @@ export default function Dashboard() {
                   </div>
                   <div className="text-right">
                     <div className="font-bold text-sm tabular-nums">
-                      {c.composite_score.toFixed(0)}<span className="text-muted-foreground text-xs">/100</span>
+                      {(c.composite_score ?? 0).toFixed(0)}<span className="text-muted-foreground text-xs">/100</span>
                     </div>
                     <div className="flex items-center gap-1 text-xs justify-end">
-                      {c.avg_net_yield_pct > 7 ? (
+                      {(c.avg_net_yield_pct ?? 0) > 7 ? (
                         <ArrowUpRight className="h-3 w-3 text-emerald-500" />
                       ) : (
                         <ArrowDownRight className="h-3 w-3 text-red-500" />
                       )}
                       <span
                         className={
-                          c.avg_net_yield_pct > 7
+                          (c.avg_net_yield_pct ?? 0) > 7
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-red-500"
                         }
                       >
-                        {c.avg_net_yield_pct.toFixed(1)}%
+                        {(c.avg_net_yield_pct ?? 0).toFixed(1)}%
                       </span>
                     </div>
                   </div>
@@ -285,16 +285,16 @@ export default function Dashboard() {
                       {formatBedrooms(t.bedrooms)} {getPropertyType(t.property_type)} — {getCommunityName(t.community)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {t.size_sqft.toLocaleString()} sqft
+                      {t.size_sqft != null ? t.size_sqft.toLocaleString() : "—"} sqft
                       {t.developer && typeof t.developer === "string" ? ` • ${t.developer}` : ""}
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="font-bold text-sm tabular-nums">
-                      AED {(t.price_aed / 1000000).toFixed(2)}M
+                      AED {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
                     </div>
                     <div className="text-xs text-emerald-600 dark:text-emerald-400 tabular-nums">
-                      {t.roi_pct}% yield
+                      {t.roi_pct != null ? `${t.roi_pct}% yield` : "—"}
                     </div>
                   </div>
                 </div>

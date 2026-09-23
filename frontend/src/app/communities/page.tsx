@@ -83,7 +83,7 @@ export default function CommunitiesPage() {
                     </span>
                     {c.community}
                   </CardTitle>
-                  <p className="text-sm text-muted-foreground">{c.district}</p>
+                  <p className="text-sm text-muted-foreground">{c.district ?? "Dubai"}</p>
                 </div>
                 <Badge className={recColors[c.recommendation]}>
                   {c.recommendation}
@@ -94,7 +94,7 @@ export default function CommunitiesPage() {
               <div className="flex items-center justify-between">
                 <div className="text-center">
                   <div className="text-3xl font-bold">
-                    {c.composite_score.toFixed(0)}
+                    {(c.composite_score ?? 0).toFixed(0)}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Score / 100
@@ -103,7 +103,7 @@ export default function CommunitiesPage() {
                 <div className="h-12 w-px bg-border" />
                 <div className="text-center">
                   <div className="text-3xl font-bold text-emerald-400">
-                    {c.avg_net_yield_pct.toFixed(1)}%
+                    {(c.avg_net_yield_pct ?? 0).toFixed(1)}%
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Net Yield
@@ -112,7 +112,7 @@ export default function CommunitiesPage() {
                 <div className="h-12 w-px bg-border" />
                 <div className="text-center">
                   <div className="text-3xl font-bold">
-                    {(c.avg_price_per_sqft / 1000).toFixed(1)}K
+                    {((c.avg_price_per_sqft ?? 0) / 1000).toFixed(1)}K
                   </div>
                   <div className="text-xs text-muted-foreground">
                     AED / sqft
@@ -123,11 +123,11 @@ export default function CommunitiesPage() {
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Price Score</span>
-                  <span className="font-medium">{c.price_score}/100</span>
+                  <span className="font-medium">{c.price_score ?? 0}/100</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Yield Score</span>
-                  <span className="font-medium">{c.yield_score}/100</span>
+                  <span className="font-medium">{c.yield_score ?? 0}/100</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Supply Risk</span>
@@ -140,22 +140,22 @@ export default function CommunitiesPage() {
                         : "text-red-400"
                     }`}
                   >
-                    {c.supply_risk}
+                    {c.supply_risk ?? "—"}
                   </span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Pipeline</span>
                   <span className="font-medium">
-                    {c.pipeline_pct_of_stock}%
+                    {c.pipeline_pct_of_stock ?? 0}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Developer</span>
-                  <span className="font-medium">{c.master_developer}</span>
+                  <span className="font-medium">{c.master_developer ?? "—"}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Occupancy</span>
-                  <span className="font-medium">{c.occupancy_rate}%</span>
+                  <span className="font-medium">{c.occupancy_rate ?? 0}%</span>
                 </div>
               </div>
             </CardContent>

@@ -51,11 +51,11 @@ export default function TrendsPage() {
   const latest = data[data.length - 1];
   const prev = data[data.length - 2];
   const yoyGrowth =
-    latest && prev
+    latest && prev && prev.avg_price
       ? ((latest.avg_price - prev.avg_price) / prev.avg_price) * 100
       : 0;
 
-  const totalTransactions = data.reduce((s, d) => s + d.transactions, 0);
+  const totalTransactions = data.reduce((s, d) => s + (d.transactions ?? 0), 0);
 
   return (
     <div className="p-6 space-y-6">
@@ -89,7 +89,7 @@ export default function TrendsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              AED {latest?.avg_price.toLocaleString() || 0}
+              AED {(latest?.avg_price ?? 0).toLocaleString()}
             </div>
             <div className="flex items-center gap-1 mt-1">
               {yoyGrowth > 0 ? (
@@ -103,7 +103,7 @@ export default function TrendsPage() {
                 }`}
               >
                 {yoyGrowth > 0 ? "+" : ""}
-                {yoyGrowth.toFixed(1)}% YoY
+                {Number.isFinite(yoyGrowth) ? yoyGrowth.toFixed(1) : "0.0"}% YoY
               </span>
             </div>
           </CardContent>
@@ -134,7 +134,7 @@ export default function TrendsPage() {
           <CardContent>
             <div className="text-3xl font-bold">
               AED{" "}
-              {latest && data[0]
+              {latest && data[0] && latest.avg_price != null && data[0].avg_price != null
                 ? (latest.avg_price - data[0].avg_price).toLocaleString()
                 : 0}
             </div>
