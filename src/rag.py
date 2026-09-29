@@ -13,6 +13,13 @@ from chromadb.config import Settings
 from openai import OpenAI
 
 from config import DB_PATH, CHROMA_DIR, LLM_TEMPERATURE, LLM_MAX_TOKENS
+from filters import extract_filters
+
+# Rows of transaction detail handed to the model. Each row costs roughly 110
+# tokens, so 40 stays around 5k tokens including scores, supply and semantic
+# context - inside the 8k/min budget of the Groq free tier, which the previous
+# single-request limit could already breach.
+TX_CONTEXT_LIMIT = 40
 
 # Initialize clients
 duck_conn = duckdb.connect(str(DB_PATH), read_only=True)
@@ -88,6 +95,41 @@ def get_model(provider: Optional[str] = None) -> str:
     return PROVIDERS["groq"]["default_model"]
 
 
+def _like_param(value: str) -> str:
+    """Escape LIKE wildcards so a filter value is matched literally."""
+    escaped = str(value).replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+    return escaped
+
+
+def _relax_empty_filter(
+    where_clause: str,
+    params: List[Any],
+    filters: Optional[Dict[str, Any]],
+    results: Dict[str, Any],
+) -> tuple[str, List[Any]]:
+    """Drop the filter entirely if it matches nothing.
+
+    A filter that selects zero rows is indistinguishable, to the model, from a
+    property type that does not exist in the dataset. Rather than let a
+    mis-extracted constraint produce "no such property is available", fall
+    back to the unbiased sample and record that it happened.
+    """
+    if not filters or where_clause == "1=1":
+        return where_clause, params
+
+    count = duck_conn.execute(
+        f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
+    ).fetchone()[0]
+    if count:
+        return where_clause, params
+
+    results["relaxed_filters"] = {
+        "requested": dict(filters),
+        "reason": "filter matched 0 transactions; retried without it",
+    }
+    return "1=1", []
+
+
 def structured_search(
     query: str,
     filters: Optional[Dict[str, Any]] = None,
@@ -99,8 +141,11 @@ def structured_search(
     params = []
     if filters:
         if filters.get("community"):
-            where_parts.append("community = ?")
-            params.append(filters["community"])
+            # ILIKE, not =: the column holds 'Business Bay' and 'Villa', so a
+            # case-mismatched filter would return zero rows and the model would
+            # report that no such property exists.
+            where_parts.append("community ILIKE ?")
+            params.append(_like_param(filters["community"]))
         if filters.get("min_price") is not None:
             where_parts.append("price_aed >= ?")
             params.append(filters["min_price"])
@@ -111,10 +156,32 @@ def structured_search(
             where_parts.append("bedrooms = ?")
             params.append(filters["bedrooms"])
         if filters.get("property_type"):
-            where_parts.append("property_type = ?")
-            params.append(filters["property_type"])
+            where_parts.append("property_type ILIKE ?")
+            params.append(_like_param(filters["property_type"]))
 
     where_clause = " AND ".join(where_parts) if where_parts else "1=1"
+    where_clause, params = _relax_empty_filter(
+        where_clause, params, filters, results
+    )
+
+    # A plain "ORDER BY net_yield_pct DESC LIMIT 15" is dominated by the
+    # highest-yielding communities: it exposed only 5 of 24 communities, and
+    # zero villas or penthouses, so the model correctly reported that no villa
+    # data existed while the database held 9.
+    #
+    # Sample across the distribution instead. Groups are ranked so that rare
+    # ones (a single penthouse) are never truncated behind common ones (63
+    # apartments), and the per-group cap is derived from the group count so the
+    # row budget is actually spent: a hard cap of 2 would show only 2 of a
+    # community's 4 transactions when a filter narrowed the set to it.
+    group_count = duck_conn.execute(
+        f"""SELECT COUNT(*) FROM (
+              SELECT 1 FROM v_net_yield WHERE {where_clause}
+              GROUP BY community, property_type
+            )""",
+        params,
+    ).fetchone()[0]
+    per_group = max(2, -(-TX_CONTEXT_LIMIT // group_count)) if group_count else 2
 
     tx_query = f"""
         SELECT transaction_id, community, property_type, bedrooms,
@@ -125,10 +192,20 @@ def structured_search(
                net_yield_pct, price_per_sqft
         FROM v_net_yield
         WHERE {where_clause}
-        ORDER BY net_yield_pct DESC
-        LIMIT 15
+        QUALIFY row_number() OVER (
+            PARTITION BY community, property_type
+            ORDER BY net_yield_pct DESC
+        ) <= {per_group}
+        ORDER BY
+            count(*) OVER (PARTITION BY community, property_type) ASC,
+            community ASC,
+            property_type ASC,
+            net_yield_pct DESC
+        LIMIT {TX_CONTEXT_LIMIT}
     """
+    results["_per_group"] = per_group
     tx_rows = duck_conn.execute(tx_query, params).fetchall()
+
     tx_cols = [
         "transaction_id", "community", "property_type", "bedrooms",
         "price_aed", "size_sqft", "roi_pct", "floor_level", "view_type",
@@ -143,7 +220,20 @@ def structured_search(
         SELECT * FROM v_investment_scores
         ORDER BY composite_score DESC
     """
-    score_rows = duck_conn.execute(score_query).fetchall()
+    # Scope scores and supply to the filtered community as well. Returning all
+    # 24 communities' scores next to one community's transactions invites the
+    # model to attribute another community's yield to the one asked about.
+    # Only the community filter applies: v_investment_scores has no price or
+    # bedroom columns.
+    scope_where, scope_params = ("1=1", [])
+    if filters and filters.get("community"):
+        scope_where = "community ILIKE ?"
+        scope_params = [_like_param(filters["community"])]
+
+    score_rows = duck_conn.execute(
+        f"SELECT * FROM v_investment_scores WHERE {scope_where} ORDER BY composite_score DESC",
+        scope_params,
+    ).fetchall()
     score_cols = [
         "community", "district", "transaction_count", "avg_price_per_sqft",
         "avg_roi_pct", "avg_net_yield_pct", "avg_service_charge", "avg_price",
@@ -154,11 +244,19 @@ def structured_search(
     ]
     results["community_scores"] = [dict(zip(score_cols, row)) for row in score_rows]
 
-    supply_query = """
+    # supply_pipeline names the column community_name, not community.
+    supply_scope = "1=1"
+    supply_params: List[Any] = []
+    if filters and filters.get("community"):
+        supply_scope = "community_name ILIKE ?"
+        supply_params = [_like_param(filters["community"])]
+
+    supply_query = f"""
         SELECT * FROM supply_pipeline
+        WHERE {supply_scope}
         ORDER BY pipeline_pct_of_stock DESC
     """
-    supply_rows = duck_conn.execute(supply_query).fetchall()
+    supply_rows = duck_conn.execute(supply_query, supply_params).fetchall()
     supply_cols = [
         "community_name", "existing_stock_units", "units_under_construction",
         "units_completed_last_12_months", "units_expected_next_24_months",
@@ -166,17 +264,108 @@ def structured_search(
     ]
     results["supply_info"] = [dict(zip(supply_cols, row)) for row in supply_rows]
 
+    results["coverage"] = _coverage_summary(where_clause, params)
     return results
 
 
-def semantic_search(query: str, n_results: int = 5) -> List[Dict[str, Any]]:
-    """Search ChromaDB for market reports (semantic)."""
+def _coverage_summary(where_clause: str, params: List[Any]) -> Dict[str, Any]:
+    """What the dataset holds vs what made it into the prompt.
+
+    Without this the model cannot distinguish "no such property" from
+    "not in the rows I was shown", and it answers the second one.
+    """
+    total = duck_conn.execute(
+        f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
+    ).fetchone()[0]
+
+    by_type = duck_conn.execute(
+        f"""SELECT property_type, COUNT(*) FROM v_net_yield
+            WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
+        params,
+    ).fetchall()
+    by_handover = duck_conn.execute(
+        f"""SELECT handover_status, COUNT(*) FROM v_net_yield
+            WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
+        params,
+    ).fetchall()
+    by_community = duck_conn.execute(
+        f"""SELECT community, COUNT(*) FROM v_net_yield
+            WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
+        params,
+    ).fetchall()
+    by_developer = duck_conn.execute(
+        f"""SELECT developer, COUNT(*) FROM v_net_yield
+            WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
+        params,
+    ).fetchall()
+    by_bedrooms = duck_conn.execute(
+        f"""SELECT bedrooms, COUNT(*) FROM v_net_yield
+            WHERE {where_clause} GROUP BY 1 ORDER BY 1""",
+        params,
+    ).fetchall()
+
+    return {
+        "total_matching": total,
+        "communities_in_dataset": len(by_community),
+        "transactions_by_type": {k: v for k, v in by_type},
+        "transactions_by_handover": {k: v for k, v in by_handover},
+        "transactions_by_developer": {k: v for k, v in by_developer},
+        "transactions_by_bedrooms": {k: v for k, v in by_bedrooms},
+        "sample_note": (
+            f"{total} transactions match this query. A representative sample is "
+            f"shown below (up to 2 per community+property type, capped at "
+            f"{TX_CONTEXT_LIMIT} rows); totals above are exact."
+        ),
+    }
+
+
+# DB community name -> the `community` value used in market-report metadata.
+# Only 4 of the 24 communities have a market report; the rest are deliberately
+# absent from this map so the semantic branch stays unfiltered and says so,
+# rather than serving one community's report as another's.
+REPORT_COMMUNITY_MAP = {
+    "Downtown Dubai": "Downtown",
+    "Dubai Marina": "Marina",
+    "JVC (Jumeirah Village Circle)": "Jvc",
+    "Dubai Hills Estate": "Dubai Hills",
+}
+
+
+def semantic_search(
+    query: str,
+    n_results: int = 5,
+    community: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Search ChromaDB for market reports (semantic).
+
+    When `community` names a community that has its own market report, the
+    search is scoped to it. Unscoped, a Downtown question ranked a Dubai Hills
+    report first, and a DAMAC Hills 2 question was answered from the Dubai Hills
+    report - two different communities presented as one.
+    """
     collection = chroma_client.get_collection("market_reports")
-    results = collection.query(
-        query_texts=[query],
-        n_results=n_results,
-        include=["documents", "metadatas", "distances"],
-    )
+
+    where = None
+    if community and community in REPORT_COMMUNITY_MAP:
+        where = {"community": REPORT_COMMUNITY_MAP[community]}
+
+    count = collection.count()
+    if where:
+        scoped = collection.get(where=where, limit=1)
+        if not scoped["ids"]:
+            where = None
+
+    if count == 0:
+        return []
+
+    kwargs: Dict[str, Any] = {
+        "query_texts": [query],
+        "n_results": min(n_results, count),
+        "include": ["documents", "metadatas", "distances"],
+    }
+    if where:
+        kwargs["where"] = where
+    results = collection.query(**kwargs)
 
     docs = []
     for i in range(len(results["ids"][0])):
@@ -196,8 +385,83 @@ def build_context(
     """Build context string from both search results."""
     parts = []
 
+    applied = structured.get("applied_filters")
+    if applied:
+        parts.append("=== FILTERS APPLIED TO THIS QUERY ===")
+        parts.append(
+            "Restricting to: "
+            + ", ".join(f"{k}={v}" for k, v in applied.items())
+        )
+        parts.append(
+            "The counts below apply to this filtered set. Filters are extracted "
+            "deterministically and deliberately left off when ambiguous, so a "
+            "missing community or property type here may still exist in the "
+            "wider dataset - say so rather than claiming it does not exist."
+        )
+
+    # Rendered independently of applied_filters: these notes are exactly the
+    # cases where the model is most likely to over-claim.
+    for note in structured.get("skipped_filters", []):
+        parts.append(f"  note: {note}")
+
+    # Reported independently of applied_filters: a filter that had to be dropped
+    # is exactly the case where the model is most likely to over-claim.
+    if structured.get("relaxed_filters"):
+        parts.append("=== FILTER RELAXED ===")
+        parts.append(
+            f"{structured['relaxed_filters']['reason']} "
+            f"(requested: {structured['relaxed_filters']['requested']}). "
+            "The rows below are unfiltered, so treat any single-community or "
+            "per-property-type figure with care."
+        )
+
+    coverage = structured.get("coverage")
+    if coverage:
+        parts.append("=== DATASET COVERAGE (exact counts, not a sample) ===")
+        parts.append(
+            f"Transactions matching this query: {coverage['total_matching']} "
+            f"across {coverage['communities_in_dataset']} communities."
+        )
+        if coverage["transactions_by_type"]:
+            parts.append(
+                "By property type: "
+                + ", ".join(
+                    f"{k}={v}" for k, v in coverage["transactions_by_type"].items()
+                )
+            )
+        if coverage["transactions_by_handover"]:
+            parts.append(
+                "By handover status: "
+                + ", ".join(
+                    f"{k}={v}" for k, v in coverage["transactions_by_handover"].items()
+                )
+            )
+        if coverage.get("transactions_by_developer"):
+            parts.append(
+                "By developer (exact): "
+                + ", ".join(
+                    f"{k}={v}"
+                    for k, v in coverage["transactions_by_developer"].items()
+                )
+            )
+        if coverage.get("transactions_by_bedrooms"):
+            parts.append(
+                "By bedrooms (exact): "
+                + ", ".join(
+                    f"{k}BR={v}"
+                    for k, v in coverage["transactions_by_bedrooms"].items()
+                )
+            )
+        parts.append(coverage["sample_note"])
+        parts.append(
+            "IMPORTANT: the counts above are exact totals for the whole matching "
+            "set. The rows below are a sample. Never add up the sample rows to "
+            "report a total, and never claim data is missing when the counts "
+            "above show otherwise."
+        )
+
     if structured["community_scores"]:
-        parts.append("=== COMMUNITY INVESTMENT SCORES ===")
+        parts.append("\n=== COMMUNITY INVESTMENT SCORES ===")
         for cs in structured["community_scores"][:8]:
             parts.append(
                 f"[{cs['community']}] "
@@ -217,7 +481,7 @@ def build_context(
 
     if structured["transactions"]:
         parts.append("\n=== MATCHING TRANSACTIONS ===")
-        for tx in structured["transactions"][:10]:
+        for tx in structured["transactions"]:
             parts.append(
                 f"[{tx['transaction_id']}] "
                 f"{tx['community']}, {tx['bedrooms']}BR {tx['property_type']}, "
@@ -401,16 +665,46 @@ Answer using ONLY the data above. Use clean markdown formatting — proper table
     raise last_err
 
 
+def known_communities() -> List[str]:
+    """Community values exactly as stored in DuckDB."""
+    return [
+        r[0]
+        for r in duck_conn.execute(
+            "SELECT DISTINCT community FROM transactions ORDER BY 1"
+        ).fetchall()
+    ]
+
+
 def rag_query(
     query: str,
     filters: Optional[Dict[str, Any]] = None,
     provider: Optional[str] = None,
     api_key: Optional[str] = None,
     model: Optional[str] = None,
+    auto_filters: bool = True,
 ) -> Dict[str, Any]:
-    """Full RAG pipeline: structured + semantic search + generation."""
+    """Full RAG pipeline: structured + semantic search + generation.
+
+    `filters` may be passed explicitly. When it is omitted, filters are derived
+    deterministically from the query text - see src/filters.py for the rules and
+    for what is deliberately left unfiltered. Set auto_filters=False to bypass.
+    """
+    extracted = {"filters": {}, "skipped": []}
+    if filters is None and auto_filters:
+        extracted = extract_filters(query, known_communities())
+        filters = extracted["filters"] or None
+
     structured = structured_search(query, filters=filters)
-    semantic = semantic_search(query, n_results=3)
+    structured["applied_filters"] = filters or {}
+    structured["skipped_filters"] = extracted["skipped"]
+
+    community = (filters or {}).get("community")
+    semantic = semantic_search(query, n_results=3, community=community)
+    if community and community not in REPORT_COMMUNITY_MAP:
+        structured["skipped_filters"] = list(structured["skipped_filters"]) + [
+            f"no market report exists for {community}; the notes below cover "
+            "other communities and must not be attributed to it"
+        ]
     context = build_context(structured, semantic)
     answer = generate_answer(
         query, context, structured, semantic,

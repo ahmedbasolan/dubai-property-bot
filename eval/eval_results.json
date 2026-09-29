@@ -1,9 +1,9 @@
 {
   "summary": {
     "total": 30,
-    "successful": 8,
-    "errors": 22,
-    "avg_keyword_score": 0.406,
+    "successful": 29,
+    "errors": 1,
+    "avg_keyword_score": 0.556,
     "number_accuracy": 1.0,
     "community_accuracy": 1.0
   },
@@ -11,8 +11,8 @@
     {
       "id": "eval_001",
       "question": "Which community has the best ROI for 1BR apartments under AED 1.5M?",
-      "answer": "**International City delivers the highest ROI for 1‑BR apartments under AED 1.5 M (10.3% ROI – TRX‑043).**\n\n- **ROI:** 10.3% (TRX‑043) vs 10.0% in JVC (TRX‑012).  \n- **Net Yield:** 8.25% (TRX‑043) vs 7.56% (TRX‑012).  \n- **Supply risk:** High (15.5% pipeline) – may pressure future rents.  \n- **Community score:** 76/100, recommendation **HOLD**.\n\n| Community | Transaction ROI | Net Yield | Supply Risk | Score |\n|-----------|----------------|-----------|-------------|-------|\n| International City | 10.3% (TRX‑043) | 8.25% | High (15.5%) | 76 |\n| JVC | 10.0% (TRX‑012) | 7.56% | High (15.9%) | 76 |\n\n**Recommendation: HOLD** – International City offers the top ROI but carries a high supply pipeline risk; monitor new completions before expanding exposure. Verify current figures with DLD.",
-      "keyword_score": 0.4,
+      "answer": "**JVC (Jumeirah Village Circle) delivers the highest ROI for 1‑BR apartments priced under AED 1.5 M (10.0% gross, 7.56% net).**\n\n- Transaction TRX‑012 shows a 1‑BR at AED 400,000 with **ROI 10.0%** and **Net Yield 7.56%**.  \n- Community score lists JVC’s overall **ROI 9.1%** and **Net Yield 7.07%**, confirming strong returns.  \n- Competing 1‑BRs under AED 1.5 M (Discovery Gardens 8.8%, Town Square 8.7%, Sports City 8.5%, Al Furjan 7.2%, Bur Dubai 7.6%) are all lower.\n\n| Community | Gross ROI | Net Yield (transaction) | Net Yield (community) |\n|-----------|-----------|--------------------------|-----------------------|\n| **JVC** | **10.0%** | 7.56% (TRX‑012) | 7.07% (score) |\n| Discovery Gardens | 8.8% (TRX‑021) | 7.08% | 7.08% |\n| Town Square | 8.7% (TRX‑072) | 6.78% | 6.51% |\n| Sports City | 8.5% (TRX‑020) | 5.62% | – |\n| Al Furjan | 7.2% (TRX‑067) | 5.69% | – |\n| Bur Dubai | 7.6% (TRX‑039) | 5.93% | – |\n\n**Recommendation: INVEST** – JVC offers the top gross return with solid net yield and a manageable supply‑risk profile (high pipeline but still attractive for entry‑level investors). Verify current DLD records before committing.",
+      "keyword_score": 0.6,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -29,7 +29,7 @@
     {
       "id": "eval_002",
       "question": "What is the average price per sqft in Downtown Dubai?",
-      "answer": "**Average price per sqft in Downtown Dubai: AED 2,100 – AED 2,800**  \n\n- This range comes from the Downtown market report (Q1 2024) 【Downtown - Key Metrics】.  \n- The area shows strong demand with a 92% occupancy rate and price appreciation of 8‑12% YoY.\n\n**Recommendation: INVEST** – Premium pricing but backed by high occupancy and sustained demand.  \n\n*Verify current figures with DLD before finalizing any transaction.*",
+      "answer": "**Downtown Dubai’s average price per sqft is AED 2,100 – 2,800** (Market Report: Downtown)【Downtown - Key Metrics】.\n\n- The market report gives a tight band for the premium core, reflecting strong demand and high‑end positioning.  \n- Individual transactions show wide variance (e.g., AED 1,040 – 11,452 / sqft), but the aggregated average range is the reliable benchmark.\n\n| Community | Avg Price/sqft (AED) |\n|-----------|----------------------|\n| Downtown Dubai | 2,100 – 2,800 |\n\n**Recommendation: INVEST** – solid occupancy (92%) and attractive rental yields (6.5‑7.5%) support continued upside.  \n\n*Verify current rates with DLD before finalizing any transaction.*",
       "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
@@ -46,7 +46,7 @@
     {
       "id": "eval_003",
       "question": "Compare rental yields between Dubai Marina and JVC.",
-      "answer": "**Dubai Marina’s rental yield data is not available in the provided dataset; JVC’s net yield is 7.07% (community) and 7.56% on a recent 1 BR transaction (TRX‑012).**  \n\n- **JVC:** Net Yield 7.07% (score 76/100, recommendation INVEST)【JVC (Jumeirah Village Circle)】; specific 1 BR sale shows Net Yield 7.56%【TRX-012】.  \n- **Dubai Marina:** No ROI or Net Yield figures are supplied; only a qualitative note on “strong yields” without numbers.\n\n| Community | Net Yield (Community) | Net Yield (Transaction) | Score | Recommendation |\n|-----------|----------------------|--------------------------|-------|----------------|\n| JVC | 7.07% | 7.56% (TRX‑012) | 76 | INVEST |\n| Dubai Marina | – | – | – | – |\n\n**Action:** **INVEST** in JVC based on available data; obtain current Marina yield figures from DLD before deciding on that market.",
+      "answer": "**JVC delivers higher net rental yields than Dubai Marina**  \n\n- **JVC Net Yield:** 7.07% (Score 76/100) – high supply risk (15.9% pipeline)【JVC (Jumeirah Village Circle)】  \n- **Dubai Marina Net Yields:** 5.83% (2 BR) and 4.73% (1 BR) from recent transactions【TRX-004】【TRX-003】 – not listed among high‑supply‑risk communities  \n\n| Community | Net Yield | Supply Risk |\n|-----------|-----------|-------------|\n| JVC | 7.07% | High (15.9% pipeline) |\n| Dubai Marina (2 BR) | 5.83% | – |\n| Dubai Marina (1 BR) | 4.73% | – |\n\n**Recommendation:** **INVEST** – JVC offers superior yields despite higher supply risk; Dubai Marina’s yields are lower, making it a secondary hold.  \n\n*Verify current conditions with the Dubai Land Department before committing.*",
       "keyword_score": 0.6666666666666666,
       "number_accuracy": true,
       "number_issues": [],
@@ -65,8 +65,8 @@
     {
       "id": "eval_004",
       "question": "What properties are available in Business Bay for under AED 2M?",
-      "answer": "**No Business Bay properties under AED 2 M are present in the provided data.**\n\n- The community list and transaction set include Discovery Gardens, Dubai Silicon Oasis, Deira, JVC, International City, Dubai South, JLT, and Sports City, but **Business Bay is absent**.  \n- Without specific listings or scores for Business Bay, we cannot assess yields, supply risk, or investment suitability.\n\n**Recommendation: AVOID** (insufficient data – verify current Business Bay listings with DLD or a broker).",
-      "keyword_score": 0.2,
+      "answer": "**Business Bay offers two ready‑to‑move apartments under AED 2 M** – a 2‑BR at AED 1.6 M and a studio‑type 0‑BR at AED 1.1 M.\n\n- Both units are **ready** and priced below the AED 2 M threshold.  \n- Net yields range from **4.94% to 5.35%**, modest compared with market‑average yields (~7%).  \n\n| Property ID | Type | Price (AED) | Size (sqft) | ROI | Net Yield | Service Charge (AED/sqft) | Developer | Status |\n|-------------|------|-------------|------------|-----|-----------|---------------------------|-----------|--------|\n| TRX-015 | 2BR Apartment | 1,600,000 | 1,140 | 7.7% | 5.35% | 19.0 | Omniyat | Ready |\n| TRX-014 | 0BR Apartment | 1,100,000 | 500 | 6.8% | 4.94% | 21.5 | Binghatti | Ready |\n\n**Recommendation: HOLD** – the limited yield profile and lack of a community‑level investment score for Business Bay suggest a cautious stance; verify current DLD data before proceeding.",
+      "keyword_score": 0.8,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -83,8 +83,8 @@
     {
       "id": "eval_005",
       "question": "Which developer has the most transactions in the dataset?",
-      "answer": "**Nakheel leads with the highest number of transactions (5)**  \n\n- Nakheel appears in TRX‑043, TRX‑044, TRX‑040, TRX‑041 and TRX‑012.  \n- Other developers: Binghatti (1), Dubai South (2), Union Properties (2).  \n\n| Developer | Transaction Count |\n|-----------|-------------------|\n| Nakheel | **5** |\n| Dubai South | 2 |\n| Union Properties | 2 |\n| Binghatti | 1 |\n\n**Recommendation: INVEST** – Nakheel’s strong transaction volume signals robust market activity and developer confidence.  \n\n*Verify current developer performance with DLD before finalizing any investment.*",
-      "keyword_score": 0.3333333333333333,
+      "answer": "**Emaar leads with the highest number of transactions (16)**【By developer (exact): Emaar=16】.\n\n- The dataset covers 73 transactions across 24 communities.  \n- Emaar’s 16 deals outpace the next biggest developer, Nakheel, which has 15.  \n- This strong activity suggests robust market confidence in Emaar projects.\n\n**Recommendation: INVEST**. Verify current DLD records for any recent changes.",
+      "keyword_score": 0.6666666666666666,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -99,8 +99,8 @@
     {
       "id": "eval_006",
       "question": "What is the ROI range for off-plan properties vs ready properties?",
-      "answer": "**Off‑plan ROI: 8.8% – 10.0% | Ready ROI: 9.0% – 10.3%**\n\n- Off‑plan examples: JVC (TRX‑012) 10.0%, Dubai South (TRX‑069) 9.1%, Dubai South (TRX‑070) 8.8%  \n- Ready examples: International City (TRX‑043) 10.3%, Dubai Silicon Oasis (TRX‑047) 9.5%, JVC (TRX‑012) 10.0% (ready), etc.\n\n| Property Type | Lowest ROI | Highest ROI |\n|---------------|------------|------------|\n| Off‑Plan      | 8.8% (TRX‑070) | 10.0% (TRX‑012) |\n| Ready         | 9.0% (TRX‑045) | 10.3% (TRX‑043) |\n\n**Recommendation: INVEST** – Both off‑plan and ready units show strong ROI, comparable to market averages. Verify current DLD records before committing.",
-      "keyword_score": 0.5,
+      "answer": "**The dataset does not provide a pre‑computed ROI range for off‑plan versus ready properties.**  \n\n- Individual transactions show off‑plan ROIs from **5.5%** (TRX‑053) up to **10.0%** (TRX‑012) and ready ROIs from **5.6%** (TRX‑063) up to **9.8%** (International City community score), but these are sample points only.  \n- No aggregate minimum‑maximum ROI values are supplied for the full set of 12 off‑plan and 61 ready transactions, and we cannot calculate them ourselves per the rules.  \n\n**Recommendation: HOLD** – obtain the full ROI distribution from the source (e.g., DLD) before making a decision.  \n\n*Verify current figures with the Dubai Land Department.*",
+      "keyword_score": 0.75,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -116,7 +116,7 @@
     {
       "id": "eval_007",
       "question": "What are the risks of investing in DAMAC Hills 2 according to market reports?",
-      "answer": "**Insufficient data to detail risks for DAMAC Hills 2**  \n\n- The provided dataset contains risk factors for Dubai Hills but **no market‑report entries for DAMAC Hills 2**.  \n- Without community‑specific scores, supply‑risk percentages, or cited risk narratives, a reliable risk assessment cannot be generated.  \n\n**Recommendation: AVOID** – seek up‑to‑date DLD and market‑report information before considering an investment in DAMAC Hills 2.",
+      "answer": "**Insufficient market‑report data on DAMAC Hills 2 risks**  \n\n- The only available entry is a single transaction (TRX‑058) showing ROI 9.0% and Net Yield 6.65% (Price AED 968/sqft, Service Charge AED 11.4/sqft) – no risk commentary is attached.  \n- DAMIC Hills 2 does **not** appear in the “High Supply Risk Communities” list, and no specific risk factors are listed in the provided market reports (which cover Dubai Hills only).  \n\n**Action:** **AVOID** – seek additional market‑report analysis before committing capital.  \n\n*Verify current conditions with DLD and request a dedicated risk assessment for DAMAC Hills 2.*",
       "keyword_score": 0.25,
       "number_accuracy": true,
       "number_issues": [],
@@ -133,8 +133,8 @@
     {
       "id": "eval_008",
       "question": "Which communities have villas available and what are their price ranges?",
-      "answer": "**No villa listings are present in the provided data.**  \n\n- The transaction list only includes apartments (0‑BR, 1‑BR, 3‑BR) across International City, Dubai Silicon Oasis, JVC, and Dubai South.  \n- Community scores and market reports do not mention villa inventory or price ranges.\n\n**Recommendation: AVOID** – Insufficient villa data to assess investment potential.  \n\n*Verify current villa availability and pricing with the Dubai Land Department before proceeding.*",
-      "keyword_score": 0.4,
+      "answer": "**Villas are listed in The Springs and Arabian Ranches, with price ranges from AED 2.2 M to AED 6.05 M.**\n\n- **The Springs** – 4 BR Villa AED 3.1 M (TRX‑029) and 5 BR Villa AED 2.2 M (TRX‑027).  \n- **Arabian Ranches** – 3 BR Villa AED 6.05 M (TRX‑017) and 4 BR Villa AED 3.55 M (TRX‑018).  \n\n| Community | Villa Types | Min Price (AED) | Max Price (AED) |\n|-----------|-------------|-----------------|-----------------|\n| The Springs | 5 BR, 4 BR | 2,200,000 (TRX‑027) | 3,100,000 (TRX‑029) |\n| Arabian Ranches | 4 BR, 3 BR | 3,550,000 (TRX‑018) | 6,050,000 (TRX‑017) |\n\n**Recommendation: INVEST** – The Springs offers a modest price band and no high‑supply warning; Arabian Ranches carries a high supply‑pipeline risk (16.5% of stock) and should be approached cautiously.  \n\n*Verify current listings and DLD records before committing.*",
+      "keyword_score": 0.6,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -151,212 +151,389 @@
     {
       "id": "eval_009",
       "question": "What is the occupancy rate in Downtown Dubai according to the market report?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198609, Requested 3392. Please try again in 14m24.432s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Downtown Dubai occupancy rate: 92%**  \n\n- The Q1 2024 market report lists an occupancy of **92%** for Downtown Dubai (Key Metrics).  \n- This is higher than most other communities, indicating strong demand, but the report does not provide a full investment score or explicit recommendation for the area.  \n\n**Recommendation: HOLD** – solid occupancy but insufficient data for a definitive invest/avoid call.  \n\n*Verify the latest DLD figures before finalizing any decision.*",
+      "keyword_score": 1.0,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "92%",
+        "occupancy",
+        "Downtown Dubai"
+      ],
+      "expected_answer_summary": "Downtown Dubai has an occupancy rate of 92% according to the Q1 2024 market report.",
+      "status": "ok"
     },
     {
       "id": "eval_010",
       "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198573, Requested 3505. Please try again in 14m57.696s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Top 3 communities for a first‑time investor with AED 1 M: Discovery Gardens, Jumeirah Village Circle (JVC) and Dubai South.**  \n\n- **Discovery Gardens** – Score 86, Net Yield 7.08% (see community data) and a 1‑BR unit at AED 700,000 (TRX‑021) fits the budget. Supply risk is medium (8.2% pipeline).  \n- **JVC** – Score 76, Net Yield 7.07% (community) and a 1‑BR unit at AED 400,000 (TRX‑012) delivers a 7.56% net yield. Supply risk is high (15.9% pipeline) but the community is still rated INVEST.  \n- **Dubai South** – Score 75, Net Yield 7.13% (community) with a 0‑BR unit at AED 650,000 (TRX‑069) yielding 7.33%. Supply risk is medium (14.2% pipeline).  \n\n| Community | Score | Net Yield (Community) | Example Net Yield (Transaction) | Typical Price ≤ AED 1M | Supply Risk |\n|-----------|-------|-----------------------|----------------------------------|------------------------|-------------|\n| Discovery Gardens | 86 | 7.08% | 7.08% (TRX‑021) | 1‑BR ≈ AED 700k | Medium (8.2%) |\n| JVC | 76 | 7.07% | 7.56% (TRX‑012) | 1‑BR ≈ AED 400k | High (15.9%) |\n| Dubai South | 75 | 7.13% | 7.33% (TRX‑069) | 0‑BR ≈ AED 650k | Medium (14.2%) |\n\n**Recommendation: INVEST** – All three score ≥ 75, offer net yields above 7%, and have entry‑level units within the AED 1 M budget. Verify current vacancy rates and service‑charge trends with the DLD before finalizing.",
+      "keyword_score": 0.8,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "JVC",
+        "first-time",
+        "budget",
+        "yield",
+        "recommendation"
+      ],
+      "expected_answer_summary": "Top recommendations: JVC (highest yield 8.5-9.5%), International City (low entry, 9.8-10.2% yield), and Town Square (affordable, 8.3-9.0% yield).",
+      "status": "ok"
     },
     {
       "id": "eval_011",
       "question": "What is the net yield for a property in Dubai Marina with AED 1.35M price and AED 14/sqft service charges?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198538, Requested 3917. Please try again in 17m40.56s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Net yield cannot be determined from the available data**  \n\n- The Dubai Marina transactions in the dataset show net yields of **5.83%** (2 BR, AED 2.7 M, SC 15.9 sqft) and **4.73%** (1 BR, AED 2.35 M, SC 18 sqft)【TRX-004】【TRX-003】.  \n- No record matches a price of **AED 1.35 M** with **AED 14/sqft** service charges, so a specific net‑yield figure is unavailable.  \n\n**Recommendation: AVOID** – seek a comparable transaction or request an updated DLD appraisal before investing.",
+      "keyword_score": 1.0,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "net yield",
+        "service charges",
+        "Dubai Marina",
+        "AED",
+        "sqft"
+      ],
+      "expected_answer_summary": "Net yield is approximately 5.5-6.5% after deducting service charges, management fees (8%), and vacancy loss (5%).",
+      "status": "ok"
     },
     {
       "id": "eval_012",
       "question": "Which communities have HIGH supply risk?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198502, Requested 3236. Please try again in 12m30.816s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**High‑supply‑risk communities:** Sports City, Dubai Creek Harbour, Al Barsha, Bluewaters Island, Arabian Ranches  \n\n- Each has a pipeline exceeding 15 % of its current stock, indicating a significant influx of new units that could pressure rents and occupancy.  \n\n| Community | Pipeline | Risk |\n|-----------|----------|------|\n| Sports City | 20.2 % (2,669 units) | HIGH |\n| Dubai Creek Harbour | 20.1 % (1,947 units) | HIGH |\n| Al Barsha | 19.5 % (2,008 units) | HIGH |\n| Bluewaters Island | 17.6 % (1,995 units) | HIGH |\n| Arabian Ranches | 16.5 % (674 units) | HIGH |\n\n**Recommendation: AVOID** – Elevated supply pipelines raise downside risk for yield and price appreciation. Verify current pipeline data with DLD before final decisions.",
+      "keyword_score": 0.6,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "supply risk",
+        "high",
+        "pipeline",
+        "units",
+        "construction"
+      ],
+      "expected_answer_summary": "Communities with >15% of stock in pipeline have HIGH supply risk. This includes Tilal Al Ghaf, DAMAC Hills 2, Dubai South, and JVC.",
+      "status": "ok"
     },
     {
       "id": "eval_013",
       "question": "What is the monthly mortgage payment for a AED 1.5M property with 20% down payment at 4.5% for 25 years?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198466, Requested 3506. Please try again in 14m11.904s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Insufficient data to determine the monthly mortgage payment**  \n\nThe provided dataset includes transaction prices, yields, and service charges, but it does **not** contain any pre‑computed mortgage amortization figures for a AED 1.5 M purchase with 20 % down at 4.5 % over 25 years. Per the response rules, we cannot calculate the payment ourselves.  \n\n**AVOID**",
+      "keyword_score": 0.5,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "mortgage",
+        "monthly",
+        "AED",
+        "6670",
+        "6,670",
+        "down payment"
+      ],
+      "expected_answer_summary": "Monthly mortgage payment is approximately AED 6,670 with 20% down payment (AED 300K), 4.5% interest, 25 year tenure.",
+      "status": "ok"
     },
     {
       "id": "eval_014",
       "question": "What are the total acquisition costs for a AED 1M property including DLD fees and agency fees?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198431, Requested 3961. Please try again in 17m13.344s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Total acquisition cost for a AED 1 M property cannot be calculated from the provided data**  \n\n- The dataset lists purchase prices, service charges, and transaction details, but it does **not** include DLD (Dubai Land Department) registration fees or typical agency commission rates.  \n- Without those fee percentages, a complete acquisition cost (price + DLD + agency) cannot be derived.  \n\n**Recommendation: AVOID** – seek up‑to‑date fee schedules from the DLD or your broker before proceeding.",
+      "keyword_score": 0.5,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "DLD",
+        "transfer fee",
+        "4%",
+        "agency",
+        "2%",
+        "acquisition"
+      ],
+      "expected_answer_summary": "Total acquisition cost includes: DLD transfer fee (4% + AED 580 admin), agency fee (2%), total approximately AED 1.066M.",
+      "status": "ok"
     },
     {
       "id": "eval_015",
       "question": "How much can I earn from short-term renting a 1BR in Downtown Dubai?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198395, Requested 3319. Please try again in 12m20.448s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**A 1‑BR in Downtown Dubai yields roughly 2.78% net annual income (≈ 5.9% gross ROI).**  \n\n- **Net Yield:** 2.78% (TRX‑001) – after service charges and typical vacancy.  \n- **Gross ROI:** 5.9% (TRX‑001) – before expenses.  \n- **Service Charge:** AED 24.5 / sqft yr (high‑cost area).  \n- **Market view:** Downtown is positioned as a “safe‑haven” for capital preservation, but premium pricing and high service fees limit rental returns.\n\n| Metric | Value |\n|--------|-------|\n| Gross ROI | 5.9% |\n| Net Yield | 2.78% |\n| Service Charge | AED 24.5 / sqft yr |\n| Sample price (1BR) | AED 2,850,000 (TRX‑001) |\n\n**Recommendation: AVOID** – the net yield is low for short‑term renting, and high service charges erode profitability. Verify current rates with the DLD before proceeding.",
+      "keyword_score": 0.16666666666666666,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "short-term",
+        "Airbnb",
+        "Downtown Dubai",
+        "daily rate",
+        "occupancy",
+        "revenue"
+      ],
+      "expected_answer_summary": "A 1BR in Downtown Dubai can earn AED 650/night at 75% occupancy, generating approximately AED 177,000/year gross revenue.",
+      "status": "ok"
     },
     {
       "id": "eval_016",
       "question": "Is short-term rental better than long-term rental in Dubai Marina?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198359, Requested 3300. Please try again in 11m56.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Short‑term rentals may be more attractive, but the available data only shows long‑term net yields for Dubai Marina (4.73%–5.83%) and does not include short‑term figures.**  \n\n- **Long‑term net yield:** 2 BR = 5.83% (TRX‑004) and 1 BR = 4.73% (TRX‑003).  \n- **Comparable market:** Discovery Gardens delivers a higher long‑term net yield of 7.08% (TRX‑021).  \n- **Market note:** The Marina report highlights strong rental demand, especially for studios and 1 BR units, but does not quantify short‑term returns.\n\n| Community      | Net Yield (Long‑term) | Signal |\n|----------------|-----------------------|--------|\n| Dubai Marina   | 4.73% – 5.83% (TRX‑003, TRX‑004) | AVOID |\n| Discovery Gardens | 7.08% (TRX‑021) | INVEST |\n\n**Recommendation: AVOID** – without short‑term rental data, Dubai Marina’s long‑term yields are modest relative to other communities; further analysis is needed before committing.  \n\n*Verify current short‑term rental performance and regulatory constraints with the DLD before making a decision.*",
+      "keyword_score": 0.2,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "short-term",
+        "long-term",
+        "Dubai Marina",
+        "comparison",
+        "premium"
+      ],
+      "expected_answer_summary": "Short-term rental in Dubai Marina generates approximately 40-50% premium over long-term rental, but requires DTCM license and management fees.",
+      "status": "ok"
     },
     {
       "id": "eval_017",
       "question": "What is the service charge difference between Downtown Dubai and JVC?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198324, Requested 3787. Please try again in 15m11.952s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Downtown Dubai service charges are roughly AED 23‑24 /sqft, about AED 12‑14 higher than JVC’s AED 10‑11 /sqft.**\n\n- Downtown Dubai transactions show service charges of **AED 23.1 /sqft** (TRX‑002) and **AED 24.5 /sqft** (TRX‑001).  \n- JVC’s community average is **AED 10.8 /sqft** (community data) and transaction values of **AED 11.4 /sqft** (TRX‑012) and **AED 10.1 /sqft** (TRX‑013).\n\n| Community | Service Charge (AED/sqft) |\n|-----------|---------------------------|\n| Downtown Dubai (TRX‑002) | 23.1 |\n| Downtown Dubai (TRX‑001) | 24.5 |\n| JVC (community) | 10.8 |\n| JVC (TRX‑012) | 11.4 |\n| JVC (TRX‑013) | 10.1 |\n\n**Recommendation: HOLD** – the data only highlights a cost gap; investment decision should consider broader metrics.  \n\n*Verify current service charge rates with the DLD before finalizing any transaction.*",
+      "keyword_score": 0.8333333333333334,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "service charge",
+        "Downtown Dubai",
+        "JVC",
+        "AED",
+        "sqft",
+        "comparison"
+      ],
+      "expected_answer_summary": "Downtown Dubai has higher service charges (AED 18-30/sqft) compared to JVC (AED 8-15/sqft), directly impacting net yield.",
+      "status": "ok"
     },
     {
       "id": "eval_018",
       "question": "Which developer has the best on-time delivery rate?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198288, Requested 3885. Please try again in 15m38.736s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Data insufficient to determine the developer with the best on‑time delivery rate**  \n\n- The provided dataset lists transaction counts, property types, ROI, yields, and developer names, but it does **not** include any on‑time delivery or handover performance metrics.  \n- Without a specific delivery‑rate field, we cannot rank developers on this criterion.\n\n**Recommendation: AVOID** – seek additional DLD or developer‑specific handover data before making a timing‑sensitive investment decision.",
+      "keyword_score": 0.3333333333333333,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "developer",
+        "on-time",
+        "delivery",
+        "Emaar",
+        "Meraas",
+        "track record"
+      ],
+      "expected_answer_summary": "Emaar has 92% on-time delivery rate, followed by Meraas at 88%. These developers have strong track records in Dubai.",
+      "status": "ok"
     },
     {
       "id": "eval_019",
       "question": "What is the ROI for a studio apartment in International City?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198252, Requested 3531. Please try again in 12m50.256s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**The gross ROI for a studio (0‑BR) in International City is **9.8%**.  \n\n- This figure comes from the community‑level metric (International City – ROI 9.8%, Net Yield 7.68%)【International City】.  \n- No individual studio transaction is listed in the sample data, so the community average is the best available indicator.  \n- The area carries a **high supply risk** (15.5% pipeline) and the recommendation is **HOLD** (Score 76/100).\n\n| Community | ROI (Gross) | Net Yield | Score | Signal |\n|-----------|-------------|-----------|-------|--------|\n| International City | 9.8% | 7.68% | 76 | HOLD |\n\n**Recommendation: HOLD** – solid gross return but elevated supply pipeline and a hold rating suggest caution. Verify current figures with the Dubai Land Department before committing.",
+      "keyword_score": 0.8,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "studio",
+        "International City",
+        "ROI",
+        "yield",
+        "affordable"
+      ],
+      "expected_answer_summary": "Studios in International City offer ROI of 9.5-10.5%, among the highest in Dubai due to low entry price and consistent rental demand.",
+      "status": "ok"
     },
     {
       "id": "eval_020",
       "question": "Compare the investment scores of Dubai Hills Estate and Business Bay.",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198217, Requested 3734. Please try again in 14m2.832s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**No investment scores are available for Dubai Hills Estate or Business Bay in the provided data.**  \n\n- The community‑level score table lists scores for 9 neighborhoods, but neither Dubai Hills Estate nor Business Bay appears.  \n- Only transaction‑level ROI/Net Yield figures exist for these areas (e.g., Business Bay 2BR ROI 7.7%, Net Yield 5.35%; Dubai Hills Estate 1BR ROI 7.4%, Net Yield 5.87%), which cannot be converted into the composite investment score used for comparison.  \n\n**Recommendation: AVOID** – seek the official community scores from Dubai Land Department before making an investment decision.  ",
+      "keyword_score": 1.0,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "Dubai Hills Estate",
+        "Business Bay",
+        "score",
+        "comparison",
+        "investment"
+      ],
+      "expected_answer_summary": "Dubai Hills Estate has higher composite score due to newer developments, better community planning, and strong Emaar brand premium.",
+      "status": "ok"
     },
     {
       "id": "eval_021",
       "question": "What view types are available in Palm Jumeirah and how do they affect price?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198181, Requested 3534. Please try again in 12m20.879999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**No view‑type or price data is available for Palm Jumeirah in the provided dataset**  \n\n- The 73 transactions cover 24 communities, but Palm Jumeirah does not appear in any listed transaction or community score.  \n- Without view‑type classifications (e.g., sea, lagoon, garden) and associated price per sqft, we cannot quantify how views affect pricing in this area.  \n\n**Recommendation: AVOID** – seek up‑to‑date DLD records or a dedicated Palm Jumeirah market report before making investment decisions.",
+      "keyword_score": 0.5,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "Palm Jumeirah",
+        "view",
+        "sea",
+        "atlantis",
+        "price",
+        "premium"
+      ],
+      "expected_answer_summary": "Palm Jumeirah offers sea, Atlantis, and community views. Sea view commands 25-40% premium over community view.",
+      "status": "ok"
     },
     {
       "id": "eval_022",
       "question": "What is the price per sqft trend in Dubai Marina over the last 2 years?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198145, Requested 3524. Please try again in 12m1.008s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Dubai Marina’s price per sqft has peaked after the 2022‑2023 surge and is now moderating, sitting roughly between AED 1,600 – 2,200.**  \n\n- Market report notes a **sharp rise in 2022‑2023** followed by **price stabilization** in 2024.  \n- Sample transactions show **price/sqft ranging from AED 1,243 to AED 1,656**, aligning with the current market band.  \n\n| Transaction | Unit Type | Price/sqft |\n|-------------|-----------|------------|\n| TRX-004 | 2 BR Apartment | AED 1,656 |\n| TRX-003 | 1 BR Apartment | AED 1,243 |\n\n**Recommendation: INVEST** – strong rental demand and price stabilization suggest attractive upside with manageable risk.  \n\n*Verify latest figures with DLD before finalizing any purchase.*",
+      "keyword_score": 0.5,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "Dubai Marina",
+        "price",
+        "trend",
+        "sqft",
+        "appreciation",
+        "growth"
+      ],
+      "expected_answer_summary": "Dubai Marina price per sqft increased from AED 1,500 (Q1 2022) to AED 2,050 (Q1 2024), approximately 37% appreciation.",
+      "status": "ok"
     },
     {
       "id": "eval_023",
       "question": "Which communities have the highest transaction volume?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198110, Requested 3775. Please try again in 13m34.319999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Insufficient data to identify the communities with the highest transaction volume.**  \nThe summary states 73 transactions across 24 communities, but no per‑community totals are provided, and the sample rows cannot be aggregated for counts. Verify the latest DLD records for precise volume figures.\n\n**Recommendation: AVOID** – lack of concrete volume data prevents a reliable ranking.  \n\n*Please confirm with Dubai Land Department for up‑to‑date transaction counts.*",
+      "keyword_score": 0.16666666666666666,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "transaction volume",
+        "Dubai Marina",
+        "JVC",
+        "Downtown",
+        "Business Bay",
+        "high volume"
+      ],
+      "expected_answer_summary": "Dubai Marina, JVC, and Downtown Dubai have the highest transaction volumes, indicating strong market liquidity.",
+      "status": "ok"
     },
     {
       "id": "eval_024",
       "question": "What is the floor level premium in Dubai buildings?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198074, Requested 3329. Please try again in 10m6.096s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Floor‑level premiums exist but are community‑specific; JVC shows a clear upward premium, while others are flat or even discounted at higher floors.**\n\n- **JVC (Jumeirah Village Circle)** – 1 BR on floor 8 priced at **AED 1,000 / sqft** vs. 3 BR on floor 16 at **AED 2,121 / sqft** (more than double per‑sqft price at a higher floor).  \n- **Bluewaters Island** – 1 BR on floor 6 at **AED 2,278 / sqft** vs. 2 BR on floor 14 at **AED 1,857 / sqft** (price per sqft falls with height).  \n- **Town Square** – 1 BR on floor 1 at **AED 1,228 / sqft** vs. 2 BR on floor 9 at **AED 1,029 / sqft** (lower per‑sqft price on higher floors).  \n\n| Community | Floor(s) | Price / sqft | Premium Direction |\n|-----------|----------|--------------|-------------------|\n| JVC | 8 → 16 | AED 1,000 → AED 2,121 | **Upward** |\n| Bluewaters | 6 → 14 | AED 2,278 → AED 1,857 | Downward |\n| Town Square | 1 → 9 | AED 1,228 → AED 1,029 | Downward |\n\n**Takeaway:** In high‑score, high‑demand areas like JVC, higher floors command a significant premium, while in luxury or high‑supply zones the effect can be muted or reversed.  \n\n**Recommendation: INVEST** – target communities with proven floor‑level premiums (e.g., JVC) to capture added value.  \n\n*Verify current floor‑premium trends with the DLD before finalizing any purchase.*",
+      "keyword_score": 0.5,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "floor",
+        "premium",
+        "high floor",
+        "low floor",
+        "view",
+        "price"
+      ],
+      "expected_answer_summary": "Higher floors command 10-20% premium in Dubai due to better views, less noise, and prestige factor.",
+      "status": "ok"
     },
     {
       "id": "eval_025",
       "question": "What parking spots are typical for apartments in Business Bay?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198039, Requested 3547. Please try again in 11m25.151999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Typical parking allocation for Business Bay apartments is 1 spot per unit.**\n\n- Both Business Bay transactions in the dataset list **Parking: 1** (TRX‑015 2BR, TRX‑014 0BR).  \n- No other Business Bay listings show a different count, indicating a standard of one space per apartment.\n\n| Transaction ID | Bedrooms | Parking |\n|----------------|----------|---------|\n| TRX‑015 | 2 BR | 1 |\n| TRX‑014 | 0 BR | 1 |\n\n**Recommendation:** N/A – insufficient community‑level data to issue an INVEST/HOLD/AVOID call.  \n\n*Verify current parking policies with the developer or DLD before finalizing any purchase.*",
+      "keyword_score": 0.6,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "parking",
+        "Business Bay",
+        "spots",
+        "apartment",
+        "amenities"
+      ],
+      "expected_answer_summary": "Business Bay apartments typically have 1 parking spot for 1BR and 2 spots for 2BR units, consistent with urban Dubai standards.",
+      "status": "ok"
     },
     {
       "id": "eval_026",
       "question": "What is the completion year range for properties in Dubai Hills Estate?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 198003, Requested 3501. Please try again in 10m49.728s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Data does not include completion years for Dubai Hills Estate properties**  \n\n- The available transactions (e.g., TRX‑009 Off‑Plan, TRX‑010 Ready) list handover status but no specific completion or handover years.  \n- The market report and community scores also omit year‑by‑year delivery timelines, so a range cannot be derived from the provided data.  \n\n**AVOID** – Insufficient information to assess completion timing.  \n\n*Verify with the Dubai Land Department or the developer for up‑to‑date handover schedules.*",
+      "keyword_score": 0.3333333333333333,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "completion year",
+        "Dubai Hills Estate",
+        "new",
+        "recent",
+        "2018",
+        "2025"
+      ],
+      "expected_answer_summary": "Dubai Hills Estate properties range from 2018 to 2025, with many recent completions reflecting its newer development status.",
+      "status": "ok"
     },
     {
       "id": "eval_027",
       "question": "What furnishing options are available in Downtown Dubai?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 197967, Requested 3725. Please try again in 12m10.944s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Downtown Dubai offers furnished and semi‑furnished apartments**【TRX-001】【TRX-002】.\n\n- **Furnished:** 1‑bedroom unit (TRX-001) – ready‑handed, premium finish.  \n- **Semi‑furnished:** 2‑bedroom unit (TRX-002) – includes basic fittings, ready‑handed.\n\nThe market report classifies Downtown Dubai as a **safe‑haven** for capital preservation, favoring 1‑BR units for entry‑level investors【Market Report: Downtown】.\n\n**Recommendation: INVEST** – stable yields and strong demand support continued investment.",
+      "keyword_score": 0.4,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "furnishing",
+        "Downtown Dubai",
+        "furnished",
+        "unfurnished",
+        "semi-furnished"
+      ],
+      "expected_answer_summary": "Downtown Dubai has 35% furnished, 45% unfurnished, and 20% semi-furnished units, reflecting its cosmopolitan tenant base.",
+      "status": "ok"
     },
     {
       "id": "eval_028",
       "question": "How does the supply pipeline affect property prices in a community?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 197931, Requested 4133. Please try again in 14m51.647999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**High supply pipelines tend to dampen price growth and compress yields**  \n\n- **Sports City** – 20.2% pipeline (high risk) → price AED 1,083 / sqft, Net Yield 6.16% (below market average).  \n- **Dubai Silicon Oasis** – 9.1% pipeline (medium) → price AED 1,357 / sqft, Net Yield 7.30% (stronger yield).  \n- **JVC** – 15.9% pipeline (high) → price AED 1,561 / sqft, Net Yield 7.07% (still attractive but price pressure evident).  \n\n**Pattern:** Communities with a higher percentage of upcoming units (≥15% pipeline) show lower price per sqft and/or weaker net yields, indicating supply‑driven price moderation.\n\n| Community | Pipeline | Supply Risk | Avg Price/sqft | Net Yield |\n|-----------|----------|------------|----------------|-----------|\n| Sports City | 20.2% | HIGH | AED 1,083 | 6.16% |\n| JVC | 15.9% | HIGH | AED 1,561 | 7.07% |\n| Dubai Silicon Oasis | 9.1% | MEDIUM | AED 1,357 | 7.30% |\n| JLT | 8.0% | LOW | AED 2,531 | 5.56% |\n\n**Takeaway:** When the pipeline exceeds ~15% of existing stock, price appreciation slows and yields may erode, raising the risk for capital growth.\n\n**Recommendation: AVOID** communities with high supply pipelines for price‑appreciation focus; prefer medium‑/low‑risk areas.  \n\n*Verify current pipeline figures with DLD before finalizing any investment.*",
+      "keyword_score": 0.16666666666666666,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "supply pipeline",
+        "prices",
+        "impact",
+        "construction",
+        "new units",
+        "oversupply"
+      ],
+      "expected_answer_summary": "Communities with >15% new supply in 24 months see 3.5% lower price growth due to oversupply risk and increased competition.",
+      "status": "ok"
     },
     {
       "id": "eval_029",
       "question": "What is the recommended investment strategy for a AED 5M budget?",
-      "answer": "",
-      "keyword_score": 0.0,
-      "number_accuracy": false,
-      "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 197896, Requested 4047. Please try again in 13m59.376s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
-      "status": "error"
+      "answer": "**Allocate AED 5 M across Dubai Silicon Oasis, Discovery Gardens and a modest position in JVC to capture the highest net yields while balancing supply‑risk.**\n\n- **Core allocation:** Dubai Silicon Oasis (Score 86, Net Yield 7.30%) and Discovery Gardens (Score 86, Net Yield 7.08%) – both medium supply risk (8‑9% pipeline) and strong occupancy.  \n- **Satellite allocation:** JVC (Score 76, Net Yield 7.07%) – low entry price (e.g., 1 BR AED 400 k, Net Yield 7.56% TRX‑012) but high supply risk (15.9% pipeline).  \n- **Diversification:** Use remaining budget for a second unit in either community or a 0 BR in Dubai South (Net Yield 7.33% TRX‑069) for additional yield.\n\n| Community | Score | Net Yield | Supply Risk | Typical unit price* |\n|-----------|-------|-----------|-------------|---------------------|\n| Dubai Silicon Oasis | 86 | 7.30% | Medium (9.1% pipeline) | ~AED 1.3 M (1 BR) |\n| Discovery Gardens | 86 | 7.08% | Medium (8.2% pipeline) | AED 0.7 M (1 BR) |\n| JVC | 76 | 7.07% | High (15.9% pipeline) | AED 0.4 M (1 BR) |\n| Dubai South (0 BR) | 75 | 7.33% | Medium (14.2% pipeline) | AED 0.65 M |\n\n\\*Based on listed transactions and average price / sqft.\n\n**Action: INVEST** – Prioritize medium‑risk, high‑score communities for stable returns and add a smaller, higher‑yield position in JVC to boost overall portfolio yield. Verify current DLD records before finalising purchases.",
+      "keyword_score": 0.4,
+      "number_accuracy": true,
+      "number_issues": [],
+      "communities_valid": true,
+      "expected_keywords": [
+        "investment strategy",
+        "AED 5M",
+        "portfolio",
+        "diversification",
+        "recommendation"
+      ],
+      "expected_answer_summary": "With AED 5M, consider diversifying: 1-2 units in prime areas (Downtown/Marina) for capital appreciation, plus 2-3 units in high-yield areas (JVC/International City) for rental income.",
+      "status": "ok"
     },
     {
       "id": "eval_030",
@@ -365,7 +542,7 @@
       "keyword_score": 0.0,
       "number_accuracy": false,
       "communities_valid": false,
-      "error": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01k1dmj3vvfz294t8can43kbdb` service tier `on_demand` on tokens per day (TPD): Limit 200000, Used 197860, Requested 3875. Please try again in 12m29.52s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}",
+      "error": "LLM daily token quota exhausted (Groq free tier 200k TPD). Wait for reset, upgrade the tier, or set OPENAI_API_KEY/OPENROUTER_API_KEY.",
       "status": "error"
     }
   ]

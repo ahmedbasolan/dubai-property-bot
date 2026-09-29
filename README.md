@@ -158,17 +158,63 @@ make eval
 
 **30-question suite** with automated checks:
 - Keyword matching (answer relevance)
-- Number accuracy (validate claims against DuckDB ranges)
+- Number accuracy (ROI and net yield each validated against their own DuckDB range)
 - Community attribution (entity names must exist in DB, alias-normalized)
 
-Latest results (real LLM — Groq gpt-oss-120b), partial run blocked by free-tier daily quota:
+Latest results (real LLM — Groq `openai/gpt-oss-120b`, 29 of 30 answered; one question
+hit the free-tier daily quota):
 
 | Metric | Result |
 |--------|--------|
-| Successful | 8 / 30 (22 skipped — Groq 200k TPD exhausted) |
-| Avg keyword score | 41% (on successful) |
+| Successful | 29 / 30 |
+| Avg keyword score | 56% |
 | Number accuracy | **100%** |
 | Community attribution | **100%** |
+
+Harness tests: `pytest eval/test_run_eval.py` — 14 tests covering the checks themselves.
+
+### Retrieval sampling
+
+Transaction context is sampled across the dataset, not taken as a global top-N by
+yield. A plain `ORDER BY net_yield_pct DESC LIMIT 15` exposed only 5 of 24
+communities and **zero** villas, so the model correctly reported that no villa
+data existed while the database held 9. The current query ranks
+`community + property_type` groups by how scarce they are, so a lone penthouse
+is never truncated, and derives the per-group cap from the group count so a
+narrow filter still returns its whole set. Cap: 40 rows.
+
+Every response also carries an exact **coverage manifest** (counts by property
+type, developer, handover status and bedrooms) plus an explicit instruction not
+to total the sample rows. Without it the model cannot tell "no such property"
+from "not in the rows I was shown", and it answers the second one.
+
+### Deterministic filter extraction
+
+`filters` used to be a parameter no caller ever populated, so every query ran
+unfiltered. `src/filters.py` now derives them from the query text without an
+LLM call — the same reason financial figures come from SQL views and not
+generation. It extracts community (with aliases: `JVC`, `downtown`, `DSO`,
+`marina` → the exact column values), property type, bedrooms and price bounds.
+
+Two rules keep a wrong filter from becoming a false "no data" answer:
+
+1. **Never narrow on a guess.** Comparison questions ("compare Marina and JVC"),
+   bare numbers ("top 3 communities"), percentages and undirected prices are
+   left unfiltered, and every omission is recorded in `skipped_filters` and
+   shown to the model.
+2. **Never narrow to nothing.** If a filter matches zero rows the query is
+   retried unfiltered and the relaxation is reported in the context.
+
+`community` and `property_type` are matched with `ILIKE`, not `=`: the columns
+hold `'Business Bay'` and `'Villa'`, so a case-mismatched filter would match
+nothing. Community and property-type filters also scope the investment-score and
+supply tables, and the semantic branch is scoped to the community's own market
+report where one exists — unscoped, a DAMAC Hills 2 question was answered from
+the *Dubai Hills* report. Only 4 of 24 communities have a report; for the rest
+the gap is stated rather than papered over.
+
+Tests: `pytest tests/ eval/test_run_eval.py` — 57 covering extraction, the
+relaxation safety net, semantic scoping, and the eval harness itself.
 
 The runner loads `.env` automatically and **resumes**: re-run `make eval` after the daily quota resets to fill in the remaining questions without redoing successes. TPM 429s retry with exponential backoff; TPD exhaustion fails fast with a clear message.
 
