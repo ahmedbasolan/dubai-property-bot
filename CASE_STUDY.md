@@ -109,14 +109,37 @@ Every response includes:
 
 30-question suite (`eval/run_eval.py`) scored against DuckDB as ground truth:
 
-| Metric | Result (Groq gpt-oss-120b) |
-|--------|----------------------------|
-| Successful answers | 8 / 30 on latest run (22 deferred — free-tier 200k daily token quota; runner **resumes** on next run) |
-| Avg keyword score | 41% (on successful) |
+| Metric | Result (Groq `openai/gpt-oss-120b`) |
+|--------|------------------------------------|
+| Successful answers | 29 / 30 (1 deferred by free-tier daily token quota; runner **resumes**) |
+| Avg keyword score | 56% |
 | Number accuracy (claims in valid DB range) | **100%** |
 | Community attribution (entities exist in DB) | **100%** |
 
-Number accuracy at 100% means the LLM never invented a yield/price outside the dataset's range — financial figures come from SQL views, not generation. Community attribution at 100% (on scored answers) means every named community exists in the DB (alias-normalized, e.g. `JVC` ↔ `JVC (Jumeirah Village Circle)`).
+Number accuracy at 100% means the LLM never invented a yield/price outside the dataset's range — financial figures come from SQL views, not generation. Community attribution at 100% means every named community exists in the DB (alias-normalized, e.g. `JVC` ↔ `JVC (Jumeirah Village Circle)`). The harness itself is covered by 14 tests (`pytest eval/test_run_eval.py`).
+
+### Two defects the eval surfaced
+
+**Retrieval starvation.** Context was built with `ORDER BY net_yield_pct DESC LIMIT 15`, which exposed only 5 of 24 communities and **zero** villas. On a villa question the model answered *"No villa listings are present in the provided data"* — factually wrong; the database held 9. It was reasoning correctly about an impoverished context.
+
+The fix samples the top 2 per `community + property_type`, ranks scarce groups first so a single penthouse is never truncated, and caps at 40 rows. Coverage went from 5/24 communities and 1/3 property types to 20/24 and 3/3. Four factually wrong answers became correct, and 26 of 30 questions improved with **zero regressions**.
+
+**A measurement bug, not a model error.** Number accuracy initially read 93% after the fix. Both failures were false positives in the checker: a supply-pipeline percentage (`15.9%`) was flagged as an out-of-range ROI because the regex crossed sentence boundaries, and a net yield of `2.78%` was validated against the ROI range (4.9–10.3) instead of the net-yield range (2.08–8.25). The checker now confines matches to a single clause and validates each metric against its own range. Real accuracy is 100%.
+
+Both matter for interpretation: the 100% figures describe what the model did with the context it was given, not that the pipeline was sound. The coverage manifest — exact counts by property type, developer, handover status and bedrooms, plus an instruction not to total the sample rows — exists so the model can distinguish "does not exist in the data" from "was not in the rows shown", and so a reader of the answer can tell the difference.
+
+### Deterministic filter extraction
+
+`filters` was a parameter no caller ever populated, so every query ran unfiltered. `src/filters.py` now derives constraints from the query text with no LLM call, for the same reason financial figures come from SQL views rather than generation. It resolves community aliases to exact column values (`JVC`, `downtown`, `DSO`, `marina` → `'JVC (Jumeirah Village Circle)'` and so on), plus property type, bedrooms and price bounds.
+
+The design assumption is that **a wrong filter is worse than no filter**, because a filter that removes rows is indistinguishable from a property that does not exist. So:
+
+- Comparison questions, bare numbers, percentages and prices with no directional wording are left unfiltered, and every omission is recorded and shown to the model.
+- A filter matching zero rows is retried unfiltered and the relaxation is reported.
+- `community` and `property_type` match with `ILIKE` — the columns hold `'Business Bay'` and `'Villa'`, so `= 'villa'` would match nothing and manufacture a "no data" answer.
+- Community filters also scope the investment-score and supply tables, and scope the semantic branch to that community's own market report. Unscoped, a DAMAC Hills 2 question was answered from the *Dubai Hills* report, and a Downtown question ranked a Dubai Hills report first. Only 4 of 24 communities have a report; for the other 20 the gap is stated.
+
+Across the 30-question suite 17 questions are now filtered, none of the extracted filters match zero rows, and average context is 21 transactions rather than a fixed 15.
 
 ## What This Proves
 

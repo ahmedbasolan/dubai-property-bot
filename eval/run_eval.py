@@ -72,23 +72,64 @@ def check_keywords(answer: str, keywords: List[str]) -> float:
 
 
 def check_number_accuracy(answer: str, db_conn) -> Dict[str, Any]:
-    """Validate numbers in answer against DuckDB data."""
+    """Validate percentage claims against DuckDB.
+
+    Two things this used to get wrong:
+
+    1. It matched `(?:ROI|yield|return).*?(\\d+)%`, where the lazy `.*?` still
+       crossed sentence boundaries. "Supply risk is high (15.9% pipeline)" was
+       flagged as an ROI claim purely because the word "yield" appeared in an
+       earlier sentence. Matching is now confined to a single clause.
+    2. It validated every match against `roi_pct` only. Net yield has its own
+       range (2.08-8.25 vs 4.9-10.3), so correct net-yield figures were
+       reported as out-of-range. Both metrics are now checked separately.
+    """
     extracted = extract_numbers(answer)
     issues = []
 
-    # Check if ROI claims match data
-    roi_matches = re.findall(r'(?:ROI|yield|return).*?(\d+\.?\d*)%', answer, re.IGNORECASE)
-    for roi_str in roi_matches:
-        try:
-            roi_val = float(roi_str)
-            # Verify against DB
-            result = db_conn.execute(
-                "SELECT MIN(roi_pct), MAX(roi_pct) FROM transactions"
-            ).fetchone()
-            if result and (roi_val < result[0] - 1 or roi_val > result[1] + 1):
-                issues.append(f"ROI {roi_val}% outside data range ({result[0]}-{result[1]}%)")
-        except ValueError:
-            pass
+    ranges = {
+        "roi": db_conn.execute(
+            "SELECT MIN(roi_pct), MAX(roi_pct) FROM transactions"
+        ).fetchone(),
+        "net_yield": db_conn.execute(
+            "SELECT MIN(net_yield_pct), MAX(net_yield_pct) FROM v_net_yield"
+        ).fetchone(),
+    }
+
+    # Metric label -> the range that metric must fall in. "net yield" has to be
+    # tested before "yield", otherwise the longer label never matches.
+    # The gap between the label and the number excludes sentence terminators,
+    # newlines and table pipes, so a match can never span from one sentence to
+    # a number in the next.
+    gap = r"[^\d%.\n|]{0,24}?"
+    num = r"(\d+(?:\.\d+)?)"
+    patterns = [
+        (rf"net\s+yield{gap}{num}\s*%", "net_yield"),
+        (rf"gross\s+(?:roi|yield){gap}{num}\s*%", "roi"),
+        (rf"\byield{gap}{num}\s*%", "net_yield"),
+        (rf"\broi\b{gap}{num}\s*%", "roi"),
+        (rf"\breturn{gap}{num}\s*%", "roi"),
+    ]
+
+    checked: set[tuple[str, float]] = set()
+    for pattern, metric in patterns:
+        for match in re.finditer(pattern, answer, re.IGNORECASE):
+            try:
+                value = float(match.group(1))
+            except ValueError:
+                continue
+            key = (metric, value)
+            if key in checked:
+                continue
+            checked.add(key)
+
+            lo, hi = ranges.get(metric) or (None, None)
+            if lo is None:
+                continue
+            if value < lo - 1 or value > hi + 1:
+                issues.append(
+                    f"{metric} {value}% outside data range ({lo}-{hi}%)"
+                )
 
     return {
         "numbers_found": len(extracted),
@@ -188,6 +229,12 @@ def run_eval(eval_path: str = None, model: str = None, resume: bool = True):
                 "communities_valid": community_check["valid_communities"],
                 "expected_keywords": item["expected_keywords"],
                 "expected_answer_summary": item["expected_answer_summary"],
+                # Record what retrieval actually did, so a score can be read in
+                # light of whether the question was filtered or left unfiltered.
+                "applied_filters": (result.get("structured") or {}).get("applied_filters", {}),
+                "skipped_filters": (result.get("structured") or {}).get("skipped_filters", []),
+                "relaxed_filters": (result.get("structured") or {}).get("relaxed_filters"),
+                "context_rows": len((result.get("structured") or {}).get("transactions", [])),
                 "status": "ok",
             })
 
