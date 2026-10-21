@@ -60,10 +60,23 @@ def init_db():
         )
     """)
 
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS price_history (
+            community VARCHAR,
+            quarter VARCHAR,
+            quarter_start DATE,
+            avg_price_per_sqft BIGINT,
+            market_volume INTEGER,
+            source VARCHAR,
+            PRIMARY KEY (community, quarter)
+        )
+    """)
+
     # --- Load CSVs ---
     _load_csv(conn, "transactions", DATA_DIR / "transactions.csv")
     _load_csv(conn, "communities", DATA_DIR / "communities.csv")
     _load_csv(conn, "supply_pipeline", DATA_DIR / "supply_pipeline.csv")
+    _load_csv(conn, "price_history", DATA_DIR / "price_history.csv")
 
     # --- Analytical Views ---
 
@@ -306,7 +319,7 @@ def _load_csv(conn, table_name: str, csv_path: Path):
 def _print_summary(conn):
     """Print database summary."""
     print("\n--- Database Summary ---")
-    for table in ["transactions", "communities", "supply_pipeline"]:
+    for table in ["transactions", "communities", "supply_pipeline", "price_history"]:
         count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
         print(f"  {table}: {count} rows")
 

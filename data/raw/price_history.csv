@@ -1,0 +1,289 @@
+community,quarter,quarter_start,avg_price_per_sqft,market_volume,source
+Downtown Dubai,Q1 2022,2022-01-01,1510,26,modelled
+Downtown Dubai,Q2 2022,2022-04-01,1567,34,modelled
+Downtown Dubai,Q3 2022,2022-07-01,1628,15,modelled
+Downtown Dubai,Q4 2022,2022-10-01,1695,27,modelled
+Downtown Dubai,Q1 2023,2023-01-01,1766,40,modelled
+Downtown Dubai,Q2 2023,2023-04-01,1842,21,modelled
+Downtown Dubai,Q3 2023,2023-07-01,1923,19,modelled
+Downtown Dubai,Q4 2023,2023-10-01,2010,25,modelled
+Downtown Dubai,Q1 2024,2024-01-01,2097,21,modelled
+Downtown Dubai,Q2 2024,2024-04-01,2183,18,modelled
+Downtown Dubai,Q3 2024,2024-07-01,2268,20,modelled
+Downtown Dubai,Q4 2024,2024-10-01,2351,23,modelled
+Dubai Marina,Q1 2022,2022-01-01,1149,35,modelled
+Dubai Marina,Q2 2022,2022-04-01,1195,22,modelled
+Dubai Marina,Q3 2022,2022-07-01,1244,32,modelled
+Dubai Marina,Q4 2022,2022-10-01,1298,43,modelled
+Dubai Marina,Q1 2023,2023-01-01,1356,42,modelled
+Dubai Marina,Q2 2023,2023-04-01,1418,40,modelled
+Dubai Marina,Q3 2023,2023-07-01,1485,19,modelled
+Dubai Marina,Q4 2023,2023-10-01,1557,30,modelled
+Dubai Marina,Q1 2024,2024-01-01,1628,46,modelled
+Dubai Marina,Q2 2024,2024-04-01,1699,37,modelled
+Dubai Marina,Q3 2024,2024-07-01,1769,19,modelled
+Dubai Marina,Q4 2024,2024-10-01,1838,39,modelled
+Palm Jumeirah,Q1 2022,2022-01-01,1254,92,modelled
+Palm Jumeirah,Q2 2022,2022-04-01,1297,86,modelled
+Palm Jumeirah,Q3 2022,2022-07-01,1343,76,modelled
+Palm Jumeirah,Q4 2022,2022-10-01,1393,154,modelled
+Palm Jumeirah,Q1 2023,2023-01-01,1447,142,modelled
+Palm Jumeirah,Q2 2023,2023-04-01,1504,138,modelled
+Palm Jumeirah,Q3 2023,2023-07-01,1565,93,modelled
+Palm Jumeirah,Q4 2023,2023-10-01,1630,93,modelled
+Palm Jumeirah,Q1 2024,2024-01-01,1694,118,modelled
+Palm Jumeirah,Q2 2024,2024-04-01,1757,104,modelled
+Palm Jumeirah,Q3 2024,2024-07-01,1819,64,modelled
+Palm Jumeirah,Q4 2024,2024-10-01,1880,119,modelled
+Dubai Hills Estate,Q1 2022,2022-01-01,1223,34,modelled
+Dubai Hills Estate,Q2 2022,2022-04-01,1270,23,modelled
+Dubai Hills Estate,Q3 2022,2022-07-01,1320,30,modelled
+Dubai Hills Estate,Q4 2022,2022-10-01,1375,35,modelled
+Dubai Hills Estate,Q1 2023,2023-01-01,1433,24,modelled
+Dubai Hills Estate,Q2 2023,2023-04-01,1495,31,modelled
+Dubai Hills Estate,Q3 2023,2023-07-01,1562,19,modelled
+Dubai Hills Estate,Q4 2023,2023-10-01,1633,25,modelled
+Dubai Hills Estate,Q1 2024,2024-01-01,1704,34,modelled
+Dubai Hills Estate,Q2 2024,2024-04-01,1774,33,modelled
+Dubai Hills Estate,Q3 2024,2024-07-01,1844,19,modelled
+Dubai Hills Estate,Q4 2024,2024-10-01,1912,31,modelled
+JVC (Jumeirah Village Circle),Q1 2022,2022-01-01,950,99,modelled
+JVC (Jumeirah Village Circle),Q2 2022,2022-04-01,985,158,modelled
+JVC (Jumeirah Village Circle),Q3 2022,2022-07-01,1022,65,modelled
+JVC (Jumeirah Village Circle),Q4 2022,2022-10-01,1063,128,modelled
+JVC (Jumeirah Village Circle),Q1 2023,2023-01-01,1106,138,modelled
+JVC (Jumeirah Village Circle),Q2 2023,2023-04-01,1152,159,modelled
+JVC (Jumeirah Village Circle),Q3 2023,2023-07-01,1202,95,modelled
+JVC (Jumeirah Village Circle),Q4 2023,2023-10-01,1255,116,modelled
+JVC (Jumeirah Village Circle),Q1 2024,2024-01-01,1308,134,modelled
+JVC (Jumeirah Village Circle),Q2 2024,2024-04-01,1360,131,modelled
+JVC (Jumeirah Village Circle),Q3 2024,2024-07-01,1411,121,modelled
+JVC (Jumeirah Village Circle),Q4 2024,2024-10-01,1461,105,modelled
+Business Bay,Q1 2022,2022-01-01,1554,43,modelled
+Business Bay,Q2 2022,2022-04-01,1601,28,modelled
+Business Bay,Q3 2022,2022-07-01,1650,28,modelled
+Business Bay,Q4 2022,2022-10-01,1704,36,modelled
+Business Bay,Q1 2023,2023-01-01,1761,43,modelled
+Business Bay,Q2 2023,2023-04-01,1821,37,modelled
+Business Bay,Q3 2023,2023-07-01,1885,21,modelled
+Business Bay,Q4 2023,2023-10-01,1953,23,modelled
+Business Bay,Q1 2024,2024-01-01,2020,37,modelled
+Business Bay,Q2 2024,2024-04-01,2086,38,modelled
+Business Bay,Q3 2024,2024-07-01,2150,19,modelled
+Business Bay,Q4 2024,2024-10-01,2213,39,modelled
+Arabian Ranches,Q1 2022,2022-01-01,810,49,modelled
+Arabian Ranches,Q2 2022,2022-04-01,838,42,modelled
+Arabian Ranches,Q3 2022,2022-07-01,868,35,modelled
+Arabian Ranches,Q4 2022,2022-10-01,901,28,modelled
+Arabian Ranches,Q1 2023,2023-01-01,936,52,modelled
+Arabian Ranches,Q2 2023,2023-04-01,973,37,modelled
+Arabian Ranches,Q3 2023,2023-07-01,1012,25,modelled
+Arabian Ranches,Q4 2023,2023-10-01,1054,28,modelled
+Arabian Ranches,Q1 2024,2024-01-01,1096,35,modelled
+Arabian Ranches,Q2 2024,2024-04-01,1137,26,modelled
+Arabian Ranches,Q3 2024,2024-07-01,1178,37,modelled
+Arabian Ranches,Q4 2024,2024-10-01,1218,40,modelled
+Sports City,Q1 2022,2022-01-01,894,146,modelled
+Sports City,Q2 2022,2022-04-01,930,104,modelled
+Sports City,Q3 2022,2022-07-01,968,111,modelled
+Sports City,Q4 2022,2022-10-01,1010,103,modelled
+Sports City,Q1 2023,2023-01-01,1055,129,modelled
+Sports City,Q2 2023,2023-04-01,1103,148,modelled
+Sports City,Q3 2023,2023-07-01,1155,118,modelled
+Sports City,Q4 2023,2023-10-01,1211,116,modelled
+Sports City,Q1 2024,2024-01-01,1267,107,modelled
+Sports City,Q2 2024,2024-04-01,1322,114,modelled
+Sports City,Q3 2024,2024-07-01,1377,119,modelled
+Sports City,Q4 2024,2024-10-01,1431,152,modelled
+Discovery Gardens,Q1 2022,2022-01-01,750,103,modelled
+Discovery Gardens,Q2 2022,2022-04-01,779,128,modelled
+Discovery Gardens,Q3 2022,2022-07-01,810,74,modelled
+Discovery Gardens,Q4 2022,2022-10-01,844,102,modelled
+Discovery Gardens,Q1 2023,2023-01-01,881,143,modelled
+Discovery Gardens,Q2 2023,2023-04-01,920,98,modelled
+Discovery Gardens,Q3 2023,2023-07-01,962,89,modelled
+Discovery Gardens,Q4 2023,2023-10-01,1007,117,modelled
+Discovery Gardens,Q1 2024,2024-01-01,1052,80,modelled
+Discovery Gardens,Q2 2024,2024-04-01,1097,104,modelled
+Discovery Gardens,Q3 2024,2024-07-01,1141,90,modelled
+Discovery Gardens,Q4 2024,2024-10-01,1184,105,modelled
+JLT (Jumeirah Lake Towers),Q1 2022,2022-01-01,1120,42,modelled
+JLT (Jumeirah Lake Towers),Q2 2022,2022-04-01,1157,57,modelled
+JLT (Jumeirah Lake Towers),Q3 2022,2022-07-01,1196,34,modelled
+JLT (Jumeirah Lake Towers),Q4 2022,2022-10-01,1239,58,modelled
+JLT (Jumeirah Lake Towers),Q1 2023,2023-01-01,1285,56,modelled
+JLT (Jumeirah Lake Towers),Q2 2023,2023-04-01,1334,58,modelled
+JLT (Jumeirah Lake Towers),Q3 2023,2023-07-01,1386,35,modelled
+JLT (Jumeirah Lake Towers),Q4 2023,2023-10-01,1441,37,modelled
+JLT (Jumeirah Lake Towers),Q1 2024,2024-01-01,1496,74,modelled
+JLT (Jumeirah Lake Towers),Q2 2024,2024-04-01,1550,46,modelled
+JLT (Jumeirah Lake Towers),Q3 2024,2024-07-01,1603,52,modelled
+JLT (Jumeirah Lake Towers),Q4 2024,2024-10-01,1655,46,modelled
+The Springs,Q1 2022,2022-01-01,712,59,modelled
+The Springs,Q2 2022,2022-04-01,741,28,modelled
+The Springs,Q3 2022,2022-07-01,772,33,modelled
+The Springs,Q4 2022,2022-10-01,806,38,modelled
+The Springs,Q1 2023,2023-01-01,842,55,modelled
+The Springs,Q2 2023,2023-04-01,881,44,modelled
+The Springs,Q3 2023,2023-07-01,922,39,modelled
+The Springs,Q4 2023,2023-10-01,966,32,modelled
+The Springs,Q1 2024,2024-01-01,1010,49,modelled
+The Springs,Q2 2024,2024-04-01,1054,47,modelled
+The Springs,Q3 2024,2024-07-01,1097,21,modelled
+The Springs,Q4 2024,2024-10-01,1140,29,modelled
+Al Barsha,Q1 2022,2022-01-01,1029,101,modelled
+Al Barsha,Q2 2022,2022-04-01,1068,89,modelled
+Al Barsha,Q3 2022,2022-07-01,1110,77,modelled
+Al Barsha,Q4 2022,2022-10-01,1156,109,modelled
+Al Barsha,Q1 2023,2023-01-01,1205,124,modelled
+Al Barsha,Q2 2023,2023-04-01,1257,126,modelled
+Al Barsha,Q3 2023,2023-07-01,1313,67,modelled
+Al Barsha,Q4 2023,2023-10-01,1373,120,modelled
+Al Barsha,Q1 2024,2024-01-01,1433,116,modelled
+Al Barsha,Q2 2024,2024-04-01,1492,99,modelled
+Al Barsha,Q3 2024,2024-07-01,1550,69,modelled
+Al Barsha,Q4 2024,2024-10-01,1607,112,modelled
+Deira,Q1 2022,2022-01-01,914,20,modelled
+Deira,Q2 2022,2022-04-01,944,28,modelled
+Deira,Q3 2022,2022-07-01,975,18,modelled
+Deira,Q4 2022,2022-10-01,1009,23,modelled
+Deira,Q1 2023,2023-01-01,1045,29,modelled
+Deira,Q2 2023,2023-04-01,1084,20,modelled
+Deira,Q3 2023,2023-07-01,1125,15,modelled
+Deira,Q4 2023,2023-10-01,1169,24,modelled
+Deira,Q1 2024,2024-01-01,1212,37,modelled
+Deira,Q2 2024,2024-04-01,1255,21,modelled
+Deira,Q3 2024,2024-07-01,1297,24,modelled
+Deira,Q4 2024,2024-10-01,1338,25,modelled
+Bur Dubai,Q1 2022,2022-01-01,1053,157,modelled
+Bur Dubai,Q2 2022,2022-04-01,1086,107,modelled
+Bur Dubai,Q3 2022,2022-07-01,1121,107,modelled
+Bur Dubai,Q4 2022,2022-10-01,1159,112,modelled
+Bur Dubai,Q1 2023,2023-01-01,1199,92,modelled
+Bur Dubai,Q2 2023,2023-04-01,1242,124,modelled
+Bur Dubai,Q3 2023,2023-07-01,1287,104,modelled
+Bur Dubai,Q4 2023,2023-10-01,1335,102,modelled
+Bur Dubai,Q1 2024,2024-01-01,1382,114,modelled
+Bur Dubai,Q2 2024,2024-04-01,1429,79,modelled
+Bur Dubai,Q3 2024,2024-07-01,1475,87,modelled
+Bur Dubai,Q4 2024,2024-10-01,1519,147,modelled
+International City,Q1 2022,2022-01-01,776,180,modelled
+International City,Q2 2022,2022-04-01,806,177,modelled
+International City,Q3 2022,2022-07-01,838,115,modelled
+International City,Q4 2022,2022-10-01,873,173,modelled
+International City,Q1 2023,2023-01-01,911,158,modelled
+International City,Q2 2023,2023-04-01,951,103,modelled
+International City,Q3 2023,2023-07-01,994,84,modelled
+International City,Q4 2023,2023-10-01,1040,109,modelled
+International City,Q1 2024,2024-01-01,1086,188,modelled
+International City,Q2 2024,2024-04-01,1132,94,modelled
+International City,Q3 2024,2024-07-01,1177,109,modelled
+International City,Q4 2024,2024-10-01,1221,132,modelled
+Dubai Silicon Oasis,Q1 2022,2022-01-01,794,30,modelled
+Dubai Silicon Oasis,Q2 2022,2022-04-01,824,27,modelled
+Dubai Silicon Oasis,Q3 2022,2022-07-01,856,14,modelled
+Dubai Silicon Oasis,Q4 2022,2022-10-01,891,23,modelled
+Dubai Silicon Oasis,Q1 2023,2023-01-01,929,39,modelled
+Dubai Silicon Oasis,Q2 2023,2023-04-01,970,29,modelled
+Dubai Silicon Oasis,Q3 2023,2023-07-01,1013,19,modelled
+Dubai Silicon Oasis,Q4 2023,2023-10-01,1059,31,modelled
+Dubai Silicon Oasis,Q1 2024,2024-01-01,1105,35,modelled
+Dubai Silicon Oasis,Q2 2024,2024-04-01,1151,18,modelled
+Dubai Silicon Oasis,Q3 2024,2024-07-01,1196,25,modelled
+Dubai Silicon Oasis,Q4 2024,2024-10-01,1240,29,modelled
+Tilal Al Ghaf,Q1 2022,2022-01-01,910,112,modelled
+Tilal Al Ghaf,Q2 2022,2022-04-01,941,78,modelled
+Tilal Al Ghaf,Q3 2022,2022-07-01,974,83,modelled
+Tilal Al Ghaf,Q4 2022,2022-10-01,1010,109,modelled
+Tilal Al Ghaf,Q1 2023,2023-01-01,1049,109,modelled
+Tilal Al Ghaf,Q2 2023,2023-04-01,1090,69,modelled
+Tilal Al Ghaf,Q3 2023,2023-07-01,1134,87,modelled
+Tilal Al Ghaf,Q4 2023,2023-10-01,1181,87,modelled
+Tilal Al Ghaf,Q1 2024,2024-01-01,1228,127,modelled
+Tilal Al Ghaf,Q2 2024,2024-04-01,1274,61,modelled
+Tilal Al Ghaf,Q3 2024,2024-07-01,1319,50,modelled
+Tilal Al Ghaf,Q4 2024,2024-10-01,1363,70,modelled
+DAMAC Hills 2,Q1 2022,2022-01-01,1070,55,modelled
+DAMAC Hills 2,Q2 2022,2022-04-01,1104,62,modelled
+DAMAC Hills 2,Q3 2022,2022-07-01,1140,37,modelled
+DAMAC Hills 2,Q4 2022,2022-10-01,1179,74,modelled
+DAMAC Hills 2,Q1 2023,2023-01-01,1220,79,modelled
+DAMAC Hills 2,Q2 2023,2023-04-01,1264,67,modelled
+DAMAC Hills 2,Q3 2023,2023-07-01,1311,35,modelled
+DAMAC Hills 2,Q4 2023,2023-10-01,1361,62,modelled
+DAMAC Hills 2,Q1 2024,2024-01-01,1410,65,modelled
+DAMAC Hills 2,Q2 2024,2024-04-01,1458,41,modelled
+DAMAC Hills 2,Q3 2024,2024-07-01,1505,36,modelled
+DAMAC Hills 2,Q4 2024,2024-10-01,1551,59,modelled
+Dubai Creek Harbour,Q1 2022,2022-01-01,1163,81,modelled
+Dubai Creek Harbour,Q2 2022,2022-04-01,1204,118,modelled
+Dubai Creek Harbour,Q3 2022,2022-07-01,1247,53,modelled
+Dubai Creek Harbour,Q4 2022,2022-10-01,1294,106,modelled
+Dubai Creek Harbour,Q1 2023,2023-01-01,1345,119,modelled
+Dubai Creek Harbour,Q2 2023,2023-04-01,1399,97,modelled
+Dubai Creek Harbour,Q3 2023,2023-07-01,1456,85,modelled
+Dubai Creek Harbour,Q4 2023,2023-10-01,1517,99,modelled
+Dubai Creek Harbour,Q1 2024,2024-01-01,1578,127,modelled
+Dubai Creek Harbour,Q2 2024,2024-04-01,1638,62,modelled
+Dubai Creek Harbour,Q3 2024,2024-07-01,1697,48,modelled
+Dubai Creek Harbour,Q4 2024,2024-10-01,1755,104,modelled
+Bluewaters Island,Q1 2022,2022-01-01,1386,134,modelled
+Bluewaters Island,Q2 2022,2022-04-01,1436,126,modelled
+Bluewaters Island,Q3 2022,2022-07-01,1489,77,modelled
+Bluewaters Island,Q4 2022,2022-10-01,1547,122,modelled
+Bluewaters Island,Q1 2023,2023-01-01,1609,122,modelled
+Bluewaters Island,Q2 2023,2023-04-01,1675,116,modelled
+Bluewaters Island,Q3 2023,2023-07-01,1745,70,modelled
+Bluewaters Island,Q4 2023,2023-10-01,1820,146,modelled
+Bluewaters Island,Q1 2024,2024-01-01,1894,121,modelled
+Bluewaters Island,Q2 2024,2024-04-01,1968,128,modelled
+Bluewaters Island,Q3 2024,2024-07-01,2040,91,modelled
+Bluewaters Island,Q4 2024,2024-10-01,2111,97,modelled
+Meydan,Q1 2022,2022-01-01,1160,63,modelled
+Meydan,Q2 2022,2022-04-01,1195,74,modelled
+Meydan,Q3 2022,2022-07-01,1233,58,modelled
+Meydan,Q4 2022,2022-10-01,1274,65,modelled
+Meydan,Q1 2023,2023-01-01,1317,95,modelled
+Meydan,Q2 2023,2023-04-01,1363,68,modelled
+Meydan,Q3 2023,2023-07-01,1412,68,modelled
+Meydan,Q4 2023,2023-10-01,1464,94,modelled
+Meydan,Q1 2024,2024-01-01,1515,110,modelled
+Meydan,Q2 2024,2024-04-01,1565,102,modelled
+Meydan,Q3 2024,2024-07-01,1614,44,modelled
+Meydan,Q4 2024,2024-10-01,1662,74,modelled
+Al Furjan,Q1 2022,2022-01-01,1108,50,modelled
+Al Furjan,Q2 2022,2022-04-01,1147,48,modelled
+Al Furjan,Q3 2022,2022-07-01,1189,32,modelled
+Al Furjan,Q4 2022,2022-10-01,1235,43,modelled
+Al Furjan,Q1 2023,2023-01-01,1284,41,modelled
+Al Furjan,Q2 2023,2023-04-01,1336,42,modelled
+Al Furjan,Q3 2023,2023-07-01,1392,35,modelled
+Al Furjan,Q4 2023,2023-10-01,1452,56,modelled
+Al Furjan,Q1 2024,2024-01-01,1511,47,modelled
+Al Furjan,Q2 2024,2024-04-01,1569,61,modelled
+Al Furjan,Q3 2024,2024-07-01,1627,29,modelled
+Al Furjan,Q4 2024,2024-10-01,1683,46,modelled
+Dubai South,Q1 2022,2022-01-01,883,118,modelled
+Dubai South,Q2 2022,2022-04-01,915,138,modelled
+Dubai South,Q3 2022,2022-07-01,949,89,modelled
+Dubai South,Q4 2022,2022-10-01,986,125,modelled
+Dubai South,Q1 2023,2023-01-01,1025,134,modelled
+Dubai South,Q2 2023,2023-04-01,1067,103,modelled
+Dubai South,Q3 2023,2023-07-01,1112,61,modelled
+Dubai South,Q4 2023,2023-10-01,1160,160,modelled
+Dubai South,Q1 2024,2024-01-01,1208,135,modelled
+Dubai South,Q2 2024,2024-04-01,1255,154,modelled
+Dubai South,Q3 2024,2024-07-01,1301,72,modelled
+Dubai South,Q4 2024,2024-10-01,1346,111,modelled
+Town Square,Q1 2022,2022-01-01,992,146,modelled
+Town Square,Q2 2022,2022-04-01,1022,161,modelled
+Town Square,Q3 2022,2022-07-01,1054,108,modelled
+Town Square,Q4 2022,2022-10-01,1089,132,modelled
+Town Square,Q1 2023,2023-01-01,1126,151,modelled
+Town Square,Q2 2023,2023-04-01,1165,158,modelled
+Town Square,Q3 2023,2023-07-01,1206,93,modelled
+Town Square,Q4 2023,2023-10-01,1250,169,modelled
+Town Square,Q1 2024,2024-01-01,1293,169,modelled
+Town Square,Q2 2024,2024-04-01,1336,151,modelled
+Town Square,Q3 2024,2024-07-01,1378,89,modelled
+Town Square,Q4 2024,2024-10-01,1419,126,modelled
