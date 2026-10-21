@@ -12,7 +12,13 @@ import os
 from datetime import datetime
 from rag import rag_query, health_check, structured_search
 from calculators import calculate_mortgage, calculate_str
-from price_trends import get_price_trend, get_all_trends, get_top_gainers, get_top_volume, HISTORICAL_DATA
+from price_trends import (
+    get_price_trend,
+    get_all_trends,
+    get_top_gainers,
+    get_top_volume,
+    list_trend_communities,
+)
 from export import generate_excel_report, generate_pdf_report
 from config import REC_ICONS, MIN_BUDGET, MAX_BUDGET
 
@@ -39,7 +45,7 @@ st.caption("AI-powered investment scoring and Q&A — backed by DLD-style transa
 # --- Disclaimer ---
 st.info(
     "**Disclaimer:** This is an AI assistant for informational purposes only, not financial advice. "
-    "Data is from a Q1 2024 mock dataset. Verify all information with the Dubai Land Department (DLD) "
+    "Data is a synthetic 2024 transaction sample plus Q1 2024 mock market reports. Verify all information with the Dubai Land Department (DLD) "
     "and consult a RERA-licensed advisor before making investment decisions."
 )
 
@@ -353,7 +359,11 @@ with tab_compare:
 # --- Trends Tab ---
 with tab_trends:
     st.subheader("📈 Price Trends")
-    st.caption("Historical price per sqft and transaction volume by community")
+    st.caption(
+        "Modelled quarterly price per sqft and market volume by community. "
+        "The latest quarter is anchored to the transaction sample; earlier "
+        "quarters use a 2022-2024 growth curve."
+    )
 
     # Top gainers
     st.markdown("### 🚀 Top Price Gainers (YoY)")
@@ -370,7 +380,7 @@ with tab_trends:
     st.markdown("---")
 
     # Community selector for detailed view
-    all_communities = sorted(HISTORICAL_DATA.keys())
+    all_communities = sorted(list_trend_communities())
     selected_comm = st.selectbox("Select community for detailed trend", all_communities)
 
     if selected_comm:
@@ -388,10 +398,10 @@ with tab_trends:
                 st.line_chart(price_df.set_index("Quarter"))
 
             with col2:
-                st.markdown("### Transaction Volume")
+                st.markdown("### Market Volume (modelled)")
                 vol_df = pd.DataFrame({
                     "Quarter": trend.quarters,
-                    "Transactions": trend.volumes,
+                    "Market volume": trend.volumes,
                 })
                 st.bar_chart(vol_df.set_index("Quarter"))
 
@@ -403,23 +413,26 @@ with tab_trends:
             with sc2:
                 st.metric("YoY Change", f"{trend.yoy_change_pct:+.1f}%")
             with sc3:
-                st.metric("Latest Volume", f"{trend.volumes[-1]} txns")
+                st.metric("Latest Market Volume", f"{trend.volumes[-1]} txns")
             with sc4:
                 trend_icon = {"up": "📈", "down": "📉", "stable": "➡️"}
                 st.metric("Trend", f"{trend_icon.get(trend.trend_direction, '')} {trend.trend_direction.title()}")
 
     # All communities comparison
     st.markdown("---")
-    st.markdown("### All Communities — Q1 2024 Snapshot")
     all_trends = get_all_trends()
+    latest_quarter = next(
+        (t.quarters[-1] for t in all_trends.values() if t.quarters), "latest"
+    )
+    st.markdown(f"### All Communities — {latest_quarter} Snapshot")
     snapshot_data = []
     for comm, t in sorted(all_trends.items(), key=lambda x: x[1].prices[-1] if x[1].prices else 0, reverse=True):
         if t.prices:
             snapshot_data.append({
                 "Community": comm,
-                "Price/sqft (Q1 2024)": t.prices[-1],
+                f"Price/sqft ({latest_quarter})": t.prices[-1],
                 "YoY Change": f"{t.yoy_change_pct:+.1f}%",
-                "Volume": t.volumes[-1] if t.volumes else 0,
+                "Market volume": t.volumes[-1] if t.volumes else 0,
                 "Trend": t.trend_direction,
             })
     st.dataframe(snapshot_data, use_container_width=True)
@@ -528,5 +541,5 @@ st.sidebar.markdown("---")
 st.sidebar.markdown(
     "**Architecture:** DuckDB (analytics) + ChromaDB (semantic) + LLM (generation)\n\n"
     "**Features:** Investment scoring, mortgage calculator, STR estimator, comparison tool, map view\n\n"
-    "**Data:** 73 mock DLD transactions, 25 communities, 4 market reports"
+    "**Data:** 74 mock DLD-style transactions, 24 communities, 4 market reports"
 )

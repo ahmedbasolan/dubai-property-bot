@@ -6,6 +6,7 @@ parking_spots, completion_year, furnishing, amenities.
 
 import csv
 import json
+import math
 import random
 import sys
 from pathlib import Path
@@ -479,22 +480,25 @@ COMMUNITY_PROFILES = {
 # Transaction templates (bedroom configs per property type)
 BEDROOM_CONFIGS = {
     "Apartment": [
-        {"bedrooms": 0, "weight": 0.15, "size_factor": 1.0},
-        {"bedrooms": 1, "weight": 0.40, "size_factor": 1.0},
-        {"bedrooms": 2, "weight": 0.35, "size_factor": 1.0},
-        {"bedrooms": 3, "weight": 0.10, "size_factor": 1.0},
+        {"bedrooms": 0, "weight": 0.15},
+        {"bedrooms": 1, "weight": 0.40},
+        {"bedrooms": 2, "weight": 0.35},
+        {"bedrooms": 3, "weight": 0.10},
     ],
     "Villa": [
-        {"bedrooms": 3, "weight": 0.30, "size_factor": 1.0},
-        {"bedrooms": 4, "weight": 0.45, "size_factor": 1.0},
-        {"bedrooms": 5, "weight": 0.25, "size_factor": 1.0},
+        {"bedrooms": 3, "weight": 0.30},
+        {"bedrooms": 4, "weight": 0.45},
+        {"bedrooms": 5, "weight": 0.25},
     ],
     "Penthouse": [
-        {"bedrooms": 2, "weight": 0.20, "size_factor": 1.3},
-        {"bedrooms": 3, "weight": 0.50, "size_factor": 1.3},
-        {"bedrooms": 4, "weight": 0.30, "size_factor": 1.3},
+        {"bedrooms": 2, "weight": 0.20},
+        {"bedrooms": 3, "weight": 0.50},
+        {"bedrooms": 4, "weight": 0.30},
     ],
 }
+
+# Smaller units trade at a higher price per sqft, larger ones at a lower one.
+BEDROOM_PPSF_FACTOR = {0: 1.10, 1: 1.05, 2: 1.00, 3: 0.96, 4: 0.93, 5: 0.90}
 
 DEVELOPERS = ["Emaar", "DAMAC", "Nakheel", "Meraas", "Omniyat", "Select Group", "Binghatti", "Nshama", "Union Properties", "DMCC", "Various"]
 OFF_PLAN_STATUS = ["Off-Plan", "Ready"]
@@ -502,6 +506,16 @@ OFF_PLAN_STATUS = ["Off-Plan", "Ready"]
 
 def weighted_choice(options, weights):
     return random.choices(options, weights=weights, k=1)[0]
+
+
+def _round_half_up(value: float, digits: int = 0) -> float:
+    """Round the way DuckDB's ROUND() does (half away from zero for >0).
+
+    The trend anchor must match `v_community_summary.avg_price_per_sqft`
+    exactly, and Python's built-in round() is half-to-even.
+    """
+    factor = 10 ** digits
+    return math.floor(value * factor + 0.5) / factor
 
 
 def generate_transaction(tx_id: int, community: str, profile: dict) -> dict:
@@ -529,12 +543,21 @@ def generate_transaction(tx_id: int, community: str, profile: dict) -> dict:
         base_price *= 1.5
     price = int(round(base_price / 50000) * 50000)
 
-    # Size
+    # Size is *derived from price* through the community's implied price
+    # density; the two used to be drawn independently from their own ranges,
+    # which produced 612-11,452 AED/sqft and made the price grade meaningless.
+    # The density centre is the profile's own midpoint price / midpoint size.
     min_s, max_s = profile["sqft_range"]
-    base_size = random.uniform(min_s, max_s) * bedroom_config["size_factor"]
-    if bedrooms == 0:
-        base_size = random.uniform(min_s, min_s + 150)
-    size = int(round(base_size / 10) * 10)
+    mid_ppsf = ((min_p + max_p) / 2) / ((min_s + max_s) / 2)
+    ppsf = (
+        mid_ppsf
+        * random.uniform(0.88, 1.12)
+        * BEDROOM_PPSF_FACTOR.get(bedrooms, 1.0)
+    )
+    size = int(round(price / ppsf / 10) * 10)
+    # Stay inside the profile's size envelope; the clamp only bites at the
+    # extremes of the price range and never pushes AED/sqft out of the band.
+    size = max(min_s, min(max_s, size))
 
     # Floor
     min_f, max_f = profile["floor_range"]
@@ -636,6 +659,74 @@ def generate_supply_pipeline() -> list:
     return rows
 
 
+# Quarterly growth used to walk the series backwards from the observed quarter.
+# Modelled on Dubai 2022-Q1 to 2024-Q4: ~3.5-4% per quarter, easing at the end.
+QUARTERLY_GROWTH = [0.033, 0.035, 0.036, 0.038, 0.039, 0.040, 0.041, 0.042, 0.040, 0.038, 0.036, 0.034]
+QUARTER_LABELS = [
+    f"Q{q} {year}" for year in (2022, 2023, 2024) for q in (1, 2, 3, 4)
+]
+QUARTER_STARTS = [
+    f"{year}-{month:02d}-01"
+    for year in (2022, 2023, 2024)
+    for month in (1, 4, 7, 10)
+]
+# Q1..Q4 seasonality on transaction volume.
+QUARTER_SEASONALITY = [1.20, 1.05, 0.80, 1.10]
+
+
+def generate_price_history(transactions: list, supply_rows: list) -> list:
+    """Build a quarterly price series anchored to the generated transactions.
+
+    The latest quarter's AED/sqft is the sample's own average, computed the same
+    way `v_community_summary` does (round each transaction to 1dp, then average),
+    so `/trends` and `/api/scores` report the same current price. Earlier
+    quarters are walked backwards with a market growth curve and a per-community
+    dispersion factor.
+
+    `market_volume` is modelled from stock turnover, not a count of the sample;
+    the API and UI label it as such.
+    """
+    sample: dict = {}
+    for tx in transactions:
+        sample.setdefault(tx["community"], []).append(
+            _round_half_up(tx["price_aed"] / tx["size_sqft"], 1)
+        )
+    stock_by_community = {
+        row["community_name"]: row["existing_stock_units"] for row in supply_rows
+    }
+
+    rows = []
+    for community in COMMUNITY_PROFILES:
+        prices = sample[community]
+        anchor = int(_round_half_up(sum(prices) / len(prices)))
+        stock = stock_by_community[community]
+        dispersion = random.uniform(0.85, 1.15)
+
+        series = [0.0] * len(QUARTER_LABELS)
+        series[-1] = anchor
+        for i in range(len(series) - 2, -1, -1):
+            growth = QUARTERLY_GROWTH[i + 1] * dispersion
+            series[i] = round(series[i + 1] / (1 + growth))
+
+        for i, (label, start, price) in enumerate(
+            zip(QUARTER_LABELS, QUARTER_STARTS, series)
+        ):
+            volume = int(
+                stock
+                * random.uniform(0.006, 0.012)
+                * QUARTER_SEASONALITY[i % 4]
+            )
+            rows.append({
+                "community": community,
+                "quarter": label,
+                "quarter_start": start,
+                "avg_price_per_sqft": price,
+                "market_volume": volume,
+                "source": "modelled",
+            })
+    return rows
+
+
 def main():
     random.seed(42)  # Reproducible
 
@@ -675,6 +766,15 @@ def main():
         writer.writeheader()
         writer.writerows(supply)
     print(f"Generated {len(supply)} supply pipeline records -> {supply_path}")
+
+    # Write quarterly price history (anchored to the transactions above)
+    history = generate_price_history(transactions, supply)
+    history_path = DATA_DIR / "price_history.csv"
+    with open(history_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=list(history[0].keys()))
+        writer.writeheader()
+        writer.writerows(history)
+    print(f"Generated {len(history)} price history rows -> {history_path}")
 
 
 if __name__ == "__main__":
