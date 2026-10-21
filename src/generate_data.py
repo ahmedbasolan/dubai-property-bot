@@ -500,7 +500,17 @@ BEDROOM_CONFIGS = {
 # Smaller units trade at a higher price per sqft, larger ones at a lower one.
 BEDROOM_PPSF_FACTOR = {0: 1.10, 1: 1.05, 2: 1.00, 3: 0.96, 4: 0.93, 5: 0.90}
 
-DEVELOPERS = ["Emaar", "DAMAC", "Nakheel", "Meraas", "Omniyat", "Select Group", "Binghatti", "Nshama", "Union Properties", "DMCC", "Various"]
+# Builders sampled for communities whose master developer is "Various".
+# They deliberately exclude every master developer that has a scorecard:
+# otherwise a "Various"-community transaction would count toward a developer
+# whose scorecard only covers master-planned communities, and the two counts
+# disagreed (Emaar/Nakheel showed 18 by builder and 16 by scorecard).
+# Keep the list length at 11: random.choice(_) consumes the seed the same way,
+# so every other generated field stays byte-identical.
+DEVELOPERS = [
+    "Omniyat", "Select Group", "Binghatti", "Sobha", "Azizi", "Danube",
+    "Ellington", "Al Habtoor", "Dubai Properties", "Seven Tides", "Wasl",
+]
 OFF_PLAN_STATUS = ["Off-Plan", "Ready"]
 
 
