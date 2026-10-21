@@ -26,7 +26,9 @@ function getCommunityName(community: unknown): string {
 
 export default function PropertiesPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [community, setCommunity] = useState<string>("all");
   const [bedrooms, setBedrooms] = useState<string>("all");
@@ -36,16 +38,27 @@ export default function PropertiesPage() {
 
   useEffect(() => {
     let stale = false;
-    const params: Record<string, string> = {};
+    const params: Record<string, string> = { limit: useLive ? "50" : "500" };
     if (community !== "all") params.community = community;
     if (bedrooms !== "all") params.bedrooms = bedrooms;
 
-    api.getTransactions(params, useLive).then((data) => {
-      if (stale) return;
-      setTransactions(data.transactions);
-      setDataSource(data.source);
-      setLoading(false);
-    });
+    api
+      .getTransactions(params, useLive)
+      .then((data) => {
+        if (stale) return;
+        setTransactions(data.transactions);
+        setTotal(data.total ?? data.transactions.length);
+        setDataSource(data.source);
+        setError(null);
+      })
+      .catch((err: unknown) => {
+        if (stale) return;
+        setTransactions([]);
+        setError(err instanceof Error ? err.message : "Failed to load properties");
+      })
+      .finally(() => {
+        if (!stale) setLoading(false);
+      });
     return () => {
       stale = true;
     };
@@ -109,7 +122,7 @@ export default function PropertiesPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Properties</h1>
           <p className="text-muted-foreground mt-1">
-            {filtered.length} properties found
+            {filtered.length} of {total} properties
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs">
@@ -170,6 +183,12 @@ export default function PropertiesPage() {
         </Select>
       </div>
 
+      {error && (
+        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+          Could not load properties: {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children">
         {filtered.map((t) => (
           <Card key={t.transaction_id} className="card-hover animate-fade-in-up">
@@ -187,7 +206,7 @@ export default function PropertiesPage() {
                 </div>
                 <Badge
                   variant={
-                    t.handover_status === "READY"
+                    t.handover_status?.toUpperCase() === "READY"
                       ? "default"
                       : "secondary"
                   }

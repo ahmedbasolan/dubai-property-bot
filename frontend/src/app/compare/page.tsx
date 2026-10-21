@@ -28,7 +28,7 @@ export default function ComparePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.getTransactions().then((data) => {
+    api.getTransactions({ limit: "500" }).then((data) => {
       setAllTransactions(data.transactions);
       setLoading(false);
     });
