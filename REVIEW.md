@@ -72,14 +72,25 @@ its communities' range.
 ## Evaluation claims
 
 **Partly fixed.** `eval/run_eval.py` marks a percentage "accurate" when it falls
-inside the column's global min–max (currently ROI 4.7–10.5%, net yield 2.92–8.58%). A
+inside the column's global min-max (currently ROI 4.7-10.5%, net yield 2.92-8.58%). A
 fabricated 7.0% passes. "100% number accuracy" therefore measures "no out-of-range
-figures", not correctness. Keyword matching averages 54%, and 29/30 includes a
-request-size failure: question 20 asks for a two-community comparison and its
-context is ~10,042 tokens against the free tier's 8,000 TPM cap (HTTP 413), so it
-fails deterministically rather than intermittently. README and case study now state
-the metric and that failure for what they are. The results were regenerated against
-the current dataset after the generator change.
+figures", not correctness. Keyword matching averages 56%.
+
+The HTTP 413 was not a 10k-token context: the context was ~5.2k tokens, but Groq
+counts **prompt + max_tokens** against its 8,000 TPM cap, and `LLM_MAX_TOKENS` was
+4,000, making the request ~10k. It is now 1,500, and `generate_answer()` lowers it
+further if the prompt grows, so question 20 fits. The runner **resumes** by question
+id and records neither the model nor the config, so a stored file can mix runs; use
+`--fresh` when the comparison matters.
+
+The post-fix run reached 20 successful answers before the 120b daily quota ran out, so
+`eval/eval_results.json` is a resume: Q1-Q19 are from that run, Q20 is still the
+pre-fix 413 record, and Q21-Q30 are from the prior run. Q20's fresh response exposed a
+second bug the 413 had hidden: comparisons were left unfiltered, then the context
+showed only the top 8 scores, so both compared communities could be missing. Comparisons
+are now scoped to the named communities, and Q20 re-checked on `openai/gpt-oss-20b`
+(the 120b quota was exhausted) correctly reports 70 vs 63 from both scorecards. A full
+120b re-run is pending the daily quota reset.
 
 ## Security
 
@@ -93,8 +104,8 @@ the current dataset after the generator change.
 
 ## Still open
 
-1. Replace global-range validation in the eval with per-question expected values, and
-   shrink the context for question 20 so it fits the free tier's 8k TPM cap.
+1. Replace global-range validation in the eval with per-question expected values.
+   The request-size failure is fixed (see "Evaluation claims").
 2. Pin `requirements.txt`; `streamlit`, `pandas`, `openpyxl` and `reportlab` are only
    needed by the legacy Streamlit UI and the export script.
 3. Frontend tests and CI (pytest + eslint + `next build`). The API contract and data
@@ -103,8 +114,8 @@ the current dataset after the generator change.
    `ingest.py` never creates.
 5. Trends earlier than the latest quarter are modelled, not observed; real DLD history
    would remove the growth-curve assumption.
-6. The chat context does not include `price_history`, so trend questions are answered
-   from the market-report chunks; only `/trends` and `/api/trends` use the DB series.
+6. Record the model and config in `eval_results.json`; the runner resumes by id, so a
+   file can otherwise mix runs from different settings.
 
 ## What holds up well
 
