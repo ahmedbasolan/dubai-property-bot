@@ -68,11 +68,14 @@ the signal cannot disagree.
 | Service Charges | 15% | A: ≤10, B: ≤15, C: ≤20, D: ≤25, F: >25 |
 
 Composite: INVEST ≥ 70, HOLD ≥ 50, AVOID < 50. Price/sqft is graded for display but
-not weighted, because price and size are drawn independently in the generator.
+not weighted; size is derived from price so AED/sqft stays in a plausible band.
 
 ### 3. Supply Pipeline Risk Flagging
 
-Communities with >15% new supply in 24 months see -3.5% price growth. The tool automatically flags high-supply communities and factors this into the investment score.
+Communities whose 24-month pipeline exceeds 15% of existing stock are flagged HIGH
+risk and lose points in the investment score (supply is 20% of the composite). The
+"-3.5% price growth" figure quoted in an earlier revision was not sourced and has
+been removed.
 
 ### 4. Disclaimer in the prompt
 
@@ -99,7 +102,7 @@ implemented.
 
 ## Data Model
 
-**73 synthetic transactions** across 24 communities with 16 fields:
+**74 synthetic transactions** across 24 communities with 16 fields:
 - Original: community, property_type, bedrooms, price, size, date, ROI, developer, handover_status
 - Added: floor_level, view_type, service_charge_aed_sqft, parking_spots, completion_year, furnishing, amenities
 
