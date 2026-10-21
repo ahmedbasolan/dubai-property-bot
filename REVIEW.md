@@ -38,22 +38,36 @@ user-visible bugs were one-line fixes.
 
 ## Data integrity (the most important finding)
 
-**Open.** The app shows two different markets at once, and neither is DLD data:
+**Fixed on this branch.** At review time the app showed two different markets at once:
 
-- `src/price_trends.py` is 140 lines of hardcoded 2022–Q1 2024 figures served by
-  `/trends` as observed history. `src/developer_scorecard.py` hardcodes on-time
+- `src/price_trends.py` was 140 lines of hardcoded 2022–Q1 2024 figures served by
+  `/trends` as observed history. `src/developer_scorecard.py` hardcoded on-time
   delivery, appreciation, unit counts and RERA compliance with no source.
-- They contradict DuckDB: Downtown is **6,246 AED/sqft** in the scores and **2,600**
-  on `/trends`; Marina is **1,450** vs **2,050**.
-- `generate_data.py:525-537` draws `price` and `size_sqft` independently, so
-  price/sqft spans **612–11,452 AED/sqft**. That makes the price/sqft grade noise,
-  which is why it is now excluded from the composite and labelled informational.
-- Each community has **2–5 transactions**; averages of that size are not
-  "institutional-grade" evidence.
+- They contradicted DuckDB: Downtown was **6,246 AED/sqft** in the scores and **2,600**
+  on `/trends`; Marina was **1,450** vs **2,050**.
+- `generate_data.py` drew `price` and `size_sqft` independently, so price/sqft spanned
+  **612–11,452 AED/sqft**.
 
-Fixing this means either sourcing real DLD data, or generating price and size with a
-community-specific price/sqft distribution (and regenerating `eval/eval_results.json`).
-Documented as a known limitation in the README until then.
+What changed:
+
+- Size is now derived from price through the community's implied AED/sqft density
+  (midpoint price / midpoint size, ±12%, with a bedroom premium). Correlation between
+  price and size went from **0.51 to 0.96**, and price/sqft from 612–11,452 to
+  **1,046–2,615** with no community spread wider than 2×.
+- A new `price_history` table (12 quarters per community, in DuckDB) replaces the
+  hardcoded trends. Its latest quarter is the sample's own average, computed the same
+  way as `v_community_summary`, so `/trends` and `/api/scores` cannot disagree.
+  Earlier quarters are modelled and the volume is stock-turnover based; both the API
+  (`source`, `basis`) and the page say so.
+- Developer scorecards are now a transaction-weighted aggregation of
+  `v_investment_scores`. The unsourced delivery, appreciation, unit-count and RERA
+  fields are gone rather than relabelled.
+- Each community still has only **2–5 transactions**; averages of that size remain
+  weak evidence, and this is still documented in the README.
+
+`tests/test_data_quality.py` pins the correlation, the AED/sqft band, per-community
+density stability, the trend/scores anchor, and that a developer's score stays inside
+its communities' range.
 
 ## Evaluation claims
 
@@ -61,7 +75,9 @@ Documented as a known limitation in the README until then.
 inside the column's global min–max (ROI 4.9–10.3%, net yield 2.08–8.25%). A
 fabricated 7.0% passes. "100% number accuracy" therefore measures "no out-of-range
 figures", not correctness. Keyword matching averages 56%, and 29/30 includes a
-quota error. README and case study now state the metric for what it is.
+quota error. README and case study now state the metric for what it is. The results
+file was produced against the pre-regeneration dataset; the check itself is
+range-based and still applies.
 
 ## Security
 
@@ -75,16 +91,16 @@ quota error. README and case study now state the metric for what it is.
 
 ## Still open
 
-1. Correlate price and size in the generator, or ingest real DLD transactions.
-2. Derive `/trends` and developer scorecards from the database, or clearly mark them
-   as illustrative in the UI (README says so; the pages do not).
-3. Replace global-range validation in the eval with per-question expected values.
-4. Pin `requirements.txt`; `streamlit`, `pandas`, `openpyxl` and `reportlab` are only
+1. Replace global-range validation in the eval with per-question expected values, and
+   re-run it after the data regeneration (LLM quota permitting).
+2. Pin `requirements.txt`; `streamlit`, `pandas`, `openpyxl` and `reportlab` are only
    needed by the legacy Streamlit UI and the export script.
-5. Frontend tests and CI (pytest + eslint + `next build`). The 10 new API tests cover
-   the regressions above but nothing renders a component.
-6. `rag.py`'s `health_check()` still probes a `transactions` Chroma collection that
+3. Frontend tests and CI (pytest + eslint + `next build`). The API contract and data
+   quality tests cover the regressions above but nothing renders a component.
+4. `rag.py`'s `health_check()` still probes a `transactions` Chroma collection that
    `ingest.py` never creates.
+5. Trends earlier than the latest quarter are modelled, not observed; real DLD history
+   would remove the growth-curve assumption.
 
 ## What holds up well
 

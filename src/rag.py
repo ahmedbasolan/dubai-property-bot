@@ -693,7 +693,7 @@ Here is a | pipe-delimited | table | that is | hard to read
 Long paragraph with no formatting that goes on and on and on...
 
 ## DATA FRESHNESS
-All data is from Q1 2024. Always remind users to verify with DLD for current conditions."""
+Transaction data covers 2024; the market reports are dated Q1 2024. Always remind users to verify with DLD for current conditions."""
 
     user_prompt = f"""Question: {query}
 
