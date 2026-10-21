@@ -14,7 +14,11 @@ VACANCY_RATE = 0.05  # ~2-3 weeks/year
 
 # LLM defaults
 LLM_TEMPERATURE = 0.3
-LLM_MAX_TOKENS = 4000
+# Groq's free tier counts the prompt *and* max_tokens against its 8k tokens per
+# minute limit, so a 4k ceiling turned a 6k-token context into a 413. Answers
+# here run a few hundred tokens; 1,500 leaves room for the context and the
+# request-budget guard in rag.generate_answer trims this further if needed.
+LLM_MAX_TOKENS = 1500
 
 # UI
 MIN_BUDGET = 300_000

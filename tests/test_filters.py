@@ -62,10 +62,14 @@ class TestCommunityExtraction:
         ).fetchone()[0]
         assert n > 0, f"resolved {value!r} matches no rows"
 
-    def test_comparison_question_is_not_filtered(self, communities):
-        """Naming two communities is a comparison, not a filter."""
+    def test_comparison_is_scoped_to_both_communities(self, communities):
+        """Naming two communities is a comparison, scoped to both."""
         result = extract_filters("Compare Dubai Marina and JVC yields", communities)
         assert "community" not in result["filters"]
+        assert result["filters"]["communities"] == [
+            "Dubai Marina",
+            "JVC (Jumeirah Village Circle)",
+        ]
         assert any("comparison" in s for s in result["skipped"])
 
     def test_unknown_community_yields_no_filter(self, communities):

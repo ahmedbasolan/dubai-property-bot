@@ -205,11 +205,14 @@ def _extract_property_type(query: str) -> tuple[Optional[str], List[str]]:
     return found.pop(), []
 
 
-def _extract_community(query: str, known: Sequence[str]) -> tuple[Optional[str], List[str]]:
-    """Resolve a community mention to its exact database string.
+def _extract_community(query: str, known: Sequence[str]) -> tuple[List[str], List[str]]:
+    """Resolve community mentions to their exact database strings.
 
-    `known` should be the community values from the database. A query naming
-    two communities is a comparison, not a filter, so it is left unfiltered.
+    `known` should be the community values from the database. One match is a
+    filter; two or more are a comparison, returned as a list so retrieval can
+    scope scores and rows to the communities being compared. Leaving that
+    comparison unfiltered returned all 24 scores and then showed only the top
+    8, so both communities could be missing from the context.
     """
     text = query.lower()
     by_norm = {c.lower(): c for c in known}
@@ -224,13 +227,14 @@ def _extract_community(query: str, known: Sequence[str]) -> tuple[Optional[str],
             matches[canonical] = canonical
 
     if not matches:
-        return None, []
+        return [], []
     if len(matches) > 1:
-        return None, [
-            f"query names {len(matches)} communities ({', '.join(sorted(matches))}); "
-            "treated as a comparison, left unfiltered"
+        names = sorted(matches)
+        return names, [
+            f"query names {len(names)} communities ({', '.join(names)}); "
+            "comparison scoped to those communities"
         ]
-    return next(iter(matches)), []
+    return [next(iter(matches))], []
 
 
 def extract_filters(
@@ -245,7 +249,7 @@ def extract_filters(
     """
     skipped: List[str] = []
 
-    community, s = _extract_community(query, known_communities)
+    communities, s = _extract_community(query, known_communities)
     skipped += s
     property_type, s = _extract_property_type(query)
     skipped += s
@@ -255,8 +259,10 @@ def extract_filters(
     skipped += s
 
     filters: Dict[str, Any] = {}
-    if community:
-        filters["community"] = community
+    if len(communities) == 1:
+        filters["community"] = communities[0]
+    elif len(communities) > 1:
+        filters["communities"] = communities
     if property_type:
         filters["property_type"] = property_type
     if bedrooms is not None:

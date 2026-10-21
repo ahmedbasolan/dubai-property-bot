@@ -14,12 +14,19 @@ from openai import OpenAI
 
 from config import DB_PATH, CHROMA_DIR, LLM_TEMPERATURE, LLM_MAX_TOKENS
 from filters import extract_filters
+from price_trends import get_price_trend, BASIS as TREND_BASIS
 
 # Rows of transaction detail handed to the model. Each row costs roughly 110
 # tokens, so 40 stays around 5k tokens including scores, supply and semantic
 # context - inside the 8k/min budget of the Groq free tier, which the previous
 # single-request limit could already breach.
 TX_CONTEXT_LIMIT = 40
+
+# Groq's free tier counts the prompt *and* max_tokens against 8k tokens per
+# minute. The request budget below is a safety net for a growing dataset: it
+# trims the answer ceiling rather than letting a large context turn into a 413.
+MAX_REQUEST_TOKENS = 7600
+MIN_ANSWER_TOKENS = 400
 
 # Column order of a transaction row, shared by the RAG context sample and the
 # REST listing. Kept as one list so the two cannot drift apart: the API used to
@@ -152,6 +159,7 @@ def structured_search(
 
     where_parts = []
     params = []
+    communities = list((filters or {}).get("communities") or [])
     if filters:
         if filters.get("community"):
             # ILIKE, not =: the column holds 'Business Bay' and 'Villa', so a
@@ -159,6 +167,14 @@ def structured_search(
             # report that no such property exists.
             where_parts.append("community ILIKE ?")
             params.append(_like_param(filters["community"]))
+        elif communities:
+            # A comparison is scoped to the communities named in the question.
+            # Leaving it unfiltered returned 24 scores, then build_context showed
+            # the top 8 - both compared communities could be missing, and the
+            # model correctly answered "no scores available".
+            placeholders = ", ".join("?" for _ in communities)
+            where_parts.append(f"community IN ({placeholders})")
+            params.extend(communities)
         if filters.get("min_price") is not None:
             where_parts.append("price_aed >= ?")
             params.append(filters["min_price"])
@@ -228,6 +244,10 @@ def structured_search(
     if filters and filters.get("community"):
         scope_where = "community ILIKE ?"
         scope_params = [_like_param(filters["community"])]
+    elif communities:
+        placeholders = ", ".join("?" for _ in communities)
+        scope_where = f"community IN ({placeholders})"
+        scope_params = communities
 
     score_rows = duck_conn.execute(
         f"SELECT * FROM v_investment_scores WHERE {scope_where} ORDER BY composite_score DESC",
@@ -243,12 +263,34 @@ def structured_search(
     ]
     results["community_scores"] = [dict(zip(score_cols, row)) for row in score_rows]
 
+    # Scoped price trend: only for a single-community query. A comparison or a
+    # broad question would need 24 series, which is exactly the kind of context
+    # bloat that produced the eval's 413. One compact line keeps trend answers
+    # anchored to the same DuckDB series that /api/trends serves.
+    community = (filters or {}).get("community")
+    if community:
+        trend = get_price_trend(community)
+        if trend.quarters:
+            results["price_trend"] = {
+                "community": trend.community,
+                "first_quarter": trend.quarters[0],
+                "first_price": trend.prices[0],
+                "latest_quarter": trend.quarters[-1],
+                "latest_price": trend.prices[-1],
+                "yoy_change_pct": trend.yoy_change_pct,
+                "basis": TREND_BASIS,
+            }
+
     # supply_pipeline names the column community_name, not community.
     supply_scope = "1=1"
     supply_params: List[Any] = []
     if filters and filters.get("community"):
         supply_scope = "community_name ILIKE ?"
         supply_params = [_like_param(filters["community"])]
+    elif communities:
+        placeholders = ", ".join("?" for _ in communities)
+        supply_scope = f"community_name IN ({placeholders})"
+        supply_params = communities
 
     supply_query = f"""
         SELECT community_name, existing_stock_units, units_under_construction,
@@ -547,6 +589,16 @@ def build_context(
                 f"Recommendation: {cs['recommendation']} (Score: {cs['composite_score']:.0f}/100)"
             )
 
+    trend = structured.get("price_trend")
+    if trend:
+        parts.append("\n=== PRICE TREND (DuckDB) ===")
+        parts.append(
+            f"[{trend['community']}] {trend['first_quarter']} "
+            f"AED {trend['first_price']:,.0f}/sqft -> "
+            f"{trend['latest_quarter']} AED {trend['latest_price']:,.0f}/sqft, "
+            f"YoY {trend['yoy_change_pct']:+.1f}%. {trend['basis']}"
+        )
+
     if structured["transactions"]:
         parts.append("\n=== MATCHING TRANSACTIONS ===")
         for tx in structured["transactions"]:
@@ -585,6 +637,22 @@ def build_context(
             parts.append(f"[{community} - {section}]\n{doc['text']}\n")
 
     return "\n".join(parts)
+
+
+def _estimate_tokens(text: str) -> int:
+    """Conservative token estimate; Groq exposes no tokenizer for this model."""
+    return max(1, len(text) // 4)
+
+
+def _budgeted_max_tokens(*prompts: str) -> int:
+    """Fit the answer ceiling under the free tier's prompt + completion limit.
+
+    A 4k max_tokens ceiling used to turn a 6k-token context into a 10k request
+    and a deterministic 413. The normal ceiling is LLM_MAX_TOKENS; this only
+    lowers it when the context itself grows.
+    """
+    used = sum(_estimate_tokens(p) for p in prompts)
+    return min(LLM_MAX_TOKENS, max(MIN_ANSWER_TOKENS, MAX_REQUEST_TOKENS - used))
 
 
 def generate_answer(
@@ -705,6 +773,7 @@ Transaction data covers 2024; the market reports are dated Q1 2024. Always remin
 
 Answer using ONLY the data above. Use clean markdown formatting — proper tables, bullet points, bold for key metrics. Never use pipe-delimited text outside of tables. Never write [CITATIONS]."""
 
+    max_tokens = _budgeted_max_tokens(system_prompt, user_prompt)
     last_err = None
     for attempt in range(4):
         try:
@@ -715,7 +784,7 @@ Answer using ONLY the data above. Use clean markdown formatting — proper table
                     {"role": "user", "content": user_prompt},
                 ],
                 temperature=LLM_TEMPERATURE,
-                max_tokens=LLM_MAX_TOKENS,
+                max_tokens=max_tokens,
             )
             return response.choices[0].message.content
         except Exception as e:
@@ -734,6 +803,14 @@ Answer using ONLY the data above. Use clean markdown formatting — proper table
                 continue
             raise
     raise last_err
+
+
+def dataset_counts() -> Dict[str, int]:
+    """Row and community counts, so UI copy never hardcodes the dataset size."""
+    transactions, communities = duck_conn.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT community) FROM transactions"
+    ).fetchone()
+    return {"transactions": int(transactions), "communities": int(communities)}
 
 
 def known_communities() -> List[str]:
