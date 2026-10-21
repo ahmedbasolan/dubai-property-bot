@@ -121,8 +121,8 @@ on Dubai, not DLD records.
 
 | Metric | Result (Groq `openai/gpt-oss-120b`) |
 |--------|------------------------------------|
-| Successful answers | 29 / 30 (1 deferred by free-tier daily token quota; runner **resumes**) |
-| Avg keyword score | 56% |
+| Successful answers | 29 / 30 (1 request needed ~10k tokens against the free tier's 8k TPM cap, HTTP 413; runner **resumes**) |
+| Avg keyword score | 54% |
 | Percentage claims outside dataset range | 0 (earlier reported as "100% number accuracy") |
 | Community attribution (entities exist in DB) | **100%** |
 
@@ -139,7 +139,7 @@ fabricated figure passes if the real column spans it. Community attribution at
 
 The fix samples the top 2 per `community + property_type`, ranks scarce groups first so a single penthouse is never truncated, and caps at 40 rows. Coverage went from 5/24 communities and 1/3 property types to 20/24 and 3/3. Four factually wrong answers became correct, and 26 of 30 questions improved with **zero regressions**.
 
-**A measurement bug, not a model error.** Number accuracy initially read 93% after the fix. Both failures were false positives in the checker: a supply-pipeline percentage (`15.9%`) was flagged as an out-of-range ROI because the regex crossed sentence boundaries, and a net yield of `2.78%` was validated against the ROI range (4.9–10.3) instead of the net-yield range (2.08–8.25). The checker now confines matches to a single clause and validates each metric against its own range. Real accuracy is 100%.
+**A measurement bug, not a model error.** Number accuracy initially read 93% after the fix. Both failures were false positives in the checker: a supply-pipeline percentage (`15.9%`) was flagged as an out-of-range ROI because the regex crossed sentence boundaries, and a net yield was validated against the ROI range instead of the net-yield range. The checker now confines matches to a single clause and validates each metric against its own range. Real accuracy is 100%.
 
 Both matter for interpretation: the 100% figures describe what the model did with the context it was given, not that the pipeline was sound. The coverage manifest — exact counts by property type, developer, handover status and bedrooms, plus an instruction not to total the sample rows — exists so the model can distinguish "does not exist in the data" from "was not in the rows shown", and so a reader of the answer can tell the difference.
 

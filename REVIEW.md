@@ -72,12 +72,14 @@ its communities' range.
 ## Evaluation claims
 
 **Partly fixed.** `eval/run_eval.py` marks a percentage "accurate" when it falls
-inside the column's global min–max (ROI 4.9–10.3%, net yield 2.08–8.25%). A
+inside the column's global min–max (currently ROI 4.7–10.5%, net yield 2.92–8.58%). A
 fabricated 7.0% passes. "100% number accuracy" therefore measures "no out-of-range
-figures", not correctness. Keyword matching averages 56%, and 29/30 includes a
-quota error. README and case study now state the metric for what it is. The results
-file was produced against the pre-regeneration dataset; the check itself is
-range-based and still applies.
+figures", not correctness. Keyword matching averages 54%, and 29/30 includes a
+request-size failure: question 20 asks for a two-community comparison and its
+context is ~10,042 tokens against the free tier's 8,000 TPM cap (HTTP 413), so it
+fails deterministically rather than intermittently. README and case study now state
+the metric and that failure for what they are. The results were regenerated against
+the current dataset after the generator change.
 
 ## Security
 
@@ -92,7 +94,7 @@ range-based and still applies.
 ## Still open
 
 1. Replace global-range validation in the eval with per-question expected values, and
-   re-run it after the data regeneration (LLM quota permitting).
+   shrink the context for question 20 so it fits the free tier's 8k TPM cap.
 2. Pin `requirements.txt`; `streamlit`, `pandas`, `openpyxl` and `reportlab` are only
    needed by the legacy Streamlit UI and the export script.
 3. Frontend tests and CI (pytest + eslint + `next build`). The API contract and data
