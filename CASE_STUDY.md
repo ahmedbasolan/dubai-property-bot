@@ -121,7 +121,7 @@ on Dubai, not DLD records.
 
 | Metric | Result (Groq `openai/gpt-oss-120b`) |
 |--------|------------------------------------|
-| Successful answers | 29 / 30 (the failure was a 413: Groq counts prompt + max_tokens, and the old 4k ceiling made a 6k prompt a 10k request; fixed. Full 120b re-run quota-blocked; Q20 re-verified on 20b) |
+| Successful answers | 29 / 30 (the failure was a 413: Groq counts prompt + max_tokens, and the old 4k ceiling made a 6k prompt a 10k request; fixed. Full 120b re-run quota-blocked; Q20 re-verified on 20b and 120b) |
 | Avg keyword score | 56% |
 | Percentage claims outside dataset range | 0 (earlier reported as "100% number accuracy") |
 | Community attribution (entities exist in DB) | **100%** |

@@ -191,8 +191,8 @@ counts the prompt **and** `max_tokens` against its 8,000 TPM cap, so the old 4k
 ceiling made the request ~10k. `LLM_MAX_TOKENS` is now 1,500 with a request-budget
 guard. A fresh run cleared its first 20 questions before the daily quota ran out;
 its Q20 response also exposed a top-8 truncation for comparisons (fixed and
-unit-tested), and Q20 was re-checked on `openai/gpt-oss-20b`, where it correctly
-compares both scores (70 vs 63). A full 120b re-run is pending quota.
+unit-tested), and Q20 was re-checked on `openai/gpt-oss-20b` and then on the 120b
+itself; both now compare both scores (70 vs 63). A full 120b re-run is pending quota.
 
 | Metric | Result |
 |--------|--------|

@@ -88,9 +88,9 @@ The post-fix run reached 20 successful answers before the 120b daily quota ran o
 pre-fix 413 record, and Q21-Q30 are from the prior run. Q20's fresh response exposed a
 second bug the 413 had hidden: comparisons were left unfiltered, then the context
 showed only the top 8 scores, so both compared communities could be missing. Comparisons
-are now scoped to the named communities, and Q20 re-checked on `openai/gpt-oss-20b`
-(the 120b quota was exhausted) correctly reports 70 vs 63 from both scorecards. A full
-120b re-run is pending the daily quota reset.
+are now scoped to the named communities; Q20 re-checked on `openai/gpt-oss-20b` and
+then on the 120b itself correctly reports 70 vs 63 from both scorecards. A full 120b
+re-run is still pending the daily quota reset.
 
 ## Security
 
