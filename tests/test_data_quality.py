@@ -111,3 +111,22 @@ def test_developer_score_is_bounded_by_its_communities(conn):
         assert composites, developer.name
         # Weighted average, rounded to a whole point.
         assert min(composites) - 1 <= developer.composite_score <= max(composites) + 1
+
+
+def test_developer_counts_reconcile_with_scorecards(conn):
+    """The chat's developer totals and the scorecards must agree.
+
+    "Various" communities used to draw from a pool that included the master
+    developers, so Emaar and Nakheel showed 18 transactions by
+    `transactions.developer` and 16 in their scorecards.
+    """
+    from developer_scorecard import get_all_developer_scores
+
+    for developer in get_all_developer_scores():
+        raw = conn.execute(
+            "SELECT COUNT(*) FROM transactions WHERE developer = ?", [developer.name]
+        ).fetchone()[0]
+        assert raw == developer.transaction_count, (
+            f"{developer.name}: {raw} rows name the developer, "
+            f"but the scorecard counts {developer.transaction_count} community transactions"
+        )
