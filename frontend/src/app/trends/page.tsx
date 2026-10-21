@@ -83,7 +83,7 @@ export default function TrendsPage() {
       ? ((latest.avg_price - yearAgo.avg_price) / yearAgo.avg_price) * 100
       : 0;
 
-  const totalMarketVolume = data.reduce((s, d) => s + (d.transactions ?? 0), 0);
+  const totalMarketVolume = data.reduce((s, d) => s + (d.market_volume ?? 0), 0);
 
   return (
     <div className="p-6 space-y-6">
@@ -230,7 +230,7 @@ export default function TrendsPage() {
                   borderRadius: "8px",
                 }}
               />
-              <Bar dataKey="transactions" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="market_volume" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
           <p className="text-xs text-muted-foreground mt-2">

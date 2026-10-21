@@ -10,7 +10,7 @@ here and in the UI:
 * Earlier quarters are walked backwards from the anchor with a 2022-2024
   growth curve and a per-community dispersion factor.
 * `market_volume` is derived from stock turnover (`supply_pipeline`), not from
-  a count of the 73 sampled transactions.
+  a count of the sampled transactions.
 """
 
 import sys
@@ -29,7 +29,7 @@ SOURCE = "duckdb:price_history"
 BASIS = (
     "Latest quarter is the sample's average AED/sqft (the same value /api/scores "
     "reports). Earlier quarters are modelled with a 2022-2024 growth curve; "
-    "volume is modelled from stock turnover, not a count of the 73 transactions."
+    "volume is modelled from stock turnover, not a count of the sampled transactions."
 )
 
 

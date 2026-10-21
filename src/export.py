@@ -137,7 +137,7 @@ def generate_excel_report(
     ws3 = wb.create_sheet("Developers")
     dev_scores = get_all_developer_scores()
     headers3 = [
-        "Developer", "Overall Grade", "Communities", "Transactions",
+        "Developer", "Overall Grade", "Communities", "Community TX",
         "Avg AED/sqft", "Avg Net Yield %", "Supply Grade",
         "Occupancy Grade", "Composite Score", "Recommendation",
     ]

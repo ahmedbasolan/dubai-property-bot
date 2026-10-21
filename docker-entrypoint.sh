@@ -7,10 +7,12 @@
 # rag.py opens it read-only at import time, so the container died on startup.
 set -e
 
-if [ ! -f data/dubai_properties.duckdb ]; then
-    echo "[entrypoint] No DuckDB file, building from data/raw CSVs"
-    python src/db_setup.py
-fi
+# Always rebuild. db_setup is idempotent (CREATE IF NOT EXISTS, then DELETE and
+# reload each table) and it is how a schema addition such as price_history
+# reaches an existing ./data volume. Guarding on "DB file exists" left upgraded
+# containers without the new table, so /trends silently served nothing.
+echo "[entrypoint] Building DuckDB from data/raw CSVs"
+python src/db_setup.py
 
 if [ ! -d chroma_db ] || [ -z "$(ls -A chroma_db 2>/dev/null)" ]; then
     echo "[entrypoint] No ChromaDB store, ingesting market reports"

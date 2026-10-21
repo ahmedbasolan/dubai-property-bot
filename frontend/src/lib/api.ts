@@ -108,7 +108,7 @@ export interface DeveloperScore {
 export interface TrendPoint {
   quarter: string;
   avg_price: number;
-  transactions: number;
+  market_volume: number;
 }
 
 export interface MapFeature {
