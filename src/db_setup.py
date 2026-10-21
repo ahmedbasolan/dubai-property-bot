@@ -121,7 +121,9 @@ def init_db():
             ROUND(AVG(v.net_yield_pct), 2) AS avg_net_yield_pct,
             ROUND(AVG(v.service_charge_aed_sqft), 1) AS avg_service_charge,
             ROUND(AVG(v.price_aed), 0) AS avg_price,
-            sp.supply_risk,
+            -- Upper-cased so the API contract is one spelling; the CSV stores
+            -- 'high'/'medium'/'low' and the UI compares against 'HIGH'/'MEDIUM'.
+            UPPER(sp.supply_risk) AS supply_risk,
             sp.pipeline_pct_of_stock,
             sp.units_expected_next_24_months,
             c.occupancy_rate,
@@ -135,7 +137,14 @@ def init_db():
                  c.district, c.master_developer
     """)
 
-    # Investment scoring view (7 metrics)
+    # Investment scoring view (5 weighted factors)
+    #
+    # The score and the recommendation are derived from the *same* factor grades,
+    # so the two can never disagree. Previously they were unrelated rule sets:
+    # JVC and International City both scored 76 and were labelled INVEST and HOLD.
+    # Recomputed for the same reason, price/sqft is reported as a grade but not
+    # weighted - price and size are currently drawn independently in
+    # generate_data.py, so the ratio is noise (612-11,452 AED/sqft in one dataset).
     conn.execute("""
         CREATE OR REPLACE VIEW v_investment_scores AS
         WITH community_stats AS (
@@ -150,7 +159,8 @@ def init_db():
                 AVG(pipeline_pct_of_stock) AS bench_pipeline,
                 AVG(occupancy_rate) AS bench_occupancy
             FROM community_stats
-        )
+        ),
+        grades AS (
         SELECT
             cs.community,
             cs.district,
@@ -218,34 +228,59 @@ def init_db():
                 WHEN cs.master_developer IN ('Nakheel', 'DAMAC') THEN 'B'
                 WHEN cs.master_developer IN ('DMCC', 'Nshama') THEN 'C'
                 ELSE 'D'
-            END AS developer_score,
-            -- Composite recommendation
-            CASE
-                WHEN (
-                    (CASE WHEN cs.avg_roi_pct >= 7.0 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.avg_net_yield_pct >= 5.0 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.pipeline_pct_of_stock <= 15 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.occupancy_rate >= 0.85 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.avg_service_charge <= 18 THEN 1 ELSE 0 END)
-                ) >= 4 THEN 'INVEST'
-                WHEN (
-                    (CASE WHEN cs.avg_roi_pct >= 6.0 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.avg_net_yield_pct >= 3.5 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.pipeline_pct_of_stock <= 20 THEN 1 ELSE 0 END) +
-                    (CASE WHEN cs.occupancy_rate >= 0.82 THEN 1 ELSE 0 END)
-                ) >= 3 THEN 'HOLD'
-                ELSE 'AVOID'
-            END AS recommendation,
-            -- Numeric composite score (0-100)
-            ROUND(
-                (CASE WHEN cs.avg_roi_pct >= 8.5 THEN 25 WHEN cs.avg_roi_pct >= 7.0 THEN 20 WHEN cs.avg_roi_pct >= 6.0 THEN 15 WHEN cs.avg_roi_pct >= 5.0 THEN 10 ELSE 5 END) +
-                (CASE WHEN cs.avg_net_yield_pct >= 7.0 THEN 25 WHEN cs.avg_net_yield_pct >= 5.5 THEN 20 WHEN cs.avg_net_yield_pct >= 4.0 THEN 15 WHEN cs.avg_net_yield_pct >= 2.5 THEN 10 ELSE 5 END) +
-                (CASE WHEN cs.pipeline_pct_of_stock <= 5 THEN 20 WHEN cs.pipeline_pct_of_stock <= 10 THEN 15 WHEN cs.pipeline_pct_of_stock <= 15 THEN 10 WHEN cs.pipeline_pct_of_stock <= 25 THEN 5 ELSE 0 END) +
-                (CASE WHEN cs.occupancy_rate >= 0.92 THEN 15 WHEN cs.occupancy_rate >= 0.88 THEN 12 WHEN cs.occupancy_rate >= 0.84 THEN 9 WHEN cs.occupancy_rate >= 0.80 THEN 6 ELSE 3 END) +
-                (CASE WHEN cs.avg_service_charge <= 10 THEN 15 WHEN cs.avg_service_charge <= 15 THEN 12 WHEN cs.avg_service_charge <= 20 THEN 9 WHEN cs.avg_service_charge <= 25 THEN 6 ELSE 3 END)
-            , 0) AS composite_score
+            END AS developer_score
         FROM community_stats cs
         CROSS JOIN benchmarks b
+        ),
+        points AS (
+            SELECT *,
+                (CASE yield_score         WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS yield_points,
+                (CASE net_yield_score     WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS net_points,
+                (CASE supply_risk_score   WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS supply_points,
+                (CASE occupancy_score     WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS occupancy_points,
+                (CASE service_charge_score WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS service_points
+            FROM grades
+        ),
+        scored AS (
+            -- Weights: gross 25, net 25, supply 20, occupancy 15, service 15.
+            -- Each factor contributes 1-5 points, so the weighted mean divided by
+            -- 5 lands on 20-100.
+            SELECT *,
+                ROUND((
+                    25 * yield_points + 25 * net_points + 20 * supply_points +
+                    15 * occupancy_points + 15 * service_points
+                ) / 5.0, 0) AS composite_score
+            FROM points
+        )
+        SELECT
+            community,
+            district,
+            transaction_count,
+            avg_price_per_sqft,
+            avg_roi_pct,
+            avg_net_yield_pct,
+            avg_service_charge,
+            avg_price,
+            supply_risk,
+            pipeline_pct_of_stock,
+            occupancy_rate,
+            master_developer,
+            price_score,
+            yield_score,
+            net_yield_score,
+            service_charge_score,
+            supply_risk_score,
+            occupancy_score,
+            developer_score,
+            -- One rule set: the signal is a band on the score above, never a
+            -- separate count of threshold passes.
+            CASE
+                WHEN composite_score >= 70 THEN 'INVEST'
+                WHEN composite_score >= 50 THEN 'HOLD'
+                ELSE 'AVOID'
+            END AS recommendation,
+            composite_score
+        FROM scored
     """)
 
     print(f"DuckDB initialized: {DB_PATH}")
