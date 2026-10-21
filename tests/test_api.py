@@ -37,7 +37,7 @@ def conn():
 
 
 def test_list_returns_whole_dataset(client, conn):
-    """The list endpoint used to return 40 of 73 rows and call that the total."""
+    """The list endpoint used to return the LLM's 40-row context sample."""
     expected = conn.execute("SELECT COUNT(*) FROM v_net_yield").fetchone()[0]
     body = client.get("/api/transactions", params={"limit": 500}).json()
 
@@ -143,12 +143,6 @@ def test_chat_get_ignores_api_key(client, monkeypatch):
 
 
 def test_every_community_has_supply_and_metadata(conn):
-    """The scoring view LEFT JOINs supply_pipeline and communities.
-
-    A missing row would NULL the pipeline/occupancy and drop the community out
-    of the ranking; this pins the data contract instead of papering over it with
-    COALESCE.
-    """
     missing_supply = conn.execute(
         """SELECT DISTINCT t.community FROM transactions t
            LEFT JOIN supply_pipeline sp ON t.community = sp.community_name
@@ -162,3 +156,30 @@ def test_every_community_has_supply_and_metadata(conn):
 
     assert missing_supply == []
     assert missing_meta == []
+
+
+def test_unknown_trend_community_returns_404(client):
+    response = client.get("/api/trends", params={"community": "Atlantis"})
+
+    assert response.status_code == 404
+    assert "Atlantis" in response.json()["detail"]
+
+
+def test_trends_report_their_source_and_basis(client):
+    """/trends must say where the series comes from and what is modelled."""
+    body = client.get("/api/trends").json()
+
+    assert body["source"] == "duckdb:price_history"
+    assert "modelled" in body["basis"].lower()
+    assert body["trends"]
+
+
+def test_developer_recommendation_matches_its_score(client):
+    body = client.get("/api/developers").json()
+
+    assert body["developers"]
+    for developer in body["developers"]:
+        value = developer["composite_score"]
+        expected = "INVEST" if value >= 70 else "HOLD" if value >= 50 else "AVOID"
+        assert developer["recommendation"] == expected, developer["name"]
+

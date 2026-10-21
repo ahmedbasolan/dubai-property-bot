@@ -23,8 +23,19 @@ from pydantic import BaseModel, Field
 
 from rag import get_transaction, list_transactions, structured_search
 from calculators import calculate_mortgage, calculate_str
-from developer_scorecard import get_all_developer_scores
-from price_trends import get_all_trends, get_top_gainers, get_top_volume
+from developer_scorecard import (
+    BASIS as DEVELOPER_BASIS,
+    SOURCE as DEVELOPER_SOURCE,
+    get_all_developer_scores,
+)
+from price_trends import (
+    BASIS as TREND_BASIS,
+    SOURCE as TREND_SOURCE,
+    get_all_trends,
+    get_price_trend,
+    get_top_gainers,
+    get_top_volume,
+)
 from data_provider import MockDataProvider
 
 app = FastAPI(title="Dubai Property Investor API", version="2.0.0")
@@ -244,7 +255,11 @@ def str_calculator(
 @app.get("/api/developers")
 def developers():
     scores = get_all_developer_scores()
-    return {"developers": [vars(d) for d in scores]}
+    return {
+        "developers": [vars(d) for d in scores],
+        "source": DEVELOPER_SOURCE,
+        "basis": DEVELOPER_BASIS,
+    }
 
 
 def _trend_to_points(t):
@@ -257,31 +272,46 @@ def _trend_to_points(t):
 
 @app.get("/api/trends")
 def price_trends(community: Optional[str] = None):
-    all_trends = get_all_trends()
     if community:
-        trend = all_trends.get(community)
-        if trend:
-            return {"community": community, "data": _trend_to_points(trend)}
-        return {"error": f"No trend data for {community}"}
-    return {"trends": {k: _trend_to_points(v) for k, v in all_trends.items()}}
+        trend = get_price_trend(community)
+        if not trend.quarters:
+            raise HTTPException(status_code=404, detail=f"No trend data for {community}")
+        return {
+            "community": trend.community,
+            "data": _trend_to_points(trend),
+            "source": TREND_SOURCE,
+            "basis": TREND_BASIS,
+        }
+    all_trends = get_all_trends()
+    return {
+        "trends": {k: _trend_to_points(v) for k, v in all_trends.items()},
+        "source": TREND_SOURCE,
+        "basis": TREND_BASIS,
+    }
 
 
 @app.get("/api/trends/top-gainers")
 def top_gainers():
     gainers = get_top_gainers()
-    return {"gainers": [
-        {"community": g.community, "yoy_change_pct": g.yoy_change_pct, "trend_direction": g.trend_direction}
-        for g in gainers
-    ]}
+    return {
+        "gainers": [
+            {"community": g.community, "yoy_change_pct": g.yoy_change_pct, "trend_direction": g.trend_direction}
+            for g in gainers
+        ],
+        "source": TREND_SOURCE,
+    }
 
 
 @app.get("/api/trends/top-volume")
 def top_volume():
     volume = get_top_volume()
-    return {"volume": [
-        {"community": v.community, "total_volume": sum(v.volumes), "yoy_change_pct": v.yoy_change_pct}
-        for v in volume
-    ]}
+    return {
+        "volume": [
+            {"community": v.community, "total_volume": sum(v.volumes), "yoy_change_pct": v.yoy_change_pct}
+            for v in volume
+        ],
+        "source": TREND_SOURCE,
+    }
 
 
 @app.get("/api/scores")
