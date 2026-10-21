@@ -660,8 +660,9 @@ def generate_supply_pipeline() -> list:
 
 
 # Quarterly growth used to walk the series backwards from the observed quarter.
-# Modelled on Dubai 2022-Q1 to 2024-Q4: ~3.5-4% per quarter, easing at the end.
-QUARTERLY_GROWTH = [0.033, 0.035, 0.036, 0.038, 0.039, 0.040, 0.041, 0.042, 0.040, 0.038, 0.036, 0.034]
+# Modelled on Dubai: a ~14% year in 2022, ~15% in 2023, then the moderation the
+# market reports describe through 2024 (~7% for the year).
+QUARTERLY_GROWTH = [0.030, 0.032, 0.034, 0.035, 0.036, 0.038, 0.038, 0.036, 0.022, 0.018, 0.015, 0.015]
 QUARTER_LABELS = [
     f"Q{q} {year}" for year in (2022, 2023, 2024) for q in (1, 2, 3, 4)
 ]
