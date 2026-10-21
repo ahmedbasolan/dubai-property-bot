@@ -24,9 +24,11 @@ from config import DB_PATH
 
 SOURCE = "duckdb:v_investment_scores"
 BASIS = (
-    "Transaction-weighted average of community metrics and grades. Covers only "
-    "communities in this dataset; delivery timeliness, appreciation and RERA "
-    "standing are not in the data and are not reported."
+    "Transaction-weighted average of community metrics and grades for communities "
+    "this developer master-developed. transaction_count counts those communities' "
+    "transactions; the transaction-level developer field can name a different "
+    "builder, so raw counts by that column differ. Delivery timeliness, "
+    "appreciation and RERA standing are not in the data and are not reported."
 )
 
 

@@ -185,13 +185,13 @@ make eval
   spans it (see `REVIEW.md`)
 - Community attribution (entity names must exist in DB, alias-normalized)
 
-Latest results (real LLM — Groq `openai/gpt-oss-120b`, 29 of 30 answered; one question
-hit the free-tier daily quota):
+Latest results (real LLM — Groq `openai/gpt-oss-120b`, 29 of 30 answered; the remaining
+question's ~10k-token context exceeded the free tier's 8,000 TPM cap, HTTP 413):
 
 | Metric | Result |
 |--------|--------|
 | Successful | 29 / 30 |
-| Avg keyword score | 56% |
+| Avg keyword score | 54% |
 | Percentage claims outside dataset range | 0 (reported as "100% number accuracy" in earlier revisions) |
 | Community attribution | **100%** |
 
@@ -242,7 +242,10 @@ relaxation safety net, semantic scoping, the eval harness itself, the REST
 contract (list endpoint returning every row, 404s, score/signal agreement), and
 data quality (price/size correlation, AED/sqft band, trend/scores anchor).
 
-The runner loads `.env` automatically and **resumes**: re-run `make eval` after the daily quota resets to fill in the remaining questions without redoing successes. TPM 429s retry with exponential backoff; TPD exhaustion fails fast with a clear message.
+The runner loads `.env` automatically and **resumes**: re-run `make eval` to fill in
+questions that failed without redoing successes. TPM 429s retry with exponential
+backoff; a request larger than the tier's TPM cap fails fast (currently question 20,
+at ~10k tokens against an 8k cap), and TPD exhaustion fails with a clear message.
 
 ## Project Structure
 
@@ -301,6 +304,10 @@ The UI uses a custom **Luxury Gold** design system (`#D4AF37` primary, Cinzel + 
   turnover — the API and the page both say so. Developer scorecards are a
   transaction-weighted aggregation of the community scores; delivery timeliness,
   appreciation and RERA standing are not in the dataset and are not reported.
+- **Two developer fields.** `transactions.developer` is the builder recorded on the
+  transaction; `communities.master_developer` is the community's master developer.
+  Developer scorecards aggregate the latter, so their `transaction_count` can differ
+  from a raw count by `developer`.
 - **The eval's number check is a range check**, not per-question accuracy.
 - **No authentication.** Chat is rate limited per IP (`CHAT_RATE_LIMIT_PER_MIN`,
   default 20/min) but not authenticated; never expose a funded server key publicly.
