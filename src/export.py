@@ -21,7 +21,7 @@ from reportlab.platypus import (
 
 from rag import structured_search
 from calculators import calculate_mortgage, calculate_str
-from developer_scorecard import score_developer, get_all_developer_scores
+from developer_scorecard import get_all_developer_scores
 
 
 # --- Styles ---
@@ -137,9 +137,9 @@ def generate_excel_report(
     ws3 = wb.create_sheet("Developers")
     dev_scores = get_all_developer_scores()
     headers3 = [
-        "Developer", "Overall Grade", "On-Time %", "Quality",
-        "Post-Handover Appreciation %", "Service Charge Grade",
-        "Projects", "Units Delivered", "RERA Compliant", "Recommendation",
+        "Developer", "Overall Grade", "Communities", "Transactions",
+        "Avg AED/sqft", "Avg Net Yield %", "Supply Grade",
+        "Occupancy Grade", "Composite Score", "Recommendation",
     ]
     for col, h in enumerate(headers3, 1):
         cell = ws3.cell(row=1, column=col, value=h)
@@ -150,10 +150,9 @@ def generate_excel_report(
 
     for row_idx, ds in enumerate(dev_scores, 2):
         data = [
-            ds.name, ds.overall_grade, ds.on_time_delivery_pct,
-            ds.quality_rating, ds.post_handover_appreciation_pct,
-            ds.service_charge_efficiency, ds.project_count,
-            ds.total_units_delivered, ds.rera_compliance, ds.recommendation,
+            ds.name, ds.overall_grade, ds.community_count, ds.transaction_count,
+            ds.avg_price_per_sqft, ds.avg_net_yield_pct, ds.supply_grade,
+            ds.occupancy_grade, ds.composite_score, ds.recommendation,
         ]
         for col, val in enumerate(data, 1):
             cell = ws3.cell(row=row_idx, column=col, value=val)
@@ -292,18 +291,18 @@ def generate_pdf_report(
     elements.append(Paragraph("Developer Scorecard", styles["Heading2"]))
     elements.append(Spacer(1, 2*mm))
 
-    dev_data = [["Developer", "Grade", "On-Time", "Quality", "Appreciation", "RERA"]]
-    for ds in sorted(dev_scores, key=lambda x: x.overall_grade):
+    dev_data = [["Developer", "Grade", "Comms", "Net Yield", "Composite", "Signal"]]
+    for ds in sorted(dev_scores, key=lambda x: x.composite_score, reverse=True):
         dev_data.append([
             ds.name,
             ds.overall_grade,
-            f"{ds.on_time_delivery_pct:.0f}%",
-            ds.quality_rating,
-            f"{ds.post_handover_appreciation_pct:.1f}%",
-            "✓" if ds.rera_compliance else "✗",
+            str(ds.community_count),
+            f"{ds.avg_net_yield_pct:.2f}%",
+            f"{ds.composite_score:.0f}",
+            ds.recommendation,
         ])
 
-    dev_table = Table(dev_data, colWidths=[35*mm, 18*mm, 22*mm, 18*mm, 28*mm, 16*mm])
+    dev_table = Table(dev_data, colWidths=[35*mm, 18*mm, 20*mm, 24*mm, 24*mm, 20*mm])
     dev_table.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1F4E79")),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
