@@ -8,16 +8,16 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
       - BAYUT_API_KEY=${BAYUT_API_KEY}
+      - CORS_ORIGINS=http://localhost:3000
     volumes:
       - ./chroma_db:/app/chroma_db
       - ./data:/app/data
-      - ./.env:/.env
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 60s
     restart: unless-stopped
 
   web:
@@ -26,11 +26,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://api:8000
+      # NEXT_PUBLIC_* is compiled into the client bundle and read by the
+      # *browser*, so it must be a host-reachable URL. `http://api:8000` only
+      # resolves inside the compose network and broke every fetch from the page.
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: sh -c "npm ci && npm run start"
+    # `next start` needs a production build; without it the service exits.
+    command: sh -c "npm ci && npm run build && npm run start"
     depends_on:
       api:
         condition: service_healthy
