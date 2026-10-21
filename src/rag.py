@@ -21,6 +21,19 @@ from filters import extract_filters
 # single-request limit could already breach.
 TX_CONTEXT_LIMIT = 40
 
+# Column order of a transaction row, shared by the RAG context sample and the
+# REST listing. Kept as one list so the two cannot drift apart: the API used to
+# reuse the context sample and silently returned 40 of 73 rows.
+TX_COLUMNS = [
+    "transaction_id", "community", "property_type", "bedrooms",
+    "price_aed", "size_sqft", "roi_pct", "floor_level", "view_type",
+    "service_charge_aed_sqft", "parking_spots", "completion_year",
+    "furnishing", "developer", "handover_status",
+    "estimated_annual_rent", "annual_service_charges",
+    "net_yield_pct", "price_per_sqft",
+]
+_TX_SELECT = ",\n               ".join(TX_COLUMNS)
+
 # Initialize clients
 duck_conn = duckdb.connect(str(DB_PATH), read_only=True)
 chroma_client = chromadb.PersistentClient(
@@ -184,12 +197,7 @@ def structured_search(
     per_group = max(2, -(-TX_CONTEXT_LIMIT // group_count)) if group_count else 2
 
     tx_query = f"""
-        SELECT transaction_id, community, property_type, bedrooms,
-               price_aed, size_sqft, roi_pct, floor_level, view_type,
-               service_charge_aed_sqft, parking_spots, completion_year,
-               furnishing, developer, handover_status,
-               estimated_annual_rent, annual_service_charges,
-               net_yield_pct, price_per_sqft
+        SELECT {_TX_SELECT}
         FROM v_net_yield
         WHERE {where_clause}
         QUALIFY row_number() OVER (
@@ -205,16 +213,7 @@ def structured_search(
     """
     results["_per_group"] = per_group
     tx_rows = duck_conn.execute(tx_query, params).fetchall()
-
-    tx_cols = [
-        "transaction_id", "community", "property_type", "bedrooms",
-        "price_aed", "size_sqft", "roi_pct", "floor_level", "view_type",
-        "service_charge_aed_sqft", "parking_spots", "completion_year",
-        "furnishing", "developer", "handover_status",
-        "estimated_annual_rent", "annual_service_charges",
-        "net_yield_pct", "price_per_sqft",
-    ]
-    results["transactions"] = [dict(zip(tx_cols, row)) for row in tx_rows]
+    results["transactions"] = [dict(zip(TX_COLUMNS, row)) for row in tx_rows]
 
     score_query = """
         SELECT * FROM v_investment_scores
@@ -252,7 +251,10 @@ def structured_search(
         supply_params = [_like_param(filters["community"])]
 
     supply_query = f"""
-        SELECT * FROM supply_pipeline
+        SELECT community_name, existing_stock_units, units_under_construction,
+               units_completed_last_12_months, units_expected_next_24_months,
+               pipeline_pct_of_stock, UPPER(supply_risk) AS supply_risk
+        FROM supply_pipeline
         WHERE {supply_scope}
         ORDER BY pipeline_pct_of_stock DESC
     """
@@ -266,6 +268,72 @@ def structured_search(
 
     results["coverage"] = _coverage_summary(where_clause, params)
     return results
+
+
+def list_transactions(
+    community: Optional[str] = None,
+    bedrooms: Optional[int] = None,
+    property_type: Optional[str] = None,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    limit: int = 50,
+    offset: int = 0,
+) -> Dict[str, Any]:
+    """Full, paginated transaction listing for the REST API.
+
+    Deliberately separate from `structured_search`: that function returns a
+    budgeted, representative *sample* for the LLM prompt (TX_CONTEXT_LIMIT
+    rows). Reusing it here truncated `/api/transactions` to 40 of 73 rows and
+    reported the sample size as the total, so the properties page silently lost
+    a third of the dataset.
+    """
+    where_parts: List[str] = []
+    params: List[Any] = []
+    if community:
+        where_parts.append("community ILIKE ?")
+        params.append(_like_param(community))
+    if bedrooms is not None:
+        where_parts.append("bedrooms = ?")
+        params.append(bedrooms)
+    if property_type:
+        where_parts.append("property_type ILIKE ?")
+        params.append(_like_param(property_type))
+    if min_price is not None:
+        where_parts.append("price_aed >= ?")
+        params.append(min_price)
+    if max_price is not None:
+        where_parts.append("price_aed <= ?")
+        params.append(max_price)
+
+    where_clause = " AND ".join(where_parts) if where_parts else "1=1"
+    total = duck_conn.execute(
+        f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
+    ).fetchone()[0]
+
+    rows = duck_conn.execute(
+        f"""SELECT {_TX_SELECT}
+            FROM v_net_yield
+            WHERE {where_clause}
+            ORDER BY net_yield_pct DESC, transaction_id ASC
+            LIMIT ? OFFSET ?""",
+        params + [int(limit), int(offset)],
+    ).fetchall()
+
+    return {
+        "transactions": [dict(zip(TX_COLUMNS, row)) for row in rows],
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+def get_transaction(transaction_id: str) -> Optional[Dict[str, Any]]:
+    """Fetch a single transaction by ID, or None if it does not exist."""
+    row = duck_conn.execute(
+        f"SELECT {_TX_SELECT} FROM v_net_yield WHERE transaction_id = ?",
+        [transaction_id],
+    ).fetchone()
+    return dict(zip(TX_COLUMNS, row)) if row else None
 
 
 def _coverage_summary(where_clause: str, params: List[Any]) -> Dict[str, Any]:
@@ -495,7 +563,10 @@ def build_context(
                 f"Developer: {tx['developer']}, {tx['handover_status']}"
             )
 
-    high_supply = [s for s in structured["supply_info"] if s["supply_risk"] == "high"]
+    high_supply = [
+        s for s in structured["supply_info"]
+        if str(s["supply_risk"]).lower() == "high"
+    ]
     if high_supply:
         parts.append("\n=== HIGH SUPPLY RISK COMMUNITIES ===")
         for s in high_supply[:5]:
