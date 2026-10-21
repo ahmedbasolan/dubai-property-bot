@@ -11,13 +11,33 @@ import {
 export default function CommunitiesPage() {
   const [communities, setCommunities] = useState<CommunityScore[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    api.getCommunities().then((data) => {
-      setCommunities(data.communities);
-      setLoading(false);
-    });
+    let stale = false;
+    api
+      .getCommunities()
+      .then((data) => {
+        if (!stale) setCommunities(data.communities);
+      })
+      .catch((err: unknown) => {
+        if (!stale) setError(err instanceof Error ? err.message : "Failed to load communities");
+      })
+      .finally(() => {
+        if (!stale) setLoading(false);
+      });
+    return () => {
+      stale = true;
+    };
   }, []);
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-sm text-red-400">Could not load communities: {error}</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -46,7 +66,7 @@ export default function CommunitiesPage() {
           Investment Leaderboard
         </h1>
         <p className="text-muted-foreground mt-1">
-          Communities ranked by 7-factor investment score
+          Communities ranked by 5-factor investment score
         </p>
       </div>
 
@@ -122,12 +142,12 @@ export default function CommunitiesPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Price Score</span>
-                  <span className="font-medium">{c.price_score ?? 0}/100</span>
+                  <span className="text-muted-foreground">Price Grade</span>
+                  <span className="font-medium">{c.price_score ?? "—"}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Yield Score</span>
-                  <span className="font-medium">{c.yield_score ?? 0}/100</span>
+                  <span className="text-muted-foreground">Yield Grade</span>
+                  <span className="font-medium">{c.yield_score ?? "—"}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Supply Risk</span>

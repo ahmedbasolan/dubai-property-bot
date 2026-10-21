@@ -51,7 +51,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     let stale = false;
-    Promise.all([api.getCommunities(), api.getTransactions({}, useLive)])
+    Promise.all([api.getCommunities(), api.getTransactions({ limit: "500" }, useLive)])
       .then(([c, t]) => {
         if (stale) return;
         setCommunities(c.communities);

@@ -16,23 +16,29 @@ async function fetchApi<T>(endpoint: string): Promise<T> {
   return res.json();
 }
 
+export type Grade = "A" | "B" | "C" | "D" | "F";
+
 export interface CommunityScore {
   community: string;
   district: string;
+  transaction_count: number;
   composite_score: number;
   recommendation: "INVEST" | "HOLD" | "AVOID";
   avg_net_yield_pct: number;
   avg_roi_pct: number;
   avg_price_per_sqft: number;
   avg_price: number;
-  supply_risk: string;
+  supply_risk: "LOW" | "MEDIUM" | "HIGH";
   pipeline_pct_of_stock: number;
   occupancy_rate: number;
   master_developer: string;
-  price_score: number;
-  yield_score: number;
-  net_yield_score: number;
-  rank: number;
+  price_score: Grade;
+  yield_score: Grade;
+  net_yield_score: Grade;
+  service_charge_score: Grade;
+  supply_risk_score: Grade;
+  occupancy_score: Grade;
+  developer_score: Grade;
 }
 
 export interface Transaction {
@@ -45,8 +51,10 @@ export interface Transaction {
   price_per_sqft: number;
   roi_pct: number;
   net_yield_pct: number;
-  floor_level: string;
-  view_type: string;
+  estimated_annual_rent: number;
+  annual_service_charges: number;
+  floor_level: number | null;
+  view_type: string | null;
   developer: string;
   handover_status: string;
   service_charge_aed_sqft: number;
@@ -110,6 +118,7 @@ export interface HealthResponse {
   status: string;
   version: string;
   data_source: string;
+  default_source: string;
   bayut_configured: boolean;
 }
 
@@ -120,7 +129,13 @@ export const api = {
     const allParams = { ...(params || {}) };
     if (useLive) allParams.use_live = "true";
     const qs = Object.keys(allParams).length ? "?" + new URLSearchParams(allParams).toString() : "";
-    return fetchApi<{ transactions: Transaction[]; source: string }>(`/api/transactions${qs}`);
+    return fetchApi<{
+      transactions: Transaction[];
+      total: number;
+      source: string;
+      limit?: number;
+      offset?: number;
+    }>(`/api/transactions${qs}`);
   },
   getTransaction: (id: string) => fetchApi<{ transaction: Transaction }>(`/api/transactions/${id}`),
   getMortgage: (params: Record<string, string>) =>
@@ -135,13 +150,32 @@ export const api = {
   getTopGainers: () => fetchApi<{ gainers: TrendPoint[] }>("/api/trends/top-gainers"),
   getTopVolume: () => fetchApi<{ volume: TrendPoint[] }>("/api/trends/top-volume"),
   getMapData: () => fetchApi<{ features: MapFeature[] }>("/api/map"),
-  chat: (q: string, opts?: { provider?: string; apiKey?: string; model?: string }) => {
-    const qs = new URLSearchParams({ q });
-    if (opts?.provider) qs.set("provider", opts.provider);
-    if (opts?.apiKey) qs.set("api_key", opts.apiKey);
-    if (opts?.model) qs.set("model", opts.model);
-    return fetchApi<{ answer: string; communities: string[]; transaction_count: number }>(
-      `/api/chat?${qs.toString()}`
-    );
-  },
+  // POST, not GET: a key in a query string is written to access logs.
+  chat: (q: string, opts?: { provider?: string; apiKey?: string; model?: string }) =>
+    fetch(`${API_BASE}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        q,
+        provider: opts?.provider,
+        api_key: opts?.apiKey,
+        model: opts?.model,
+      }),
+    }).then(async (res) => {
+      if (!res.ok) {
+        let detail = `API error: ${res.status}`;
+        try {
+          const body = await res.json();
+          if (body?.detail) detail = String(body.detail);
+        } catch {
+          /* keep status-only message */
+        }
+        throw new Error(detail);
+      }
+      return (await res.json()) as {
+        answer: string;
+        communities: string[];
+        transaction_count: number;
+      };
+    }),
 };
