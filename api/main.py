@@ -7,18 +7,21 @@ Supports two data modes:
 
 import os
 import sys
+import threading
+import time
 from pathlib import Path
-from typing import Optional
+from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent.parent / ".env")
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
 
-from rag import structured_search
+from rag import get_transaction, list_transactions, structured_search
 from calculators import calculate_mortgage, calculate_str
 from developer_scorecard import get_all_developer_scores
 from price_trends import get_all_trends, get_top_gainers, get_top_volume
@@ -26,13 +29,48 @@ from data_provider import MockDataProvider
 
 app = FastAPI(title="Dubai Property Investor API", version="2.0.0")
 
+# Origins are configurable because the hardcoded localhost pair breaks any
+# deployment. Comma-separated, e.g. CORS_ORIGINS="https://app.example.com".
+CORS_ORIGINS = [
+    o.strip()
+    for o in os.getenv(
+        "CORS_ORIGINS", "http://localhost:3000,http://localhost:3001"
+    ).split(",")
+    if o.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- Chat rate limit ---
+# Keyed by client IP. The endpoint spends real LLM credit, so an unauthenticated
+# caller could otherwise run up the owner's bill. Set to 0 to disable.
+CHAT_RATE_LIMIT_PER_MIN = int(os.getenv("CHAT_RATE_LIMIT_PER_MIN", "20"))
+_chat_hits: Dict[str, List[float]] = {}
+_chat_hits_lock = threading.Lock()
+
+
+def _check_chat_rate_limit(client_ip: str) -> None:
+    if CHAT_RATE_LIMIT_PER_MIN <= 0:
+        return
+    now = time.time()
+    with _chat_hits_lock:
+        hits = [t for t in _chat_hits.get(client_ip, []) if now - t < 60]
+        if len(hits) >= CHAT_RATE_LIMIT_PER_MIN:
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    f"Chat rate limit reached ({CHAT_RATE_LIMIT_PER_MIN}/min). "
+                    "Wait a minute or raise CHAT_RATE_LIMIT_PER_MIN."
+                ),
+            )
+        hits.append(now)
+        _chat_hits[client_ip] = hits
 
 # --- Data source selection ---
 BAYUT_KEY = os.getenv("BAYUT_API_KEY", "")
@@ -63,11 +101,16 @@ def get_provider():
 @app.get("/api/health")
 def health():
     provider = get_provider()
-    data_source = "bayut" if BAYUT_KEY and "Bayut" in type(provider).__name__ else "mock"
+    live = bool(BAYUT_KEY) and "Bayut" in type(provider).__name__
     return {
         "status": "ok",
         "version": "2.0.0",
-        "data_source": data_source,
+        # What /api/transactions?use_live=true would serve.
+        "data_source": "bayut" if live else "mock",
+        # What the analytics endpoints (/api/communities, /api/scores, /api/map)
+        # actually read. They always query DuckDB, even when Bayut is configured,
+        # so reporting a single "bayut" source here mislabelled the whole app.
+        "default_source": "mock",
         "bayut_configured": bool(BAYUT_KEY),
     }
 
@@ -101,7 +144,8 @@ def get_transactions(
     property_type: Optional[str] = None,
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
-    limit: int = Query(default=50, le=200),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
     use_live: bool = Query(default=False, description="Use live BayutAPI data"),
 ):
     if use_live and BAYUT_KEY:
@@ -116,31 +160,26 @@ def get_transactions(
         )
         return {"transactions": [vars(t) for t in txns], "total": len(txns), "source": "bayut"}
 
-    # Default: use DuckDB (mock or pre-ingested data)
-    result = structured_search("", filters=None)
-    txns = result["transactions"]
-
-    if community:
-        txns = [t for t in txns if t["community"].lower() == community.lower()]
-    if bedrooms is not None:
-        txns = [t for t in txns if t["bedrooms"] == bedrooms]
-    if property_type:
-        txns = [t for t in txns if t["property_type"].lower() == property_type.lower()]
-    if min_price is not None:
-        txns = [t for t in txns if t["price_aed"] >= min_price]
-    if max_price is not None:
-        txns = [t for t in txns if t["price_aed"] <= max_price]
-
-    return {"transactions": txns[:limit], "total": len(txns), "source": "mock"}
+    # Paginated listing over DuckDB. Not structured_search: that returns a
+    # budgeted sample for the LLM and used to cap this endpoint at 40 of 73 rows.
+    result = list_transactions(
+        community=community,
+        bedrooms=bedrooms,
+        property_type=property_type,
+        min_price=min_price,
+        max_price=max_price,
+        limit=limit,
+        offset=offset,
+    )
+    return {**result, "source": "mock"}
 
 
 @app.get("/api/transactions/{transaction_id}")
-def get_transaction(transaction_id: str):
-    result = structured_search("", filters=None)
-    for tx in result["transactions"]:
-        if tx["transaction_id"] == transaction_id:
-            return {"transaction": tx}
-    return {"error": "Transaction not found"}, 404
+def get_transaction_by_id(transaction_id: str):
+    tx = get_transaction(transaction_id)
+    if tx is None:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    return {"transaction": tx}
 
 
 @app.get("/api/mortgage")
@@ -183,7 +222,10 @@ def str_calculator(
         community, bedrooms, int(property_price), int(size_sqft), service_charge_sqft
     )
     if result is None:
-        return {"error": f"No STR data for {community} {bedrooms}BR"}
+        raise HTTPException(
+            status_code=404,
+            detail=f"No STR data for {community} {bedrooms}BR",
+        )
     return {
         "community": result.community,
         "bedrooms": result.bedrooms,
@@ -302,19 +344,25 @@ def map_data():
     return {"features": features}
 
 
-@app.get("/api/chat")
-def chat(
-    q: str = Query(..., description="Investor question"),
-    provider: Optional[str] = Query(None, description="LLM provider: groq, openai, openrouter"),
-    api_key: Optional[str] = Query(None, description="API key for the provider"),
-    model: Optional[str] = Query(None, description="Model override"),
-):
-    """RAG chat: retrieves data + generates answer via LLM.
+class ChatRequest(BaseModel):
+    """Chat payload.
 
-    Supports Groq (free), OpenAI, and OpenRouter.
-    Pass provider + api_key to use your own key, or leave empty for server defaults.
-    On LLM quota/config failure, returns a data-only markdown answer (HTTP 200).
+    The API key travels in the request body, never in the query string: a key in
+    a URL ends up in uvicorn access logs, browser history and proxy logs.
     """
+
+    q: str = Field(..., min_length=2, max_length=1000)
+    provider: Optional[str] = Field(default=None, pattern="^(groq|openai|openrouter)$")
+    api_key: Optional[str] = Field(default=None, max_length=200)
+    model: Optional[str] = Field(default=None, max_length=100)
+
+
+def _chat_response(
+    q: str,
+    provider: Optional[str],
+    api_key: Optional[str],
+    model: Optional[str],
+) -> dict:
     from rag import rag_query, structured_search
 
     try:
@@ -332,6 +380,33 @@ def chat(
         "communities": [s["community"] for s in structured["community_scores"][:5]],
         "transaction_count": len(structured["transactions"]),
     }
+
+
+@app.post("/api/chat")
+def chat(chat_request: ChatRequest, request: Request):
+    """RAG chat: retrieves data + generates answer via LLM."""
+    _check_chat_rate_limit(request.client.host if request.client else "unknown")
+    return _chat_response(
+        chat_request.q, chat_request.provider, chat_request.api_key, chat_request.model
+    )
+
+
+@app.get("/api/chat", deprecated=True)
+def chat_get(
+    request: Request,
+    q: str = Query(..., description="Investor question"),
+    provider: Optional[str] = Query(None, description="LLM provider: groq, openai, openrouter"),
+    model: Optional[str] = Query(None, description="Model override"),
+):
+    """Deprecated GET variant, kept for old links.
+
+    It deliberately does not accept `api_key`: use POST /api/chat so keys are
+    not written into access logs.
+    """
+    _check_chat_rate_limit(request.client.host if request.client else "unknown")
+    if provider not in (None, "groq", "openai", "openrouter"):
+        raise HTTPException(status_code=422, detail=f"Unknown provider: {provider}")
+    return _chat_response(q, provider, None, model)
 
 
 def _data_only_answer(query: str, structured: dict, error: str) -> str:
