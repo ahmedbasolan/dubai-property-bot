@@ -86,15 +86,23 @@ export interface STRResult {
 
 export interface DeveloperScore {
   name: string;
-  overall_grade: string;
-  on_time_delivery_pct: number;
-  quality_rating: string;
-  post_handover_appreciation_pct: number;
-  service_charge_efficiency: string;
-  project_count: number;
-  total_units_delivered: number;
-  rera_compliance: boolean;
-  recommendation: string;
+  communities: string[];
+  community_count: number;
+  transaction_count: number;
+  avg_price_per_sqft: number;
+  avg_roi_pct: number;
+  avg_net_yield_pct: number;
+  avg_service_charge: number;
+  avg_occupancy_rate: number;
+  avg_pipeline_pct: number;
+  yield_grade: Grade;
+  net_yield_grade: Grade;
+  service_charge_grade: Grade;
+  supply_grade: Grade;
+  occupancy_grade: Grade;
+  composite_score: number;
+  overall_grade: Grade;
+  recommendation: "INVEST" | "HOLD" | "AVOID";
 }
 
 export interface TrendPoint {
@@ -142,9 +150,12 @@ export const api = {
     fetchApi<MortgageResult>(`/api/mortgage?${new URLSearchParams(params)}`),
   getSTR: (params: Record<string, string>) =>
     fetchApi<STRResult>(`/api/str?${new URLSearchParams(params)}`),
-  getDevelopers: () => fetchApi<{ developers: DeveloperScore[] }>("/api/developers"),
+  getDevelopers: () =>
+    fetchApi<{ developers: DeveloperScore[]; source: string; basis: string }>(
+      "/api/developers"
+    ),
   getTrends: (community?: string) =>
-    fetchApi<{ trends: Record<string, TrendPoint[]> }>(
+    fetchApi<{ trends: Record<string, TrendPoint[]>; source: string; basis: string }>(
       `/api/trends${community ? `?community=${community}` : ""}`
     ),
   getTopGainers: () => fetchApi<{ gainers: TrendPoint[] }>("/api/trends/top-gainers"),
