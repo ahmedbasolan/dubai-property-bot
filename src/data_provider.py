@@ -109,31 +109,35 @@ class MockDataProvider(DataProvider):
         where_parts = []
         params = []
         if community:
-            where_parts.append("community = ?")
+            where_parts.append("v.community = ?")
             params.append(community)
         if min_price is not None:
-            where_parts.append("price_aed >= ?")
+            where_parts.append("v.price_aed >= ?")
             params.append(min_price)
         if max_price is not None:
-            where_parts.append("price_aed <= ?")
+            where_parts.append("v.price_aed <= ?")
             params.append(max_price)
         if bedrooms is not None:
-            where_parts.append("bedrooms = ?")
+            where_parts.append("v.bedrooms = ?")
             params.append(bedrooms)
         if property_type:
-            where_parts.append("property_type = ?")
+            where_parts.append("v.property_type = ?")
             params.append(property_type)
 
         where = " AND ".join(where_parts) if where_parts else "1=1"
+        # net_yield_pct lives on v_net_yield, not on transactions; ordering the
+        # base table by it raised a BinderException. amenities is still read from
+        # transactions, which the view does not expose.
         query = f"""
-            SELECT transaction_id, community, property_type, bedrooms,
-                   price_aed, size_sqft, transaction_date, roi_pct,
-                   developer, handover_status, floor_level, view_type,
-                   service_charge_aed_sqft, parking_spots, completion_year,
-                   furnishing, amenities
-            FROM transactions
+            SELECT v.transaction_id, v.community, v.property_type, v.bedrooms,
+                   v.price_aed, v.size_sqft, t.transaction_date, v.roi_pct,
+                   v.developer, v.handover_status, v.floor_level, v.view_type,
+                   v.service_charge_aed_sqft, v.parking_spots, v.completion_year,
+                   v.furnishing, t.amenities
+            FROM v_net_yield v
+            JOIN transactions t ON t.transaction_id = v.transaction_id
             WHERE {where}
-            ORDER BY net_yield_pct DESC
+            ORDER BY v.net_yield_pct DESC
             LIMIT {limit}
         """
         rows = self.conn.execute(query, params).fetchall()
