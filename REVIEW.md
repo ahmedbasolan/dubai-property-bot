@@ -103,6 +103,8 @@ the current dataset after the generator change.
    `ingest.py` never creates.
 5. Trends earlier than the latest quarter are modelled, not observed; real DLD history
    would remove the growth-curve assumption.
+6. The chat context does not include `price_history`, so trend questions are answered
+   from the market-report chunks; only `/trends` and `/api/trends` use the DB series.
 
 ## What holds up well
 

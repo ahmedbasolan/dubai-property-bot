@@ -265,7 +265,7 @@ def developers():
 def _trend_to_points(t):
     """Convert a PriceTrend to a list of point dicts."""
     return [
-        {"quarter": q, "avg_price": p, "transactions": v}
+        {"quarter": q, "avg_price": p, "market_volume": v}
         for q, p, v in zip(t.quarters, t.prices, t.volumes)
     ]
 

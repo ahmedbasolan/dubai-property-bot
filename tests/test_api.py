@@ -173,6 +173,11 @@ def test_trends_report_their_source_and_basis(client):
     assert "modelled" in body["basis"].lower()
     assert body["trends"]
 
+    points = next(iter(body["trends"].values()))
+    assert points
+    assert "market_volume" in points[0]
+    assert "transactions" not in points[0], "volume is modelled, not sampled"
+
 
 def test_developer_recommendation_matches_its_score(client):
     body = client.get("/api/developers").json()
