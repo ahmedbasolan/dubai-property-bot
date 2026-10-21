@@ -185,13 +185,19 @@ make eval
   spans it (see `REVIEW.md`)
 - Community attribution (entity names must exist in DB, alias-normalized)
 
-Latest results (real LLM — Groq `openai/gpt-oss-120b`, 29 of 30 answered; the remaining
-question's ~10k-token context exceeded the free tier's 8,000 TPM cap, HTTP 413):
+Latest complete run (Groq `openai/gpt-oss-120b`): 29 of 30. The failure was an HTTP
+413, but not because the context was 10k tokens: the context is ~5.2k, and Groq
+counts the prompt **and** `max_tokens` against its 8,000 TPM cap, so the old 4k
+ceiling made the request ~10k. `LLM_MAX_TOKENS` is now 1,500 with a request-budget
+guard. A fresh run cleared its first 20 questions before the daily quota ran out;
+its Q20 response also exposed a top-8 truncation for comparisons (fixed and
+unit-tested), and Q20 was re-checked on `openai/gpt-oss-20b`, where it correctly
+compares both scores (70 vs 63). A full 120b re-run is pending quota.
 
 | Metric | Result |
 |--------|--------|
 | Successful | 29 / 30 |
-| Avg keyword score | 54% |
+| Avg keyword score | 56% |
 | Percentage claims outside dataset range | 0 (reported as "100% number accuracy" in earlier revisions) |
 | Community attribution | **100%** |
 
@@ -212,6 +218,13 @@ type, developer, handover status and bedrooms) plus an explicit instruction not
 to total the sample rows. Without it the model cannot tell "no such property"
 from "not in the rows I was shown", and it answers the second one.
 
+The LLM request budget counts **prompt + `max_tokens`** because Groq's free tier
+counts both against its 8,000 TPM limit. `LLM_MAX_TOKENS` is 1,500, and
+`generate_answer()` lowers it further when the prompt grows, so a larger context
+cannot turn into a deterministic 413. Single-community queries also get one
+compact `price_history` line, so trend answers cite the same DuckDB series as
+`/api/trends`.
+
 ### Deterministic filter extraction
 
 `filters` used to be a parameter no caller ever populated, so every query ran
@@ -222,10 +235,12 @@ generation. It extracts community (with aliases: `JVC`, `downtown`, `DSO`,
 
 Two rules keep a wrong filter from becoming a false "no data" answer:
 
-1. **Never narrow on a guess.** Comparison questions ("compare Marina and JVC"),
-   bare numbers ("top 3 communities"), percentages and undirected prices are
-   left unfiltered, and every omission is recorded in `skipped_filters` and
-   shown to the model.
+1. **Never narrow on a guess.** Bare numbers ("top 3 communities"), percentages and
+   undirected prices are left unfiltered, and every omission is recorded in
+   `skipped_filters` and shown to the model. A comparison ("compare Marina and
+   JVC") is scoped to the communities it names — leaving it unfiltered returned all
+   24 scores and then showed the top 8, so both compared communities could be
+   missing from the prompt.
 2. **Never narrow to nothing.** If a filter matches zero rows the query is
    retried unfiltered and the relaxation is reported in the context.
 
@@ -237,15 +252,15 @@ report where one exists — unscoped, a DAMAC Hills 2 question was answered from
 the *Dubai Hills* report. Only 4 of 24 communities have a report; for the rest
 the gap is stated rather than papered over.
 
-Tests: `pytest tests/ eval/test_run_eval.py` - 76 covering extraction, the
+Tests: `pytest tests/ eval/test_run_eval.py` - 81 covering extraction, the
 relaxation safety net, semantic scoping, the eval harness itself, the REST
 contract (list endpoint returning every row, 404s, score/signal agreement), and
 data quality (price/size correlation, AED/sqft band, trend/scores anchor).
 
 The runner loads `.env` automatically and **resumes**: re-run `make eval` to fill in
 questions that failed without redoing successes. TPM 429s retry with exponential
-backoff; a request larger than the tier's TPM cap fails fast (currently question 20,
-at ~10k tokens against an 8k cap), and TPD exhaustion fails with a clear message.
+backoff; the request budget keeps prompt + `max_tokens` under the tier's 8k TPM, and
+TPD exhaustion fails with a clear message that can be resumed after the reset.
 
 ## Project Structure
 
@@ -301,13 +316,17 @@ The UI uses a custom **Luxury Gold** design system (`#D4AF37` primary, Cinzel + 
 - **Trends are partly modelled.** `/trends` reads `price_history` from DuckDB and its
   latest quarter is anchored to the same AED/sqft the scores use. Earlier quarters are
   walked backwards with a 2022-2024 growth curve, and volume is modelled from stock
-  turnover — the API and the page both say so. Developer scorecards are a
+  turnover - the API and the page both say so. Developer scorecards are a
   transaction-weighted aggregation of the community scores; delivery timeliness,
   appreciation and RERA standing are not in the dataset and are not reported.
-- **Two developer fields.** `transactions.developer` is the builder recorded on the
-  transaction; `communities.master_developer` is the community's master developer.
-  Developer scorecards aggregate the latter, so their `transaction_count` can differ
-  from a raw count by `developer`.
+- **Chat trends are scoped.** A single-community question gets one compact
+  `price_history` line (the same series as `/api/trends`); comparisons and broad
+  questions do not, to keep the prompt inside the free tier's TPM budget.
+- **Two developer fields, reconciled.** `transactions.developer` is the builder
+  recorded on the transaction; `communities.master_developer` is the community's
+  master developer. Builders for `"Various"` communities are sampled from a pool
+  that excludes every master developer with a scorecard, so a scorecard's
+  `transaction_count` equals the raw count by `developer`.
 - **The eval's number check is a range check**, not per-question accuracy.
 - **No authentication.** Chat is rate limited per IP (`CHAT_RATE_LIMIT_PER_MIN`,
   default 20/min) but not authenticated; never expose a funded server key publicly.

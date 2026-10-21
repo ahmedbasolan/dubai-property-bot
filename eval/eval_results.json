@@ -3,15 +3,15 @@
     "total": 30,
     "successful": 29,
     "errors": 1,
-    "avg_keyword_score": 0.538,
-    "number_accuracy": 1.0,
-    "community_accuracy": 1.0
+    "avg_keyword_score": 0.562,
+    "number_accuracy": 1,
+    "community_accuracy": 1
   },
   "results": [
     {
       "id": "eval_001",
       "question": "Which community has the best ROI for 1BR apartments under AED 1.5M?",
-      "answer": "**International City delivers the highest ROI for 1‑BR apartments priced ≤ AED 1.5 M** (ROI 9.9%, Net Yield 8.06%).\n\n- **ROI:** 9.9% (top among listed communities)  \n- **Net Yield:** 8.06% – the strongest net return after service charges and vacancy  \n- **Supply Risk:** High (15.5% pipeline) – monitor upcoming inventory  \n\n| Community | ROI | Net Yield | Supply Risk |\n|-----------|-----|-----------|-------------|\n| International City | 9.9% | 8.06% | High (15.5%) |\n| Dubai South | 9.2% | 7.20% | Medium (14.2%) |\n| JVC | 9.1% | 7.09% | High (15.9%) |\n| Discovery Gardens | 9.1% | 6.92% | Medium (8.2%) |\n\n**Recommendation: INVEST** – International City offers the best risk‑adjusted return, though keep an eye on the high supply pipeline. Verify current market conditions with DLD before committing.",
+      "answer": "**International City offers the highest ROI for 1‑BR apartments under AED 1.5 M (ROI 9.9%).**  \n\n- **Net Yield:** 8.06% (strong after‑service‑charge return)  \n- **Supply Risk:** High – 15.5% pipeline, which could pressure future rents  \n- **Sample transaction:** 1 BR at AED 400 k, ROI 10.5%, Net Yield 8.58% (TRX‑045)  \n\n| Community | ROI (Gross) | Net Yield | Supply Risk |\n|-----------|-------------|-----------|-------------|\n| International City | **9.9%** | 8.06% | High (15.5%) |\n| Dubai South | 9.2% | 7.20% | Medium (14.2%) |\n| JVC | 9.1% | 7.09% | High (15.9%) |\n| Discovery Gardens | 9.1% | 6.92% | Medium (8.2%) |\n| Deira | 9.0% | 7.12% | High (15.4%) |\n\n**Recommendation: INVEST** – International City delivers the best risk‑adjusted return, but monitor the high supply pipeline for potential rent pressure. Verify current DLD data before committing.",
       "keyword_score": 0.6,
       "number_accuracy": true,
       "number_issues": [],
@@ -37,7 +37,7 @@
     {
       "id": "eval_002",
       "question": "What is the average price per sqft in Downtown Dubai?",
-      "answer": "**Average price per sqft in Downtown Dubai: AED 2,351**  \n\n- The community investment score lists an **Avg Price/sqft of AED 2,351** for Downtown Dubai.  \n- The market report cites a **range of AED 2,100 – 2,800**, and the two recent transactions show **AED 2,088** (2 BR) and **AED 2,615** (1 BR), both within that range.\n\n| Source | Avg Price/sqft |\n|--------|----------------|\n| Community Score | AED 2,351 |\n| Market Report (range) | AED 2,100 – 2,800 |\n| Transaction TRX‑002 (2 BR) | AED 2,088 |\n| Transaction TRX‑001 (1 BR) | AED 2,615 |\n\n**Recommendation: HOLD** – price levels are stable, with modest upside and a solid occupancy rate (92%). Verify current DLD data before any transaction.",
+      "answer": "**Average price per sq ft in Downtown Dubai: AED 2,351**  \n\n- This figure comes from the community investment score (Avg Price/sqft = AED 2,351) and matches the latest quarter’s price trend.  \n- Market reports show a broader range of **AED 2,100 – 2,800**, while the two recent transactions priced at **AED 2,088** and **AED 2,615** bracket the average.\n\n| Metric | Value |\n|--------|-------|\n| Avg Price/sq ft (score) | AED 2,351 |\n| Reported range | AED 2,100 – 2,800 |\n| Recent transaction avg. | AED 2,351 (mid‑point) |\n\n**Recommendation: HOLD** – Prices are stable with moderate supply risk; maintain exposure while monitoring market dynamics.  \n\n*Verify current rates with DLD before any transaction.*",
       "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
@@ -60,8 +60,8 @@
     {
       "id": "eval_003",
       "question": "Compare rental yields between Dubai Marina and JVC.",
-      "answer": "**JVC delivers higher rental yields than Dubai Marina (7.09% vs ≈5.5%).**  \n\n- **JVC:** Net Yield 7.09%, ROI 9.1%, Score 79/100 (high‑yield, affordable entry).  \n- **Dubai Marina:** Sample transactions show Net Yield 5.89% (2 BR) and 5.23% (1 BR), ROI 7.8% and 7.1% respectively – lower than JVC.\n\n| Community | Net Yield | Gross ROI | Score |\n|-----------|-----------|-----------|-------|\n| JVC (Jumeirah Village Circle) | 7.09% | 9.1% | 79 |\n| Dubai Marina (2 BR) | 5.89% | 7.8% | N/A |\n| Dubai Marina (1 BR) | 5.23% | 7.1% | N/A |\n\n**Recommendation: INVEST** – JVC offers superior yield and price advantage; Marina remains attractive for waterfront exposure but delivers lower returns. Verify current rates with DLD before committing.",
-      "keyword_score": 0.6666666666666666,
+      "answer": "**JVC delivers higher net rental yields than Dubai Marina** (7.09% vs. 5.2‑5.9% in sample transactions).\n\n- **JVC:** Community score 79/100, Net Yield 7.09% (high‑yield affordable hub)【JVC (Jumeirah Village Circle)】.  \n- **Dubai Marina:** Sample 2‑BR unit Net Yield 5.89% and 1‑BR unit Net Yield 5.23%【TRX-004】【TRX-003】; market note cites “strong yields” but no specific figure.  \n\n| Community | Score | Net Yield | Signal |\n|-----------|-------|-----------|--------|\n| JVC | 79 | 7.09% | INVEST |\n| Dubai Marina (2BR) | N/A | 5.89% | INVEST |\n| Dubai Marina (1BR) | N/A | 5.23% | INVEST |\n\n- **Supply risk:** JVC faces high pipeline risk (15.9% of stock)【JVC (Jumeirah Village Circle)】; no high‑risk flag for Marina.  \n\n**Recommendation: INVEST** – JVC offers superior yields despite higher supply risk; Marina remains attractive for waterfront exposure with solid but lower yields. Verify current DLD data before committing.",
+      "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -85,7 +85,7 @@
     {
       "id": "eval_004",
       "question": "What properties are available in Business Bay for under AED 2M?",
-      "answer": "**Business Bay offers two ready‑to‑buy apartments under AED 2 M:** a 2‑BR at AED 1.15 M and a 1‑BR at AED 0.8 M.\n\n- Both units deliver **net yields around 5.6‑5.8%**, aligning with the community’s average net yield of **5.79%** (Score 70/100, INVEST).  \n- The supply risk is **medium (10.2% pipeline)**, and occupancy stands at **87%**, indicating stable demand.\n\n| Transaction ID | Bedrooms | Price (AED) | Size (sqft) | ROI | Net Yield | Service Charge (AED/sqft) | Developer | Handover |\n|----------------|----------|-------------|-------------|-----|-----------|---------------------------|-----------|----------|\n| TRX-017 | 2 BR | 1,150,000 | 540 | 7.5% | 5.77% | 16.0 | Nshama | Ready |\n| TRX-018 | 1 BR | 800,000 | 410 | 7.7% | 5.64% | 20.7 | DAMAC | Off‑Plan |\n\n**Recommendation: INVEST** – solid yields, price advantage, and a favorable community score support a strong entry point. Verify current availability and DLD records before proceeding.",
+      "answer": "**Business Bay has two ready‑to‑buy apartments under AED 2 M: a 2‑BR for AED 1.15 M and a 1‑BR for AED 0.8 M.**  \n\nBoth units fall within the community’s INVEST rating (Score 70/100) and deliver net yields around 5.6‑5.8%, aligning with the area’s average net yield of 5.79%.\n\n| Transaction ID | Bedrooms | Price (AED) | Size (sqft) | Net Yield | Service Charge (AED/sqft) | Status |\n|----------------|----------|------------|------------|-----------|---------------------------|--------|\n| TRX-017 | 2 BR | 1,150,000 | 540 | 5.77% | 16.0 | Ready |\n| TRX-018 | 1 BR | 800,000 | 410 | 5.64% | 20.7 | Off‑Plan |\n\n**Recommendation: INVEST** – the properties are priced below market averages, offer respectable net yields, and sit in a community with a solid investment score. Verify current availability and DLD records before proceeding.",
       "keyword_score": 0.4,
       "number_accuracy": true,
       "number_issues": [],
@@ -112,17 +112,18 @@
     {
       "id": "eval_005",
       "question": "Which developer has the most transactions in the dataset?",
-      "answer": "**Nakheel and Emaar each have the highest number of transactions (18 each).**\n\n- The dataset shows **Nakheel = 18** and **Emaar = 18** transactions, topping all other developers.  \n- All other developers have fewer transactions (Meraas 7, DMCC 7, etc.).\n\n| Developer | Transactions |\n|-----------|--------------|\n| Nakheel   | 18 |\n| Emaar     | 18 |\n\n**Recommendation: HOLD** – the data only reveals transaction counts; no investment signal is implied.  \n\n*Verify current market conditions with DLD before acting.*",
-      "keyword_score": 0.6666666666666666,
+      "answer": "**Emaar and Nakheel each have the most transactions – 16 each**  \n\nBoth developers tie for the highest activity in the 74‑transaction set, representing the largest share of market turnover.\n\n| Developer | Transactions |\n|-----------|--------------|\n| **Emaar** | **16** |\n| **Nakheel** | **16** |\n| Others | ≤5 |\n\n**Recommendation: INVEST** – the strong transaction volume signals robust market presence; still verify project‑specific fundamentals and current DLD data.",
+      "keyword_score": 1.0,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
       "expected_keywords": [
         "Emaar",
-        "developer",
+        "Nakheel",
+        "16",
         "most transactions"
       ],
-      "expected_answer_summary": "Emaar has the most transactions, appearing across Downtown Dubai, Dubai Marina, Dubai Hills Estate, and Arabian Ranches.",
+      "expected_answer_summary": "Emaar and Nakheel are tied with 16 transactions each.",
       "applied_filters": {},
       "skipped_filters": [],
       "relaxed_filters": null,
@@ -132,7 +133,7 @@
     {
       "id": "eval_006",
       "question": "What is the ROI range for off-plan properties vs ready properties?",
-      "answer": "**No aggregate ROI range is provided for off‑plan versus ready properties in the dataset.**\n\n- The transaction list includes individual ROI figures for both handover statuses, but the data does not contain pre‑computed minimum‑maximum or average ranges for each group.  \n- Without a summarized metric, we cannot reliably state the overall ROI spread for off‑plan versus ready units.\n\n**Recommendation: AVOID** – Seek additional market reports or DLD data that summarize ROI ranges before making a handover‑status‑based investment decision.",
+      "answer": "**The dataset does not include a pre‑computed ROI range for off‑plan versus ready properties.**  \n\n- Individual transactions list ROI values (e.g., off‑plan TRX‑067 ROI 7.8%, ready TRX‑043 ROI 8.8%), but no aggregated min‑max or range is provided.  \n- Without a defined range, a reliable comparison cannot be made.\n\n**Recommendation: AVOID** – seek additional market reports or DLD data that summarize ROI ranges before making allocation decisions.",
       "keyword_score": 0.75,
       "number_accuracy": true,
       "number_issues": [],
@@ -153,7 +154,7 @@
     {
       "id": "eval_007",
       "question": "What are the risks of investing in DAMAC Hills 2 according to market reports?",
-      "answer": "**There is no dedicated market‑report risk analysis for DAMAC Hills 2; the dataset only provides its investment score and supply‑risk metrics.**  \n\n- The community score is **67/100** with a **Medium supply risk (14.5% pipeline)** and **occupancy at 78%** (Score section).  \n- These factors suggest potential pressure from upcoming inventory and modest tenancy levels, which are the primary risk indicators available.  \n\n| Metric | Value | Implication |\n|--------|-------|-------------|\n| Score | 67/100 | Indicates modest overall attractiveness |\n| Supply Risk | Medium (14.5% pipeline) | Future unit influx could affect prices |\n| Occupancy | 78% | Below optimal levels, may impact cash flow |\n| Recommendation | HOLD | Aligns with the score |\n\n**Recommendation: HOLD** – monitor supply pipeline and occupancy trends before increasing exposure.  \n\n*Verify current conditions with DLD, as data reflects Q1 2024.*",
+      "answer": "**No dedicated market report exists for DAMAC Hills 2; risk insights come from the community investment score.**  \n\n- **Supply Risk:** Medium (14.5% pipeline) – indicates a moderate influx of new units that could pressure prices.  \n- **Occupancy:** 78% with an **F** rating in the score – suggests weaker demand relative to other suburbs.  \n- **Overall Score:** 67/100, leading to a **HOLD** recommendation (Score: 67/100)【Community Investment Scores】.  \n\n| Metric | Value |\n|--------|-------|\n| Supply Risk | Medium (14.5% pipeline) |\n| Occupancy | 78% (Rating: F) |\n| Net Yield | 6.48% |\n| Recommendation | HOLD (Score 67/100) |\n\n**Recommendation: HOLD** – moderate supply pressure and low occupancy flag risk; monitor pipeline and demand trends before increasing exposure.  \n\n*Verify current conditions with DLD before finalizing any decision.*",
       "keyword_score": 0.25,
       "number_accuracy": true,
       "number_issues": [],
@@ -178,7 +179,7 @@
     {
       "id": "eval_008",
       "question": "Which communities have villas available and what are their price ranges?",
-      "answer": "**Villas are currently listed in four Dubai communities with the following price bands:**  \n\n- **Palm Jumeirah:** AED 12.2 M (single listing)  \n- **The Springs:** AED 1.65 M – AED 2.30 M  \n- **Tilal Al Ghaf:** AED 4.85 M – AED 5.20 M  \n- **Arabian Ranches:** AED 6.20 M – AED 7.65 M  \n\n| Community | Min Price (AED) | Max Price (AED) | Supply Risk |\n|-----------|----------------|----------------|-------------|\n| Palm Jumeirah | 12,200,000 | 12,200,000 | – |\n| The Springs | 1,650,000 | 2,300,000 | Low (7.4% pipeline) |\n| Tilal Al Ghaf | 4,850,000 | 5,200,000 | – |\n| Arabian Ranches | 6,200,000 | 7,650,000 | **High** (16.5% pipeline) |\n\n**Key points**  \n- Villa inventory is limited to these four communities (9 transactions total).  \n- Arabian Ranches shows a high supply pipeline risk, which could pressure future prices.  \n\n**Recommendation:** **INVEST** in villas across these communities, prioritising The Springs and Tilal Al Ghaf for lower entry prices and modest supply risk. Verify current DLD records before finalising.",
+      "answer": "**Villas are listed in four communities with price ranges from AED 1.65 M to AED 12.2 M.**\n\n- The dataset contains **9 villa transactions** across **4 communities** (Palm Jumeirah, The Springs, Tilal Al Ghaf, Arabian Ranches).  \n- No other villa communities appear in the filtered data; additional villas may exist outside this sample.\n\n| Community | Price Range (AED) | Transaction IDs |\n|-----------|-------------------|-----------------|\n| Palm Jumeirah | 12.20 M – 12.20 M | TRX‑008 |\n| The Springs | 1.65 M – 2.30 M | TRX‑032, TRX‑033 |\n| Tilal Al Ghaf | 4.85 M – 5.20 M | TRX‑054, TRX‑055 |\n| Arabian Ranches | 6.20 M – 7.65 M | TRX‑022, TRX‑023, TRX‑024, TRX‑021 |\n\n**Recommendation: AVOID** – current villa listings show modest net yields (3‑5 %) and, for Arabian Ranches, a **high supply risk** (16.5 % pipeline). Verify with the DLD for any newer inventory before proceeding.",
       "keyword_score": 1.0,
       "number_accuracy": true,
       "number_issues": [],
@@ -202,7 +203,7 @@
     {
       "id": "eval_009",
       "question": "What is the occupancy rate in Downtown Dubai according to the market report?",
-      "answer": "**Occupancy rate in Downtown Dubai is 92%**\n\n- The Q1 2024 market report lists an **Occupancy Rate: 92%** for Downtown Dubai, which aligns with the community score data.  \n\n| Community | Occupancy |\n|-----------|-----------|\n| Downtown Dubai | 92% |\n\n**Recommendation: HOLD** – consistent with the provided score (63/100).  \n\n*Verify with the DLD for any updates before finalizing decisions.*",
+      "answer": "**Occupancy rate in Downtown Dubai is 92%**【Market Report: Downtown – Key Metrics】.\n\n- The market report for Q1 2024 lists a **92% occupancy** for the community.  \n- This matches the community investment score data, which also records **Occupancy: 92%**【Community Investment Scores】.\n\n| Community | Occupancy |\n|-----------|-----------|\n| Downtown Dubai | 92% |\n\n**Recommendation: HOLD** – Current occupancy is strong, but net yields are modest, supporting a hold stance.",
       "keyword_score": 1.0,
       "number_accuracy": true,
       "number_issues": [],
@@ -224,8 +225,8 @@
     {
       "id": "eval_010",
       "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
-      "answer": "**Top 3 communities for a first‑time investor with AED 1 M: International City, Discovery Gardens, Dubai Silicon Oasis**  \n\n- **International City** delivers the highest net yield (8.06%) and a solid score (79/100) but carries **high supply risk** (15.5% pipeline).  \n- **Discovery Gardens** offers a good balance of yield (6.92%), strong score (82/100) and **medium supply risk** (8.2% pipeline).  \n- **Dubai Silicon Oasis** provides a respectable yield (6.95%) with a **medium supply risk** (9.1% pipeline) and affordable pricing per sqft.\n\n| Community | Score | Net Yield | Supply Risk | Signal |\n|-----------|-------|-----------|-------------|--------|\n| International City | 79 | 8.06% | HIGH (15.5% pipeline) | INVEST |\n| Discovery Gardens | 82 | 6.92% | MEDIUM (8.2% pipeline) | INVEST |\n| Dubai Silicon Oasis | 79 | 6.95% | MEDIUM (9.1% pipeline) | INVEST |\n\n**Recommendation: INVEST** – these three communities combine the best yields and scores within the AED 1 M budget, while supply‑risk levels are manageable for a first‑time buyer (note the higher risk in International City). Verify current DLD records before finalizing.",
-      "keyword_score": 0.6,
+      "answer": "**Top 3 communities for a first‑time investor with AED 1 M:** **Discovery Gardens, Dubai Silicon Oasis, International City**  \n\n- **Discovery Gardens** – Score 82, Net Yield 6.92%, Supply Risk MEDIUM (8.2% pipeline).  \n- **Dubai Silicon Oasis** – Score 79, Net Yield 6.95%, Supply Risk MEDIUM (9.1% pipeline).  \n- **International City** – Score 79, Net Yield 8.06%, Supply Risk HIGH (15.5% pipeline) – highest yield but watch pipeline exposure.\n\n| Community | Score | Net Yield | Supply Risk | Signal |\n|-----------|-------|-----------|-------------|--------|\n| Discovery Gardens | 82 | 6.92% | MEDIUM (8.2%) | INVEST |\n| Dubai Silicon Oasis | 79 | 6.95% | MEDIUM (9.1%) | INVEST |\n| International City | 79 | 8.06% | HIGH (15.5%) | HOLD* |\n\n\\*Hold pending monitoring of the high supply pipeline; the yield advantage may offset risk if demand stays strong.\n\n**Action:** **INVEST** in Discovery Gardens and Dubai Silicon Oasis now; **HOLD** International City while tracking pipeline releases.  \n\n*Verify current prices and vacancy rates with the Dubai Land Department before finalising any purchase.*",
+      "keyword_score": 0.2,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -248,8 +249,8 @@
     {
       "id": "eval_011",
       "question": "What is the net yield for a property in Dubai Marina with AED 1.35M price and AED 14/sqft service charges?",
-      "answer": "**Net yield is approximately 5.56%** for a Dubai Marina unit at the price level you mentioned.\n\n- The community score for Dubai Marina lists a **Net Yield of 5.56%** (Score 73/100)【Dubai Marina: Score 73/100, Net Yield 5.56%】.  \n- No transaction in the dataset matches a AED 1.35 M price with a AED 14/sqft service charge, so a precise unit‑level net yield cannot be derived; the community average is the best proxy.\n\n| Community | Net Yield |\n|-----------|-----------|\n| Dubai Marina | 5.56% |\n\n**Recommendation: INVEST** – the area is rated “INVEST” with solid occupancy (89%) and medium supply risk. Verify current service‑charge levels and exact unit pricing with the DLD before finalizing.",
-      "keyword_score": 0.8,
+      "answer": "**The exact net yield for a AED 1.35 M Dubai Marina unit with AED 14/sqft service charges is not available in the data; the community’s average net yield is 5.56%.**\n\n- The Dubai Marina score sheet reports a **Net Yield of 5.56%** for the overall market (Score 73/100)【Community Investment Scores】.  \n- No transaction in the sample matches the AED 1.35 M price or AED 14/sqft service charge, so a property‑specific net yield cannot be derived.\n\n| Reference | Net Yield |\n|-----------|-----------|\n| Community average (Dubai Marina) | 5.56% |\n| TRX‑004 (2BR, AED 2.7 M, SC AED 15.9/sqft) | 5.89% |\n| TRX‑003 (1BR, AED 2.35 M, SC AED 18.0/sqft) | 5.23% |\n\n**Recommendation: INVEST** – Dubai Marina’s overall score and net yield are solid, though verify current service‑charge structures and market conditions with DLD.",
+      "keyword_score": 1.0,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -274,8 +275,8 @@
     {
       "id": "eval_012",
       "question": "Which communities have HIGH supply risk?",
-      "answer": "**High‑supply‑risk communities:** Deira, JVC, International City, Town Square, Sports City, Dubai Creek Harbour, Al Barsha, Bluewaters Island, Arabian Ranches.\n\n| Community | Pipeline % (24 mo) | Risk |\n|-----------|-------------------|------|\n| Deira | 15.4% | HIGH |\n| JVC (Jumeirah Village Circle) | 15.9% | HIGH |\n| International City | 15.5% | HIGH |\n| Town Square | 15.6% | HIGH |\n| Sports City | 20.2% | HIGH |\n| Dubai Creek Harbour | 20.1% | HIGH |\n| Al Barsha | 19.5% | HIGH |\n| Bluewaters Island | 17.6% | HIGH |\n| Arabian Ranches | 16.5% | HIGH |\n\n**Recommendation: AVOID** – Elevated pipeline volumes could pressure rents and occupancy, increasing downside risk. Verify current pipeline data with DLD before any commitment.",
-      "keyword_score": 0.4,
+      "answer": "**The following communities are flagged with HIGH supply risk**  \n\nHigh pipeline percentages indicate a significant addition of new units (≈15‑20% of existing stock) that could pressure rents and resale values.\n\n| Community | Pipeline % | Supply Risk |\n|-----------|------------|-------------|\n| Deira | 15.4% | HIGH |\n| Jumeirah Village Circle (JVC) | 15.9% | HIGH |\n| International City | 15.5% | HIGH |\n| Town Square | 15.6% | HIGH |\n| Sports City | 20.2% | HIGH |\n| Dubai Creek Harbour | 20.1% | HIGH |\n| Al Barsha | 19.5% | HIGH |\n| Bluewaters Island | 17.6% | HIGH |\n| Arabian Ranches | 16.5% | HIGH |\n\n**Recommendation: AVOID** – Elevated supply pipelines raise downside risk; verify current conditions with the DLD before any commitment.",
+      "keyword_score": 0.8,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -296,8 +297,8 @@
     {
       "id": "eval_013",
       "question": "What is the monthly mortgage payment for a AED 1.5M property with 20% down payment at 4.5% for 25 years?",
-      "answer": "**Unable to provide a monthly mortgage payment – the required calculation isn’t in the supplied data.**  \n\n- The dataset contains transaction prices, yields, and community scores, but no pre‑computed mortgage amortisation figures.  \n- Without an existing mortgage payment metric, we must refrain from estimating one.\n\n**Recommendation: AVOID** – seek a lender’s amortisation schedule or a dedicated mortgage calculator for accurate figures.",
-      "keyword_score": 0.3333333333333333,
+      "answer": "**Unable to provide the monthly mortgage payment – the required calculation isn’t in the supplied data.**  \n\n- The dataset includes transaction prices, yields, and community scores, but no pre‑computed mortgage amortization figures for a AED 1.5 M property with the specified terms.  \n- Without an existing metric, any derived payment would violate the rule against self‑calculation.\n\n**AVOID** – Seek a lender’s amortization schedule or a dedicated mortgage calculator for accurate figures.",
+      "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -321,7 +322,7 @@
     {
       "id": "eval_014",
       "question": "What are the total acquisition costs for a AED 1M property including DLD fees and agency fees?",
-      "answer": "**Insufficient data to calculate total acquisition costs for a AED 1 M property**  \n\n- The dataset provides transaction prices, service charges, ROI, and net yields, but **no DLD fee rates or agency commission percentages** are listed.  \n- Without those fee structures, the full acquisition cost (price + DLD + agency) cannot be derived from the available information.  \n\n**Recommendation: AVOID** – seek the missing fee details before proceeding.",
+      "answer": "**Insufficient data to calculate total acquisition costs for a AED 1 M property**  \n\n- The dataset does not include the Dubai Land Department (DLD) registration fee rate.  \n- Agency commission percentages are not provided in the available data.  \n\nWithout these fee structures, the full acquisition cost (purchase price + DLD fees + agency fees) cannot be derived.\n\n**Recommendation: HOLD** – obtain the current DLD and agency fee rates before proceeding.",
       "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
@@ -346,8 +347,8 @@
     {
       "id": "eval_015",
       "question": "How much can I earn from short-term renting a 1BR in Downtown Dubai?",
-      "answer": "**You can expect an annual net return of **4.20%** on a 1‑BR apartment in Downtown Dubai.**\n\n- **Net Yield:** 4.20% (TRX‑001 transaction) – reflects income after service charges and typical vacancy for short‑term rentals.  \n- **Gross ROI:** 5.9% (same transaction) – before expenses.  \n- **Community Benchmark:** Net Yield 4.46%, ROI 6.3% (Downtown Dubai score 63/100, HOLD).  \n\n| Source | Net Yield | Gross ROI | Recommendation |\n|--------|-----------|-----------|----------------|\n| Transaction TRX‑001 | 4.20% | 5.9% | HOLD |\n| Community Avg. | 4.46% | 6.3% | HOLD |\n\n**Recommendation: HOLD** – stable but modest net yields; consider the high service charges and medium supply risk before committing. Verify current rates with the DLD.",
-      "keyword_score": 0.16666666666666666,
+      "answer": "**You can expect a net annual return of roughly **4.2%** on a 1‑BR in Downtown Dubai.**  \n\n- **Net Yield:** 4.20% for the sampled transaction (TRX‑001) and 4.46% for the community overall.  \n- **ROI (gross):** 5.9% for the same transaction, indicating the gross rental income before service charges and vacancy.  \n- **Service Charge:** AED 24.5 / sqft, one of the highest in Dubai, which reduces the net yield.  \n\n| Source | Net Yield | Gross ROI | Service Charge |\n|--------|-----------|-----------|----------------|\n| TRX‑001 (1 BR, AED 2.85 M) | 4.20% | 5.9% | AED 24.5 / sqft |\n| Community average | 4.46% | 6.3% | AED 23.8 / sqft |\n\n**Recommendation: HOLD** – stable occupancy (92%) but high service charges and medium supply risk (13% pipeline) limit upside for short‑term rentals. Verify current rates with the DLD before finalizing.",
+      "keyword_score": 0.3333333333333333,
       "number_accuracy": true,
       "number_issues": [],
       "communities_valid": true,
@@ -372,7 +373,7 @@
     {
       "id": "eval_016",
       "question": "Is short-term rental better than long-term rental in Dubai Marina?",
-      "answer": "**Data insufficient to compare short‑term vs long‑term rental performance in Dubai Marina**  \n\n- The dataset provides only **long‑term rental yields**: community net yield 5.56% (ROI 7.5%) and transaction net yields 5.89% (2 BR) and 5.23% (1 BR).  \n- No metrics are available for short‑term (holiday) rentals such as occupancy, ADR, or net yield.  \n\n| Metric | Value |\n|--------|-------|\n| Community Net Yield (long‑term) | 5.56% |\n| Transaction Net Yield – 2 BR | 5.89% |\n| Transaction Net Yield – 1 BR | 5.23% |\n\n**Recommendation: AVOID** drawing a short‑term vs long‑term conclusion until short‑term rental data is obtained. Verify with DLD and market operators for current short‑term performance.",
+      "answer": "**Data does not provide separate short‑term and long‑term rental yields for Dubai Marina; only long‑term (gross ROI/Net Yield) figures are available.**  \n\n- **Long‑term net yields** range from **5.23%** (TRX‑003, 1 BR) to **5.89%** (TRX‑004, 2 BR)【TRX-003】【TRX-004】.  \n- Community‑level **Net Yield** is **5.56%** and **ROI** (gross) **7.5%**【Community Investment Scores】.  \n- The market report highlights **strong rental demand** from expat professionals, implying a robust long‑term market【Market Report: Marina】.  \n\n| Metric | Value |\n|--------|-------|\n| Community Net Yield | 5.56% |\n| Transaction Net Yield (1 BR) | 5.23% (TRX‑003) |\n| Transaction Net Yield (2 BR) | 5.89% (TRX‑004) |\n| Recommendation Score | 73/100 (INVEST) |\n\n**Recommendation: INVEST** – solid long‑term yields and a favorable investment score, though you should obtain specific short‑term rental performance data before deciding on that strategy.  \n\n*Verify current regulations and market conditions with the Dubai Land Department.*",
       "keyword_score": 0.0,
       "number_accuracy": true,
       "number_issues": [],
@@ -396,7 +397,7 @@
     {
       "id": "eval_017",
       "question": "What is the service charge difference between Downtown Dubai and JVC?",
-      "answer": "**Downtown Dubai’s service charge (~AED 23.1‑24.5 /sqft) is about AED 10‑12 higher than JVC’s (~AED 12.6 /sqft).**  \n\n- Downtown Dubai transaction TRX‑002 shows a charge of **AED 23.1 /sqft**.  \n- JVC community data lists a charge of **AED 12.6 /sqft**.  \n\n| Community | Service Charge (AED/sqft) |\n|-----------|---------------------------|\n| Downtown Dubai (TRX‑002) | 23.1 |\n| JVC (Jumeirah Village Circle) | 12.6 |\n| **Difference** | **10.5** |\n\n**Recommendation: INVEST** – lower service charges improve net yield potential in JVC.  \n\n*Verify current rates with the DLD before finalizing any transaction.*",
+      "answer": "**Direct service‑charge figures are available, but a pre‑computed difference is not provided**  \n\n- **Downtown Dubai:** Service Charge ≈ AED 23.1 – 24.5 /sqft (transactions TRX‑002, TRX‑001)  \n- **JVC (Jumeirah Village Circle):** Service Charge ≈ AED 12.6 /sqft (community score) and AED 13.6 / 9.6 /sqft (transactions TRX‑016, TRX‑014)\n\n| Community | Service Charge (AED/sqft) | Source |\n|-----------|---------------------------|--------|\n| Downtown Dubai | 23.1 – 24.5 | TRX‑002, TRX‑001 |\n| JVC | 12.6 (community) | Community Investment Scores |\n| JVC | 13.6, 9.6 (transactions) | TRX‑016, TRX‑014 |\n\n**Recommendation:** **HOLD** – data shows the charges but a calculated gap isn’t supplied; verify current rates with DLD before any cost‑impact decisions.",
       "keyword_score": 0.8333333333333334,
       "number_accuracy": true,
       "number_issues": [],
@@ -421,7 +422,7 @@
     {
       "id": "eval_018",
       "question": "Which developer has the best on-time delivery rate?",
-      "answer": "**Best on‑time delivery rate: data insufficient**  \n\nThe provided dataset lists transaction volumes and developer counts (e.g., Nakheel = 18, Emaar = 18, etc.) but contains no metric on handover timing or on‑time delivery percentages. Without explicit delivery performance data, a reliable ranking cannot be derived.\n\n**Recommendation: HOLD** – Await concrete on‑time delivery statistics before making a developer‑specific investment decision.",
+      "answer": "**Insufficient data to determine the developer with the best on‑time delivery rate.**\n\n- The dataset lists total transaction counts per developer (e.g., Nakheel = 16, Emaar = 16) but does not break down how many of those are *Ready* versus *Off‑Plan* for each developer.  \n- Without the Ready/Off‑Plan split, an on‑time delivery (hand‑over) rate cannot be calculated.\n\n**Action: AVOID** – seek detailed handover statistics from the Dubai Land Department before making a developer‑selection decision.",
       "keyword_score": 0.5,
       "number_accuracy": true,
       "number_issues": [],
@@ -444,7 +445,7 @@
     {
       "id": "eval_019",
       "question": "What is the ROI for a studio apartment in International City?",
-      "answer": "**The ROI for a studio (0‑BR) apartment in International City is approximately 9.9% (sample transactions show 9.5%–10.2%).**\n\n- **Community average ROI:** 9.9% (International City score)【International City】  \n- **Transaction ROI:** 10.2% (TRX-047) and 9.5% (TRX-048)【TRX-047】【TRX-048】  \n- **Supply risk:** High (15.5% pipeline)【HIGH (15.5% pipeline)】\n\n| Transaction | ROI |\n|-------------|-----|\n| TRX-047 | 10.2% |\n| TRX-048 | 9.5% |\n\n**Recommendation: INVEST** – solid yields despite high supply risk; verify current market conditions with DLD.",
+      "answer": "**ROI for a studio (0‑BR) apartment in International City ranges from 9.5% to 10.2% (community average 9.9%)**\n\n- The community score lists **ROI 9.9%** (International City, Score 79/100).  \n- Transaction TRX‑047 reports **ROI 10.2%**.  \n- Transaction TRX‑048 reports **ROI 9.5%**.  \n\n| Transaction | ROI | Net Yield |\n|-------------|-----|-----------|\n| TRX‑047 | 10.2% | 8.30% |\n| TRX‑048 | 9.5% | 7.63% |\n| Community Avg. | 9.9% | 8.06% |\n\n**Recommendation: INVEST** – solid yields with a high‑score rating, though note the **high supply risk** (15.5% pipeline). Verify current conditions with DLD before committing.",
       "keyword_score": 0.8,
       "number_accuracy": true,
       "number_issues": [],
