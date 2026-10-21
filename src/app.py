@@ -10,7 +10,7 @@ import pandas as pd
 import tempfile
 import os
 from datetime import datetime
-from rag import rag_query, health_check, structured_search
+from rag import rag_query, health_check, structured_search, dataset_counts
 from calculators import calculate_mortgage, calculate_str
 from price_trends import (
     get_price_trend,
@@ -537,9 +537,11 @@ if st.sidebar.button("Generate PDF Report"):
         os.unlink(tmp.name)
 
 # --- Footer ---
+_counts = dataset_counts()
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     "**Architecture:** DuckDB (analytics) + ChromaDB (semantic) + LLM (generation)\n\n"
     "**Features:** Investment scoring, mortgage calculator, STR estimator, comparison tool, map view\n\n"
-    "**Data:** 74 mock DLD-style transactions, 24 communities, 4 market reports"
+    f"**Data:** {_counts['transactions']} mock DLD-style transactions, "
+    f"{_counts['communities']} communities, 4 market reports"
 )

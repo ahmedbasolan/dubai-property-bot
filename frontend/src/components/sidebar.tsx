@@ -134,8 +134,7 @@ export function Sidebar() {
           </div>
 
           <div className="text-xs text-muted-foreground space-y-1">
-            <p>74 Mock Transactions</p>
-            <p>24 Communities</p>
+            <p>Mock DLD-style dataset</p>
             <p>5-Factor Scoring</p>
           </div>
         </div>
