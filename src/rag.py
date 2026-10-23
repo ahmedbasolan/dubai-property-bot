@@ -14,6 +14,7 @@ from openai import OpenAI
 
 from config import DB_PATH, CHROMA_DIR, LLM_TEMPERATURE, LLM_MAX_TOKENS
 from filters import extract_filters
+from price_trends import get_price_trend, BASIS as TREND_BASIS
 
 # Rows of transaction detail handed to the model. Each row costs roughly 110
 # tokens, so 40 stays around 5k tokens including scores, supply and semantic
@@ -21,8 +22,36 @@ from filters import extract_filters
 # single-request limit could already breach.
 TX_CONTEXT_LIMIT = 40
 
+# Groq's free tier counts the prompt *and* max_tokens against 8k tokens per
+# minute. The request budget below is a safety net for a growing dataset: it
+# trims the answer ceiling rather than letting a large context turn into a 413.
+MAX_REQUEST_TOKENS = 7600
+MIN_ANSWER_TOKENS = 400
+
+# Column order of a transaction row, shared by the RAG context sample and the
+# REST listing. Kept as one list so the two cannot drift apart: the API used to
+# reuse the context sample and silently returned 40 of 73 rows.
+TX_COLUMNS = [
+    "transaction_id", "community", "property_type", "bedrooms",
+    "price_aed", "size_sqft", "transaction_date", "roi_pct",
+    "project", "developer", "handover_status",
+    "estimated_annual_rent", "net_yield_pct", "price_per_sqft",
+]
+_TX_SELECT = ",\n               ".join(TX_COLUMNS)
+
 # Initialize clients
 duck_conn = duckdb.connect(str(DB_PATH), read_only=True)
+
+
+def _db() -> duckdb.DuckDBPyConnection:
+    """A cursor of its own for each query.
+
+    FastAPI runs handlers on a thread pool, and one DuckDB connection shared
+    across threads interleaves results: two concurrent page loads made one
+    query's rows come back from another. A cursor is a separate handle onto
+    the same database, so concurrent requests stay isolated.
+    """
+    return duck_conn.cursor()
 chroma_client = chromadb.PersistentClient(
     path=str(CHROMA_DIR),
     settings=Settings(anonymized_telemetry=False),
@@ -117,7 +146,7 @@ def _relax_empty_filter(
     if not filters or where_clause == "1=1":
         return where_clause, params
 
-    count = duck_conn.execute(
+    count = _db().execute(
         f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
     ).fetchone()[0]
     if count:
@@ -139,6 +168,7 @@ def structured_search(
 
     where_parts = []
     params = []
+    communities = list((filters or {}).get("communities") or [])
     if filters:
         if filters.get("community"):
             # ILIKE, not =: the column holds 'Business Bay' and 'Villa', so a
@@ -146,6 +176,14 @@ def structured_search(
             # report that no such property exists.
             where_parts.append("community ILIKE ?")
             params.append(_like_param(filters["community"]))
+        elif communities:
+            # A comparison is scoped to the communities named in the question.
+            # Leaving it unfiltered returned 24 scores, then build_context showed
+            # the top 8 - both compared communities could be missing, and the
+            # model correctly answered "no scores available".
+            placeholders = ", ".join("?" for _ in communities)
+            where_parts.append(f"community IN ({placeholders})")
+            params.extend(communities)
         if filters.get("min_price") is not None:
             where_parts.append("price_aed >= ?")
             params.append(filters["min_price"])
@@ -174,47 +212,40 @@ def structured_search(
     # apartments), and the per-group cap is derived from the group count so the
     # row budget is actually spent: a hard cap of 2 would show only 2 of a
     # community's 4 transactions when a filter narrowed the set to it.
-    group_count = duck_conn.execute(
+    #
+    # With DLD data every row is an apartment, so the groups are community x
+    # ready/off-plan. Within a group, sample across the price range (not the
+    # top yields) so the model sees typical units, not only the outliers.
+    group_count = _db().execute(
         f"""SELECT COUNT(*) FROM (
               SELECT 1 FROM v_net_yield WHERE {where_clause}
-              GROUP BY community, property_type
+              GROUP BY community, handover_status
             )""",
         params,
     ).fetchone()[0]
     per_group = max(2, -(-TX_CONTEXT_LIMIT // group_count)) if group_count else 2
 
     tx_query = f"""
-        SELECT transaction_id, community, property_type, bedrooms,
-               price_aed, size_sqft, roi_pct, floor_level, view_type,
-               service_charge_aed_sqft, parking_spots, completion_year,
-               furnishing, developer, handover_status,
-               estimated_annual_rent, annual_service_charges,
-               net_yield_pct, price_per_sqft
-        FROM v_net_yield
-        WHERE {where_clause}
+        WITH banded AS (
+            SELECT *,
+                   ntile({per_group}) OVER (
+                       PARTITION BY community, handover_status ORDER BY price_aed) AS price_band,
+                   count(*) OVER (PARTITION BY community, handover_status) AS group_size
+            FROM v_net_yield
+            WHERE {where_clause}
+        )
+        SELECT {_TX_SELECT}
+        FROM banded
         QUALIFY row_number() OVER (
-            PARTITION BY community, property_type
-            ORDER BY net_yield_pct DESC
-        ) <= {per_group}
-        ORDER BY
-            count(*) OVER (PARTITION BY community, property_type) ASC,
-            community ASC,
-            property_type ASC,
-            net_yield_pct DESC
+            PARTITION BY community, handover_status, price_band
+            ORDER BY hash(transaction_id)
+        ) = 1
+        ORDER BY group_size ASC, community ASC, handover_status ASC, price_aed ASC
         LIMIT {TX_CONTEXT_LIMIT}
     """
     results["_per_group"] = per_group
-    tx_rows = duck_conn.execute(tx_query, params).fetchall()
-
-    tx_cols = [
-        "transaction_id", "community", "property_type", "bedrooms",
-        "price_aed", "size_sqft", "roi_pct", "floor_level", "view_type",
-        "service_charge_aed_sqft", "parking_spots", "completion_year",
-        "furnishing", "developer", "handover_status",
-        "estimated_annual_rent", "annual_service_charges",
-        "net_yield_pct", "price_per_sqft",
-    ]
-    results["transactions"] = [dict(zip(tx_cols, row)) for row in tx_rows]
+    tx_rows = _db().execute(tx_query, params).fetchall()
+    results["transactions"] = [dict(zip(TX_COLUMNS, row)) for row in tx_rows]
 
     score_query = """
         SELECT * FROM v_investment_scores
@@ -229,20 +260,35 @@ def structured_search(
     if filters and filters.get("community"):
         scope_where = "community ILIKE ?"
         scope_params = [_like_param(filters["community"])]
+    elif communities:
+        placeholders = ", ".join("?" for _ in communities)
+        scope_where = f"community IN ({placeholders})"
+        scope_params = communities
 
-    score_rows = duck_conn.execute(
-        f"SELECT * FROM v_investment_scores WHERE {scope_where} ORDER BY composite_score DESC",
+    results["community_scores"] = _rows_as_dicts(
+        f"""SELECT * FROM v_investment_scores WHERE {scope_where}
+            ORDER BY composite_score DESC NULLS LAST, community""",
         scope_params,
-    ).fetchall()
-    score_cols = [
-        "community", "district", "transaction_count", "avg_price_per_sqft",
-        "avg_roi_pct", "avg_net_yield_pct", "avg_service_charge", "avg_price",
-        "supply_risk", "pipeline_pct_of_stock", "occupancy_rate",
-        "master_developer", "price_score", "yield_score", "net_yield_score",
-        "service_charge_score", "supply_risk_score", "occupancy_score",
-        "developer_score", "recommendation", "composite_score",
-    ]
-    results["community_scores"] = [dict(zip(score_cols, row)) for row in score_rows]
+    )
+
+    # Scoped price trend: only for a single-community query. A comparison or a
+    # broad question would need 24 series, which is exactly the kind of context
+    # bloat that produced the eval's 413. One compact line keeps trend answers
+    # anchored to the same DuckDB series that /api/trends serves.
+    community = (filters or {}).get("community")
+    if community:
+        trend = get_price_trend(community)
+        if trend.quarters:
+            results["price_trend"] = {
+                "community": trend.community,
+                "first_quarter": trend.quarters[0],
+                "first_price": trend.prices[0],
+                "latest_quarter": trend.quarters[-1],
+                "latest_price": trend.prices[-1],
+                "change_pct": trend.change_pct,
+                "momentum_pct": trend.momentum_pct,
+                "basis": TREND_BASIS,
+            }
 
     # supply_pipeline names the column community_name, not community.
     supply_scope = "1=1"
@@ -250,22 +296,92 @@ def structured_search(
     if filters and filters.get("community"):
         supply_scope = "community_name ILIKE ?"
         supply_params = [_like_param(filters["community"])]
+    elif communities:
+        placeholders = ", ".join("?" for _ in communities)
+        supply_scope = f"community_name IN ({placeholders})"
+        supply_params = communities
 
-    supply_query = f"""
-        SELECT * FROM supply_pipeline
-        WHERE {supply_scope}
-        ORDER BY pipeline_pct_of_stock DESC
-    """
-    supply_rows = duck_conn.execute(supply_query, supply_params).fetchall()
-    supply_cols = [
-        "community_name", "existing_stock_units", "units_under_construction",
-        "units_completed_last_12_months", "units_expected_next_24_months",
-        "pipeline_pct_of_stock", "supply_risk",
-    ]
-    results["supply_info"] = [dict(zip(supply_cols, row)) for row in supply_rows]
+    results["supply_info"] = _rows_as_dicts(
+        f"""SELECT * FROM supply_pipeline WHERE {supply_scope}
+            ORDER BY pipeline_ratio DESC""",
+        supply_params,
+    )
 
     results["coverage"] = _coverage_summary(where_clause, params)
     return results
+
+
+def _rows_as_dicts(query: str, params: List[Any]) -> List[Dict[str, Any]]:
+    """Run a query and key each row by the view's own column names."""
+    cursor = _db().execute(query, params)
+    cols = [d[0] for d in cursor.description]
+    return [dict(zip(cols, row)) for row in cursor.fetchall()]
+
+
+def list_transactions(
+    community: Optional[str] = None,
+    bedrooms: Optional[int] = None,
+    property_type: Optional[str] = None,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    limit: int = 50,
+    offset: int = 0,
+) -> Dict[str, Any]:
+    """Full, paginated transaction listing for the REST API.
+
+    Deliberately separate from `structured_search`: that function returns a
+    budgeted, representative *sample* for the LLM prompt (TX_CONTEXT_LIMIT
+    rows). Reusing it here truncated `/api/transactions` to 40 of 73 rows and
+    reported the sample size as the total, so the properties page silently lost
+    a third of the dataset.
+    """
+    where_parts: List[str] = []
+    params: List[Any] = []
+    if community:
+        where_parts.append("community ILIKE ?")
+        params.append(_like_param(community))
+    if bedrooms is not None:
+        where_parts.append("bedrooms = ?")
+        params.append(bedrooms)
+    if property_type:
+        where_parts.append("property_type ILIKE ?")
+        params.append(_like_param(property_type))
+    if min_price is not None:
+        where_parts.append("price_aed >= ?")
+        params.append(min_price)
+    if max_price is not None:
+        where_parts.append("price_aed <= ?")
+        params.append(max_price)
+
+    where_clause = " AND ".join(where_parts) if where_parts else "1=1"
+    total = _db().execute(
+        f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
+    ).fetchone()[0]
+
+    rows = _db().execute(
+        f"""SELECT {_TX_SELECT}
+            FROM v_net_yield
+            WHERE {where_clause}
+            ORDER BY transaction_date DESC, transaction_id ASC
+            LIMIT ? OFFSET ?""",
+        params + [int(limit), int(offset)],
+    ).fetchall()
+
+    return {
+        "transactions": [dict(zip(TX_COLUMNS, row)) for row in rows],
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+    }
+
+
+def get_transaction(transaction_id: str) -> Optional[Dict[str, Any]]:
+    """Fetch a single transaction by ID, or None if it does not exist."""
+    row = _db().execute(
+        f"SELECT {_TX_SELECT} FROM v_net_yield WHERE transaction_id = ?",
+        [transaction_id],
+    ).fetchone()
+    return dict(zip(TX_COLUMNS, row)) if row else None
 
 
 def _coverage_summary(where_clause: str, params: List[Any]) -> Dict[str, Any]:
@@ -274,31 +390,26 @@ def _coverage_summary(where_clause: str, params: List[Any]) -> Dict[str, Any]:
     Without this the model cannot distinguish "no such property" from
     "not in the rows I was shown", and it answers the second one.
     """
-    total = duck_conn.execute(
+    total = _db().execute(
         f"SELECT COUNT(*) FROM v_net_yield WHERE {where_clause}", params
     ).fetchone()[0]
 
-    by_type = duck_conn.execute(
+    by_type = _db().execute(
         f"""SELECT property_type, COUNT(*) FROM v_net_yield
             WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
         params,
     ).fetchall()
-    by_handover = duck_conn.execute(
+    by_handover = _db().execute(
         f"""SELECT handover_status, COUNT(*) FROM v_net_yield
             WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
         params,
     ).fetchall()
-    by_community = duck_conn.execute(
+    by_community = _db().execute(
         f"""SELECT community, COUNT(*) FROM v_net_yield
             WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
         params,
     ).fetchall()
-    by_developer = duck_conn.execute(
-        f"""SELECT developer, COUNT(*) FROM v_net_yield
-            WHERE {where_clause} GROUP BY 1 ORDER BY 2 DESC""",
-        params,
-    ).fetchall()
-    by_bedrooms = duck_conn.execute(
+    by_bedrooms = _db().execute(
         f"""SELECT bedrooms, COUNT(*) FROM v_net_yield
             WHERE {where_clause} GROUP BY 1 ORDER BY 1""",
         params,
@@ -309,26 +420,30 @@ def _coverage_summary(where_clause: str, params: List[Any]) -> Dict[str, Any]:
         "communities_in_dataset": len(by_community),
         "transactions_by_type": {k: v for k, v in by_type},
         "transactions_by_handover": {k: v for k, v in by_handover},
-        "transactions_by_developer": {k: v for k, v in by_developer},
         "transactions_by_bedrooms": {k: v for k, v in by_bedrooms},
         "sample_note": (
-            f"{total} transactions match this query. A representative sample is "
-            f"shown below (up to 2 per community+property type, capped at "
-            f"{TX_CONTEXT_LIMIT} rows); totals above are exact."
+            f"{total} transactions match this query. A sample spread across the "
+            f"price range of each community (ready and off-plan) is shown below, "
+            f"capped at {TX_CONTEXT_LIMIT} rows; totals above are exact."
         ),
     }
 
 
-# DB community name -> the `community` value used in market-report metadata.
-# Only 4 of the 24 communities have a market report; the rest are deliberately
-# absent from this map so the semantic branch stays unfiltered and says so,
-# rather than serving one community's report as another's.
-REPORT_COMMUNITY_MAP = {
-    "Downtown Dubai": "Downtown",
-    "Dubai Marina": "Marina",
-    "JVC (Jumeirah Village Circle)": "Jvc",
-    "Dubai Hills Estate": "Dubai Hills",
-}
+def has_report(community: Optional[str]) -> bool:
+    """Whether build_reports.py produced a report for this exact community.
+
+    Reports carry the DuckDB community name in their metadata. A community
+    without one stays unscoped and the gap is announced, rather than serving
+    one community's report as another's.
+    """
+    if not community:
+        return False
+    try:
+        found = chroma_client.get_collection("market_reports").get(
+            where={"community": community}, limit=1)
+    except Exception:
+        return False
+    return bool(found["ids"])
 
 
 def semantic_search(
@@ -345,15 +460,8 @@ def semantic_search(
     """
     collection = chroma_client.get_collection("market_reports")
 
-    where = None
-    if community and community in REPORT_COMMUNITY_MAP:
-        where = {"community": REPORT_COMMUNITY_MAP[community]}
-
+    where = {"community": community} if has_report(community) else None
     count = collection.count()
-    if where:
-        scoped = collection.get(where=where, limit=1)
-        if not scoped["ids"]:
-            where = None
 
     if count == 0:
         return []
@@ -436,14 +544,6 @@ def build_context(
                     f"{k}={v}" for k, v in coverage["transactions_by_handover"].items()
                 )
             )
-        if coverage.get("transactions_by_developer"):
-            parts.append(
-                "By developer (exact): "
-                + ", ".join(
-                    f"{k}={v}"
-                    for k, v in coverage["transactions_by_developer"].items()
-                )
-            )
         if coverage.get("transactions_by_bedrooms"):
             parts.append(
                 "By bedrooms (exact): "
@@ -461,49 +561,72 @@ def build_context(
         )
 
     if structured["community_scores"]:
-        parts.append("\n=== COMMUNITY INVESTMENT SCORES ===")
+        parts.append("\n=== COMMUNITY INVESTMENT SCORES (DLD data, Jan-Sep 2026) ===")
         for cs in structured["community_scores"][:8]:
+            if cs["composite_score"] is None:
+                yield_part = (f"Yield: INSUFFICIENT DATA (only {cs['rent_contracts'] or 0} "
+                              "Ejari contracts; do not estimate one)")
+                score_part = "Recommendation: INSUFFICIENT DATA (no score)"
+            else:
+                yield_part = (f"Gross yield: {cs['avg_roi_pct']:.2f}%, "
+                              f"Net yield before service charges: {cs['avg_net_yield_pct']:.2f}% "
+                              f"(rent basis: {cs['rent_basis']}, {cs['rent_contracts']} contracts)")
+                score_part = (f"Recommendation: {cs['recommendation']} "
+                              f"(Score: {cs['composite_score']:.0f}/100)")
+            momentum = ("n/a" if cs["price_momentum_pct"] is None
+                        else f"{cs['price_momentum_pct']:+.1f}% (same {cs['paired_projects']} projects, Q1->Q3)")
             parts.append(
                 f"[{cs['community']}] "
-                f"District: {cs['district']}, "
-                f"Avg Price/sqft: AED {cs['avg_price_per_sqft']:,.0f}, "
-                f"ROI: {cs['avg_roi_pct']:.1f}%, "
-                f"Net Yield: {cs['avg_net_yield_pct']:.2f}%, "
-                f"Service Charge: AED {cs['avg_service_charge']:.1f}/sqft, "
-                f"Supply Risk: {cs['supply_risk']} ({cs['pipeline_pct_of_stock']:.1f}% pipeline), "
-                f"Occupancy: {cs['occupancy_rate']:.0%}, "
-                f"Developer: {cs['master_developer']}, "
-                f"Scores - Price:{cs['price_score']} Yield:{cs['yield_score']} Net:{cs['net_yield_score']} "
-                f"SC:{cs['service_charge_score']} Supply:{cs['supply_risk_score']} "
-                f"Occ:{cs['occupancy_score']} Dev:{cs['developer_score']}, "
-                f"Recommendation: {cs['recommendation']} (Score: {cs['composite_score']:.0f}/100)"
+                f"Median ready price/sqft: AED {cs['avg_price_per_sqft']:,.0f}, "
+                f"Ready sales: {cs['transaction_count']}, "
+                f"{yield_part}, "
+                f"Price momentum: {momentum}, "
+                f"Supply: {cs['offplan_sales']} off-plan vs {cs['transaction_count']} ready sales "
+                f"(ratio {cs['pipeline_ratio']}, risk {cs['supply_risk']}), "
+                f"Grades - Yield:{cs['yield_score'] or 'n/a'} Supply:{cs['supply_risk_score']} "
+                f"Momentum:{cs['momentum_score'] or 'n/a'} Liquidity:{cs['liquidity_score']}, "
+                f"{score_part}"
             )
+
+    trend = structured.get("price_trend")
+    if trend:
+        parts.append("\n=== PRICE TREND (DLD ready sales) ===")
+        parts.append(
+            f"[{trend['community']}] {trend['first_quarter']} "
+            f"AED {trend['first_price']:,.0f}/sqft -> "
+            f"{trend['latest_quarter']} AED {trend['latest_price']:,.0f}/sqft "
+            f"({trend['change_pct']:+.1f}% on community medians). {trend['basis']}"
+        )
 
     if structured["transactions"]:
-        parts.append("\n=== MATCHING TRANSACTIONS ===")
+        parts.append("\n=== SAMPLE DLD TRANSACTIONS ===")
         for tx in structured["transactions"]:
+            beds = "Studio" if tx["bedrooms"] == 0 else (
+                "unknown beds" if tx["bedrooms"] is None else f"{tx['bedrooms']}BR")
+            est = ("estimated gross yield n/a (insufficient rent data)"
+                   if tx["roi_pct"] is None else
+                   f"estimated gross yield {tx['roi_pct']}% / net {tx['net_yield_pct']:.2f}% "
+                   f"(community rent per m2 x unit size)")
             parts.append(
-                f"[{tx['transaction_id']}] "
-                f"{tx['community']}, {tx['bedrooms']}BR {tx['property_type']}, "
-                f"AED {tx['price_aed']:,}, {tx['size_sqft']}sqft, "
-                f"ROI {tx['roi_pct']}%, Net Yield {tx['net_yield_pct']:.2f}%, "
-                f"Price/sqft: AED {tx['price_per_sqft']:,.0f}, "
-                f"Floor: {tx['floor_level']}, View: {tx['view_type']}, "
-                f"Service Charge: AED {tx['service_charge_aed_sqft']}/sqft, "
-                f"Parking: {tx['parking_spots']}, "
-                f"Furnishing: {tx['furnishing']}, "
-                f"Developer: {tx['developer']}, {tx['handover_status']}"
+                f"[{tx['transaction_id']}] {tx['transaction_date']}, "
+                f"{tx['community']}, {beds} {tx['property_type']}, "
+                f"{tx['handover_status']}, AED {tx['price_aed']:,.0f}, {tx['size_sqft']:,.0f} sqft "
+                f"(AED {tx['price_per_sqft']:,.0f}/sqft), project: {tx['project'] or 'n/a'}, "
+                f"{est}"
             )
 
-    high_supply = [s for s in structured["supply_info"] if s["supply_risk"] == "high"]
+    high_supply = [
+        s for s in structured["supply_info"]
+        if str(s["supply_risk"]).lower() == "high"
+    ]
     if high_supply:
         parts.append("\n=== HIGH SUPPLY RISK COMMUNITIES ===")
         for s in high_supply[:5]:
             parts.append(
                 f"[{s['community_name']}] "
-                f"Pipeline: {s['pipeline_pct_of_stock']:.1f}% of existing stock "
-                f"({s['units_expected_next_24_months']:,} units in 24 months), "
-                f"Risk: HIGH"
+                f"{s['offplan_sales']:,} off-plan vs {s['ready_sales']:,} ready sales in 2026 "
+                f"(ratio {s['pipeline_ratio']}): stock still to be handed over. "
+                f"{s['units_completed_2026']:,} units handed over so far in 2026. Risk: HIGH"
             )
 
     if semantic:
@@ -514,6 +637,22 @@ def build_context(
             parts.append(f"[{community} - {section}]\n{doc['text']}\n")
 
     return "\n".join(parts)
+
+
+def _estimate_tokens(text: str) -> int:
+    """Conservative token estimate; Groq exposes no tokenizer for this model."""
+    return max(1, len(text) // 4)
+
+
+def _budgeted_max_tokens(*prompts: str) -> int:
+    """Fit the answer ceiling under the free tier's prompt + completion limit.
+
+    A 4k max_tokens ceiling used to turn a 6k-token context into a 10k request
+    and a deterministic 413. The normal ceiling is LLM_MAX_TOKENS; this only
+    lowers it when the context itself grows.
+    """
+    used = sum(_estimate_tokens(p) for p in prompts)
+    return min(LLM_MAX_TOKENS, max(MIN_ANSWER_TOKENS, MAX_REQUEST_TOKENS - used))
 
 
 def generate_answer(
@@ -544,17 +683,19 @@ def generate_answer(
     citations = []
     if structured["community_scores"]:
         for cs in structured["community_scores"][:5]:
-            citations.append(
-                f"{cs['community']}: Score {cs['composite_score']:.0f}/100, "
-                f"Net Yield {cs['avg_net_yield_pct']:.2f}%, "
-                f"Recommendation {cs['recommendation']}"
-            )
+            if cs["composite_score"] is None:
+                citations.append(f"{cs['community']}: insufficient rent data, no score")
+            else:
+                citations.append(
+                    f"{cs['community']}: Score {cs['composite_score']:.0f}/100, "
+                    f"Gross Yield {cs['avg_roi_pct']:.2f}%, "
+                    f"Recommendation {cs['recommendation']}"
+                )
     if structured["transactions"]:
         for tx in structured["transactions"][:5]:
             citations.append(
                 f"{tx['transaction_id']}: {tx['community']}, "
-                f"{tx['bedrooms']}BR, AED {tx['price_aed']:,}, "
-                f"Net Yield {tx['net_yield_pct']:.2f}%"
+                f"{tx['handover_status']}, AED {tx['price_aed']:,.0f}"
             )
 
     system_prompt = """You are a Dubai real estate investment advisor. Answer investor questions using ONLY the provided data.
@@ -567,9 +708,10 @@ def generate_answer(
 ## RESPONSE RULES
 1. NEVER calculate financial metrics yourself. Use only pre-computed values from the data.
 2. Always cite specific data points (transaction IDs, community names, scores).
-3. Distinguish between GROSS yield (ROI) and NET yield (after service charges, vacancy).
-4. When data is insufficient, say so clearly.
-5. Flag supply pipeline risks when relevant.
+3. Distinguish GROSS yield from NET yield. Net yield here deducts management and vacancy only; it is BEFORE service charges, which DLD does not publish. Say so when you quote it.
+4. When data is insufficient, say so clearly. A community marked INSUFFICIENT DATA has no yield or score: never estimate one for it.
+5. Flag supply pipeline risks when relevant (off-plan sales still to be handed over).
+6. The data is Dubai Land Department open data: registered apartment sales Jan-Sep 2026 and Ejari rent contracts. Mention the source when giving numbers.
 
 ## FORMATTING — STRICT
 You MUST use clean markdown formatting. Follow these rules exactly:
@@ -578,13 +720,13 @@ You MUST use clean markdown formatting. Follow these rules exactly:
 - Start with a 1-line direct answer (bold the key finding)
 - Follow with a short explanation (2-3 sentences max)
 - Use a table if comparing 2+ communities
-- End with a clear action: **INVEST**, **HOLD**, or **AVOID**
+- End with a clear action: **INVEST**, **HOLD**, or **AVOID** - or **INSUFFICIENT DATA** when the community has no score
 
 ### Tables
 When showing multiple communities, ALWAYS use a proper markdown table:
-| Community | Score | Net Yield | Signal |
-|-----------|-------|-----------|--------|
-| JVC | 76 | 7.07% | INVEST |
+| Community | Score | Gross Yield | Signal |
+|-----------|-------|-------------|--------|
+| JVC | 74 | 7.55% | INVEST |
 
 ### Lists
 - Use bullet points for quick facts
@@ -622,7 +764,7 @@ Here is a | pipe-delimited | table | that is | hard to read
 Long paragraph with no formatting that goes on and on and on...
 
 ## DATA FRESHNESS
-All data is from Q1 2024. Always remind users to verify with DLD for current conditions."""
+Transaction data covers 2024; the market reports are dated Q1 2024. Always remind users to verify with DLD for current conditions."""
 
     user_prompt = f"""Question: {query}
 
@@ -634,6 +776,7 @@ All data is from Q1 2024. Always remind users to verify with DLD for current con
 
 Answer using ONLY the data above. Use clean markdown formatting — proper tables, bullet points, bold for key metrics. Never use pipe-delimited text outside of tables. Never write [CITATIONS]."""
 
+    max_tokens = _budgeted_max_tokens(system_prompt, user_prompt)
     last_err = None
     for attempt in range(4):
         try:
@@ -644,7 +787,7 @@ Answer using ONLY the data above. Use clean markdown formatting — proper table
                     {"role": "user", "content": user_prompt},
                 ],
                 temperature=LLM_TEMPERATURE,
-                max_tokens=LLM_MAX_TOKENS,
+                max_tokens=max_tokens,
             )
             return response.choices[0].message.content
         except Exception as e:
@@ -665,11 +808,19 @@ Answer using ONLY the data above. Use clean markdown formatting — proper table
     raise last_err
 
 
+def dataset_counts() -> Dict[str, int]:
+    """Row and community counts, so UI copy never hardcodes the dataset size."""
+    transactions, communities = _db().execute(
+        "SELECT COUNT(*), COUNT(DISTINCT community) FROM transactions"
+    ).fetchone()
+    return {"transactions": int(transactions), "communities": int(communities)}
+
+
 def known_communities() -> List[str]:
     """Community values exactly as stored in DuckDB."""
     return [
         r[0]
-        for r in duck_conn.execute(
+        for r in _db().execute(
             "SELECT DISTINCT community FROM transactions ORDER BY 1"
         ).fetchall()
     ]
@@ -700,7 +851,7 @@ def rag_query(
 
     community = (filters or {}).get("community")
     semantic = semantic_search(query, n_results=3, community=community)
-    if community and community not in REPORT_COMMUNITY_MAP:
+    if community and not has_report(community):
         structured["skipped_filters"] = list(structured["skipped_filters"]) + [
             f"no market report exists for {community}; the notes below cover "
             "other communities and must not be attributed to it"
@@ -723,7 +874,7 @@ def health_check() -> Dict[str, bool]:
     """Verify all dependencies are working."""
     checks = {}
     try:
-        duck_conn.execute("SELECT 1")
+        _db().execute("SELECT 1")
         checks["duckdb"] = True
     except duckdb.Error:
         checks["duckdb"] = False

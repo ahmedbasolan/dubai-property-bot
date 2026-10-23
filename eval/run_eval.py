@@ -50,12 +50,14 @@ def extract_communities(text: str) -> List[str]:
     """Extract community names from text."""
     known_communities = [
         "Downtown Dubai", "Dubai Marina", "Palm Jumeirah",
-        "Dubai Hills Estate", "JVC", "Business Bay", "Arabian Ranches",
-        "Sports City", "Discovery Gardens", "JLT", "The Springs",
-        "Al Barsha", "Deira", "Bur Dubai", "International City",
-        "Dubai Silicon Oasis", "Tilal Al Ghaf", "DAMAC Hills 2",
-        "Dubai Creek Harbour", "Bluewaters Island", "Meydan",
-        "Al Furjan", "Dubai South", "Town Square",
+        "Dubai Hills Estate", "JVC", "JVT", "JLT", "JBR", "Business Bay",
+        "Sports City", "Discovery Gardens", "International City",
+        "Dubai Silicon Oasis", "Dubai Creek Harbour", "Meydan",
+        "Al Furjan", "Dubai South", "Town Square", "Arjan",
+        "Sobha Hartland", "Majan", "Dubai Production City",
+        "Dubai Land Residence Complex", "Motor City", "Liwan",
+        "DAMAC Hills", "The Greens", "Dubai Healthcare City",
+        "Dubai Studio City",
     ]
     found = []
     text_lower = text.lower()
@@ -81,15 +83,18 @@ def check_number_accuracy(answer: str, db_conn) -> Dict[str, Any]:
        flagged as an ROI claim purely because the word "yield" appeared in an
        earlier sentence. Matching is now confined to a single clause.
     2. It validated every match against `roi_pct` only. Net yield has its own
-       range (2.08-8.25 vs 4.9-10.3), so correct net-yield figures were
-       reported as out-of-range. Both metrics are now checked separately.
+       range, so correct net-yield figures were reported as out-of-range.
+       Both metrics are now checked separately.
+
+    Ranges come from the per-sale estimates in v_net_yield, which span the
+    community-level yields as well, so either kind of figure is accepted.
     """
     extracted = extract_numbers(answer)
     issues = []
 
     ranges = {
         "roi": db_conn.execute(
-            "SELECT MIN(roi_pct), MAX(roi_pct) FROM transactions"
+            "SELECT MIN(roi_pct), MAX(roi_pct) FROM v_net_yield"
         ).fetchone(),
         "net_yield": db_conn.execute(
             "SELECT MIN(net_yield_pct), MAX(net_yield_pct) FROM v_net_yield"

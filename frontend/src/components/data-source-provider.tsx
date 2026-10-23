@@ -13,13 +13,13 @@ interface DataSourceContextType {
 const DataSourceContext = createContext<DataSourceContextType>({
   useLive: false,
   setUseLive: () => {},
-  source: "mock",
+  source: "dld",
   bayutConfigured: false,
 });
 
 export function DataSourceProvider({ children }: { children: ReactNode }) {
   const [useLive, setUseLive] = useState(false);
-  const [source, setSource] = useState("mock");
+  const [source, setSource] = useState("dld");
   const [bayutConfigured, setBayutConfigured] = useState(false);
 
   useEffect(() => {

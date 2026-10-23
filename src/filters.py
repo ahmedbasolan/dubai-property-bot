@@ -29,48 +29,72 @@ from typing import Any, Dict, List, Optional, Sequence
 COMMUNITY_ALIASES: Dict[str, str] = {
     "jvc": "JVC (Jumeirah Village Circle)",
     "jumeirah village circle": "JVC (Jumeirah Village Circle)",
+    "jvt": "JVT (Jumeirah Village Triangle)",
+    "jumeirah village triangle": "JVT (Jumeirah Village Triangle)",
     "jlt": "JLT (Jumeirah Lake Towers)",
     "jumeirah lake towers": "JLT (Jumeirah Lake Towers)",
+    "jbr": "JBR (Jumeirah Beach Residence)",
+    "jumeirah beach residence": "JBR (Jumeirah Beach Residence)",
     "downtown": "Downtown Dubai",
     "dso": "Dubai Silicon Oasis",
     "silicon oasis": "Dubai Silicon Oasis",
     "dubai hills": "Dubai Hills Estate",
-    "damac hills 2": "DAMAC Hills 2",
-    "damac hills": "DAMAC Hills 2",
+    "damac hills": "DAMAC Hills",
     "creek harbour": "Dubai Creek Harbour",
-    "springs": "The Springs",
-    "bluewaters": "Bluewaters Island",
     "international city": "International City",
     "intl city": "International City",
     "discovery gardens": "Discovery Gardens",
     "sports city": "Sports City",
-    "arabian ranches": "Arabian Ranches",
+    "dubai sports city": "Sports City",
     "business bay": "Business Bay",
     "dubai marina": "Dubai Marina",
     "marina": "Dubai Marina",
     "palm jumeirah": "Palm Jumeirah",
-    "tilal al ghaf": "Tilal Al Ghaf",
+    "the palm": "Palm Jumeirah",
     "dubai south": "Dubai South",
     "town square": "Town Square",
-    "bluewaters island": "Bluewaters Island",
     "meydan": "Meydan",
-    "al barsha": "Al Barsha",
     "al furjan": "Al Furjan",
-    "deira": "Deira",
-    "bur dubai": "Bur Dubai",
-    "deira souk": "Deira",
+    "arjan": "Arjan",
+    "sobha hartland": "Sobha Hartland",
+    "hartland": "Sobha Hartland",
+    "majan": "Majan",
+    "production city": "Dubai Production City",
+    "impz": "Dubai Production City",
+    "dubai land residence complex": "Dubai Land Residence Complex",
+    "dlrc": "Dubai Land Residence Complex",
+    "motor city": "Motor City",
+    "liwan": "Liwan",
+    "the greens": "The Greens",
+    "healthcare city": "Dubai Healthcare City",
+    "dhcc": "Dubai Healthcare City",
+    "studio city": "Dubai Studio City",
 }
 
+# Communities dropped from v1 (villa-only, or too few registered apartment
+# sales). A mention is reported as not covered instead of being matched to a
+# similar name: "DAMAC Hills 2" must never become DAMAC Hills.
+NOT_COVERED_COMMUNITIES: Dict[str, str] = {
+    "damac hills 2": "villa community; v1 covers apartments only",
+    "arabian ranches": "villa community; v1 covers apartments only",
+    "the springs": "villa community; v1 covers apartments only",
+    "springs": "villa community; v1 covers apartments only",
+    "tilal al ghaf": "villa community; v1 covers apartments only",
+    "bluewaters": "too few registered apartment sales in 2026 to analyse",
+    "al barsha": "too few registered apartment sales in 2026 to analyse",
+    "deira": "not in the v1 community list",
+    "bur dubai": "not in the v1 community list",
+}
+
+# DLD apartment data only: every row is an apartment, so these words never
+# narrow anything. Villas and penthouses aren't separately covered.
 PROPERTY_TYPE_ALIASES: Dict[str, str] = {
-    "villa": "Villa",
-    "villas": "Villa",
     "apartment": "Apartment",
     "apartments": "Apartment",
     "flat": "Apartment",
     "flats": "Apartment",
-    "penthouse": "Penthouse",
-    "penthouses": "Penthouse",
 }
+NOT_COVERED_PROPERTY_TYPES = ("villa", "villas", "townhouse", "townhouses", "penthouse", "penthouses")
 
 _NUMBER_WORDS = {
     "zero": 0, "studio": 0, "studios": 0,
@@ -193,6 +217,12 @@ def _extract_bedrooms(query: str) -> tuple[Optional[int], List[str]]:
 def _extract_property_type(query: str) -> tuple[Optional[str], List[str]]:
     """Return (property_type, skipped). Ambiguous mentions are not filtered."""
     text = query.lower()
+    uncovered = [w for w in NOT_COVERED_PROPERTY_TYPES if re.search(rf"\b{w}\b", text)]
+    if uncovered:
+        return None, [
+            f"'{uncovered[0]}' isn't covered: the data is DLD-registered apartment sales "
+            "only; left unfiltered"
+        ]
     found = {
         canonical
         for alias, canonical in PROPERTY_TYPE_ALIASES.items()
@@ -205,15 +235,27 @@ def _extract_property_type(query: str) -> tuple[Optional[str], List[str]]:
     return found.pop(), []
 
 
-def _extract_community(query: str, known: Sequence[str]) -> tuple[Optional[str], List[str]]:
-    """Resolve a community mention to its exact database string.
+def _extract_community(query: str, known: Sequence[str]) -> tuple[List[str], List[str]]:
+    """Resolve community mentions to their exact database strings.
 
-    `known` should be the community values from the database. A query naming
-    two communities is a comparison, not a filter, so it is left unfiltered.
+    `known` should be the community values from the database. One match is a
+    filter; two or more are a comparison, returned as a list so retrieval can
+    scope scores and rows to the communities being compared. Leaving that
+    comparison unfiltered returned all 24 scores and then showed only the top
+    8, so both communities could be missing from the context.
     """
     text = query.lower()
     by_norm = {c.lower(): c for c in known}
     by_norm.update({c.lower().strip(): c for c in known})
+
+    # Report uncovered communities, then blank them out so a covered alias
+    # inside them ("damac hills" in "damac hills 2") can't match.
+    skipped: List[str] = []
+    for name, reason in sorted(NOT_COVERED_COMMUNITIES.items(), key=lambda kv: -len(kv[0])):
+        pattern = rf"\b{re.escape(name)}\b"
+        if re.search(pattern, text):
+            skipped.append(f"'{name}' isn't covered ({reason})")
+            text = re.sub(pattern, " ", text)
 
     matches: Dict[str, str] = {}
     for alias, canonical in COMMUNITY_ALIASES.items():
@@ -224,13 +266,14 @@ def _extract_community(query: str, known: Sequence[str]) -> tuple[Optional[str],
             matches[canonical] = canonical
 
     if not matches:
-        return None, []
+        return [], skipped
     if len(matches) > 1:
-        return None, [
-            f"query names {len(matches)} communities ({', '.join(sorted(matches))}); "
-            "treated as a comparison, left unfiltered"
+        names = sorted(matches)
+        return names, skipped + [
+            f"query names {len(names)} communities ({', '.join(names)}); "
+            "comparison scoped to those communities"
         ]
-    return next(iter(matches)), []
+    return [next(iter(matches))], skipped
 
 
 def extract_filters(
@@ -245,7 +288,7 @@ def extract_filters(
     """
     skipped: List[str] = []
 
-    community, s = _extract_community(query, known_communities)
+    communities, s = _extract_community(query, known_communities)
     skipped += s
     property_type, s = _extract_property_type(query)
     skipped += s
@@ -255,8 +298,10 @@ def extract_filters(
     skipped += s
 
     filters: Dict[str, Any] = {}
-    if community:
-        filters["community"] = community
+    if len(communities) == 1:
+        filters["community"] = communities[0]
+    elif len(communities) > 1:
+        filters["communities"] = communities
     if property_type:
         filters["property_type"] = property_type
     if bedrooms is not None:

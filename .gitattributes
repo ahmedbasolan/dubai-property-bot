@@ -1,0 +1,4 @@
+* text=auto
+# Shell scripts must keep LF endings: the Docker build context copies the file
+# as-is, and a CRLF shebang fails inside the container.
+*.sh text eol=lf

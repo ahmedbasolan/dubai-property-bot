@@ -16,7 +16,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-function formatBedrooms(n: number) {
+function formatBedrooms(n: number | null) {
+  if (n === null || n === undefined) return "";
   return n === 0 ? "Studio" : `${n}BR`;
 }
 
@@ -45,17 +46,19 @@ function getPropertyType(pt: unknown): string {
 export default function Dashboard() {
   const [communities, setCommunities] = useState<CommunityScore[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactionTotal, setTransactionTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { useLive } = useDataSource();
 
   useEffect(() => {
     let stale = false;
-    Promise.all([api.getCommunities(), api.getTransactions({}, useLive)])
+    Promise.all([api.getCommunities(), api.getTransactions({ limit: "8" }, useLive)])
       .then(([c, t]) => {
         if (stale) return;
         setCommunities(c.communities);
         setTransactions(t.transactions);
+        setTransactionTotal(t.total ?? t.transactions.length);
         setError(null);
         setLoading(false);
       })
@@ -112,12 +115,12 @@ export default function Dashboard() {
   const avoidCount = communities.filter(
     (c) => c.recommendation === "AVOID"
   ).length;
+  // Only communities with enough Ejari contracts have a yield and a score.
+  const scored = communities.filter((c) => c.composite_score !== null);
   const avgYield =
-    communities.reduce((s, c) => s + (c.avg_net_yield_pct ?? 0), 0) /
-    (communities.length || 1);
+    scored.reduce((s, c) => s + (c.avg_roi_pct ?? 0), 0) / (scored.length || 1);
   const avgScore =
-    communities.reduce((s, c) => s + (c.composite_score ?? 0), 0) /
-    (communities.length || 1);
+    scored.reduce((s, c) => s + (c.composite_score ?? 0), 0) / (scored.length || 1);
 
   return (
     <div className="p-6 space-y-6">
@@ -133,7 +136,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-2 text-xs glass-badge rounded-full px-3 py-1.5">
           <Radio size={14} className={useLive ? "text-emerald-400" : "text-muted-foreground"} />
           <span className={useLive ? "text-emerald-400" : "text-muted-foreground"}>
-            {useLive ? "Live DLD Data" : "Mock Data"}
+            {useLive ? "Live listings (Bayut)" : "DLD open data, Jan–Sep 2026"}
           </span>
         </div>
       </div>
@@ -149,7 +152,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-3xl font-bold tabular-nums">{communities.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {transactions.length} transactions
+              {transactionTotal.toLocaleString()} registered sales
             </p>
           </CardContent>
         </Card>
@@ -157,16 +160,16 @@ export default function Dashboard() {
         <Card className="glass-card border-0 animate-fade-in-up">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-              Avg Net Yield
+              Avg Gross Yield
             </CardTitle>
             <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
-              {avgYield.toFixed(1)}%
+              {scored.length ? `${avgYield.toFixed(1)}%` : "n/a"}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Across all communities
+              {scored.length} of {communities.length} communities have rent data
             </p>
           </CardContent>
         </Card>
@@ -180,7 +183,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-primary tabular-nums">
-              {avgScore.toFixed(0)}<span className="text-lg text-muted-foreground">/100</span>
+              {scored.length ? avgScore.toFixed(0) : "—"}<span className="text-lg text-muted-foreground">/100</span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Investment composite
@@ -206,6 +209,11 @@ export default function Dashboard() {
               <Badge className="bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30">
                 {avoidCount} Avoid
               </Badge>
+              {communities.length - scored.length > 0 && (
+                <Badge className="bg-muted text-muted-foreground border-border">
+                  {communities.length - scored.length} Not enough data
+                </Badge>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -235,30 +243,35 @@ export default function Dashboard() {
                         {c.community}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {c.district}
+                        {c.transaction_count.toLocaleString()} ready sales
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="font-bold text-sm tabular-nums">
-                      {(c.composite_score ?? 0).toFixed(0)}<span className="text-muted-foreground text-xs">/100</span>
+                      {c.composite_score === null ? "—" : c.composite_score.toFixed(0)}
+                      <span className="text-muted-foreground text-xs">/100</span>
                     </div>
-                    <div className="flex items-center gap-1 text-xs justify-end">
-                      {(c.avg_net_yield_pct ?? 0) > 7 ? (
-                        <ArrowUpRight className="h-3 w-3 text-emerald-500" />
-                      ) : (
-                        <ArrowDownRight className="h-3 w-3 text-red-500" />
-                      )}
-                      <span
-                        className={
-                          (c.avg_net_yield_pct ?? 0) > 7
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-red-500"
-                        }
-                      >
-                        {(c.avg_net_yield_pct ?? 0).toFixed(1)}%
-                      </span>
-                    </div>
+                    {c.avg_roi_pct === null ? (
+                      <div className="text-xs text-muted-foreground">no rent data</div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-xs justify-end">
+                        {c.avg_roi_pct >= 7 ? (
+                          <ArrowUpRight className="h-3 w-3 text-emerald-500" />
+                        ) : (
+                          <ArrowDownRight className="h-3 w-3 text-red-500" />
+                        )}
+                        <span
+                          className={
+                            c.avg_roi_pct >= 7
+                              ? "text-emerald-600 dark:text-emerald-400"
+                              : "text-red-500"
+                          }
+                        >
+                          {c.avg_roi_pct.toFixed(1)}% gross
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -270,7 +283,7 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 font-[family-name:var(--font-cinzel)]">
               <Building2 size={18} className="text-accent" />
-              Recent Transactions
+              Latest Registered Sales
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -285,8 +298,8 @@ export default function Dashboard() {
                       {formatBedrooms(t.bedrooms)} {getPropertyType(t.property_type)} — {getCommunityName(t.community)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {t.size_sqft != null ? t.size_sqft.toLocaleString() : "—"} sqft
-                      {t.developer && typeof t.developer === "string" ? ` • ${t.developer}` : ""}
+                      {t.size_sqft != null ? t.size_sqft.toLocaleString() : "—"} sqft • {t.transaction_date}
+                      {t.project ? ` • ${t.project}` : ""}
                     </div>
                   </div>
                   <div className="text-right">
@@ -294,7 +307,7 @@ export default function Dashboard() {
                       AED {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
                     </div>
                     <div className="text-xs text-emerald-600 dark:text-emerald-400 tabular-nums">
-                      {t.roi_pct != null ? `${t.roi_pct}% yield` : "—"}
+                      {t.roi_pct != null ? `${t.roi_pct.toFixed(1)}% est. yield` : t.handover_status}
                     </div>
                   </div>
                 </div>

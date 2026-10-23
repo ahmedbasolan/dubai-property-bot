@@ -333,7 +333,7 @@ export default function ChatPage() {
           </button>
         </form>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-          {useLive ? "Live BayutAPI data" : "Mock data"} •{" "}
+          {useLive ? "Live BayutAPI listings" : "DLD open data, Jan–Sep 2026"} •{" "}
           {currentProvider.label} •{" "}
           {apiKey ? "Your key" : "Server key"}
         </p>
