@@ -78,6 +78,9 @@ yields for more communities.
 Docker (optional): `docker compose up --build`. The API container runs the same
 pipeline on start, so `data/raw/dld/` must hold the exports.
 
+Live demo: one Vercel project serves the frontend and the API as two Services.
+See [`docs/deploy.md`](docs/deploy.md).
+
 ## Pages
 
 | Route | Purpose |

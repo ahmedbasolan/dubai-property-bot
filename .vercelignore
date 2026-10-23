@@ -1,0 +1,23 @@
+# Allowlist: upload only what the deployed app runs on. The Vercel CLI
+# ignores .gitignore, so anything not excluded here would be uploaded,
+# including .env files and the raw DLD exports.
+/*
+!api
+!src
+!frontend
+!data
+!chroma_db
+!requirements.txt
+!vercel.json
+
+# Never upload secrets
+.env*
+**/.env*
+
+# Not needed at runtime (raw exports, intermediate parquet, local builds)
+data/raw
+data/processed
+data/chroma_db
+frontend/node_modules
+frontend/.next
+**/__pycache__

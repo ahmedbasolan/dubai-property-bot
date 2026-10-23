@@ -1,11 +1,14 @@
 """Shared configuration for Dubai Property Bot."""
 
+import os
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "raw"
 DB_PATH = PROJECT_ROOT / "data" / "dubai_properties.duckdb"
-CHROMA_DIR = PROJECT_ROOT / "chroma_db"
+# Overridable so a read-only host can point ChromaDB at a writable copy
+# (see api/vercel_entry.py); unset locally.
+CHROMA_DIR = Path(os.environ.get("CHROMA_DIR") or PROJECT_ROOT / "chroma_db")
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 DLD_RAW_DIR = DATA_DIR / "dld"  # manual exports from the DLD open-data gateway
 COMMUNITY_MAP_PATH = PROJECT_ROOT / "data" / "reference" / "community_map.csv"

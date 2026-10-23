@@ -370,7 +370,18 @@ def _chat_response(
     api_key: Optional[str],
     model: Optional[str],
 ) -> dict:
-    from rag import rag_query, structured_search
+    from rag import get_llm_client, rag_query, retrieve
+
+    if get_llm_client(provider=provider, api_key=api_key) is None:
+        # No server key (the public demo runs without one) and none supplied:
+        # answer from the data rather than returning a configuration error.
+        structured = retrieve(q)["structured"]
+        answer = _data_only_answer(
+            q, structured,
+            "No LLM key is configured on this server. Add your own Groq, OpenAI or "
+            "OpenRouter key in the chat settings for written answers.",
+        )
+        return _chat_payload(answer, structured)
 
     try:
         result = rag_query(q, provider=provider, api_key=api_key, model=model)
@@ -378,10 +389,15 @@ def _chat_response(
         structured = result["structured"]
     except Exception as e:
         # Graceful degradation: never 500 the chat UI — answer from DuckDB only
-        structured = structured_search(q, filters=None)
-        answer = _data_only_answer(q, structured, str(e))
+        structured = retrieve(q)["structured"]
+        answer = _data_only_answer(
+            q, structured, "The LLM is temporarily unavailable (likely its daily quota).")
         print(f"[CHAT] LLM unavailable, data-only fallback: {e}")
 
+    return _chat_payload(answer, structured)
+
+
+def _chat_payload(answer: str, structured: dict) -> dict:
     return {
         "answer": answer,
         "communities": [s["community"] for s in structured["community_scores"][:5]],
@@ -416,14 +432,14 @@ def chat_get(
     return _chat_response(q, provider, None, model)
 
 
-def _data_only_answer(query: str, structured: dict, error: str) -> str:
+def _data_only_answer(query: str, structured: dict, reason: str) -> str:
     """Build a readable markdown answer from DuckDB when the LLM is unavailable."""
     scores = structured.get("community_scores", [])
     txns = structured.get("transactions", [])
     lines = [
         f"**{query}**",
         "",
-        "_Live LLM is temporarily unavailable (daily quota). Answer generated from DuckDB data only._",
+        f"_{reason} This answer is generated from the data only._",
         "",
     ]
     pct = lambda v: "n/a" if v is None else f"{v:.2f}%"
