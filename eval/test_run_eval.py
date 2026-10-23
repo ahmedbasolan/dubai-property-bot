@@ -39,19 +39,21 @@ class TestNumberAccuracy:
         assert result["valid"], result["issues"]
 
     def test_net_yield_uses_the_net_yield_range(self, conn):
-        """Net yield runs 2.08-8.25; ROI runs 4.9-10.3. Checking a net-yield
+        """Net and gross yield have separate ranges. Checking a net-yield
         figure against the ROI range flagged a correct answer as wrong."""
-        answer = "A 1-BR in Downtown yields roughly 2.78% net annual income (about 5.9% gross ROI)."
+        answer = "A 1-BR in Downtown yields roughly 4.78% net annual income (about 5.9% gross ROI)."
         result = check_number_accuracy(answer, conn)
         assert result["valid"], result["issues"]
 
-    @pytest.mark.parametrize(
-        "answer",
-        ["ROI 4.9%", "ROI 10.3%", "Net Yield: 2.08% (TRX-001)", "Net yield 8.25%"],
-    )
-    def test_boundary_values_are_in_range(self, conn, answer):
-        result = check_number_accuracy(answer, conn)
-        assert result["valid"], result["issues"]
+    def test_boundary_values_are_in_range(self, conn):
+        """The exact min and max in the data must pass, for both metrics."""
+        (roi_lo, roi_hi), (net_lo, net_hi) = (
+            conn.execute(f"SELECT MIN({c}), MAX({c}) FROM v_net_yield").fetchone()
+            for c in ("roi_pct", "net_yield_pct")
+        )
+        for answer in (f"ROI {roi_lo}%", f"ROI {roi_hi}%", f"Net Yield: {net_lo}% (x)", f"Net yield {net_hi}%"):
+            result = check_number_accuracy(answer, conn)
+            assert result["valid"], (answer, result["issues"])
 
     @pytest.mark.parametrize(
         "answer,metric",

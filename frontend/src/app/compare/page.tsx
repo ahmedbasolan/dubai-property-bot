@@ -13,6 +13,11 @@ import {
 import { api, type Transaction } from "@/lib/api";
 import { GitCompare, X } from "lucide-react";
 
+function bedsLabel(bedrooms: number | null): string {
+  if (bedrooms === null || bedrooms === undefined) return "Apartment";
+  return bedrooms === 0 ? "Studio" : `${bedrooms}BR`;
+}
+
 function getCommunityName(community: unknown): string {
   if (typeof community === "string") return community;
   if (community && typeof community === "object") {
@@ -65,7 +70,7 @@ export default function ComparePage() {
           Property Comparison
         </h1>
         <p className="text-muted-foreground mt-1">
-          Compare up to 3 properties side by side
+          Compare up to 3 of the latest 500 DLD-registered sales side by side
         </p>
       </div>
 
@@ -81,7 +86,7 @@ export default function ComparePage() {
                 value={t.transaction_id}
                 disabled={selectedIds.includes(t.transaction_id)}
               >
-                {t.transaction_id} — {t.bedrooms}BR {getCommunityName(t.community)} — AED{" "}
+                {t.transaction_id} — {bedsLabel(t.bedrooms)} {getCommunityName(t.community)} — AED{" "}
                 {((t.price_aed ?? 0) / 1000000).toFixed(2)}M
               </SelectItem>
             ))}
@@ -114,10 +119,7 @@ export default function ComparePage() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg">{t.transaction_id}</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  {t.bedrooms === 0
-                    ? "Studio"
-                    : `${t.bedrooms} Bedroom`}{" "}
-                  — {getCommunityName(t.community)}
+                  {bedsLabel(t.bedrooms)} — {getCommunityName(t.community)} — {t.transaction_date}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -141,24 +143,20 @@ export default function ComparePage() {
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
-                    <span className="text-muted-foreground">Net Yield</span>
+                    <span className="text-muted-foreground">Est. Gross Yield</span>
                     <span className="font-bold text-emerald-400">
-                      {t.net_yield_pct?.toFixed(1) ?? "—"}%
+                      {t.roi_pct != null ? `${t.roi_pct.toFixed(1)}%` : "n/a"}
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
-                    <span className="text-muted-foreground">ROI</span>
+                    <span className="text-muted-foreground">Est. Net Yield</span>
                     <span className="font-bold text-emerald-400">
-                      {t.roi_pct != null ? `${t.roi_pct}%` : "—"}
+                      {t.net_yield_pct != null ? `${t.net_yield_pct.toFixed(1)}%` : "n/a"}
                     </span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
-                    <span className="text-muted-foreground">Floor</span>
-                    <span className="font-bold">{t.floor_level ?? "—"}</span>
-                  </div>
-                  <div className="flex justify-between p-2 rounded bg-accent/50">
-                    <span className="text-muted-foreground">View</span>
-                    <span className="font-bold">{t.view_type ?? "—"}</span>
+                    <span className="text-muted-foreground">Project</span>
+                    <span className="font-bold text-right">{t.project ?? "—"}</span>
                   </div>
                   <div className="flex justify-between p-2 rounded bg-accent/50">
                     <span className="text-muted-foreground">Developer</span>
@@ -168,7 +166,7 @@ export default function ComparePage() {
                     <span className="text-muted-foreground">Status</span>
                     <Badge
                       variant={
-                        t.handover_status === "READY"
+                        t.handover_status === "Ready"
                           ? "default"
                           : "secondary"
                       }
@@ -176,15 +174,11 @@ export default function ComparePage() {
                       {t.handover_status ?? "—"}
                     </Badge>
                   </div>
-                  <div className="flex justify-between p-2 rounded bg-accent/50">
-                    <span className="text-muted-foreground">
-                      Service Charge
-                    </span>
-                    <span className="font-bold">
-                      {t.service_charge_aed_sqft ?? "—"} AED/sqft
-                    </span>
-                  </div>
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  Yields are estimates: the community&apos;s median Ejari rent per m² applied to
+                  this unit&apos;s size. Net is before service charges.
+                </p>
               </CardContent>
             </Card>
           ))}

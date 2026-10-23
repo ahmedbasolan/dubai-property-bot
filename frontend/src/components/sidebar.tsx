@@ -110,7 +110,7 @@ export function Sidebar() {
               >
                 <span className="flex items-center gap-2">
                   <Radio size={14} className={useLive ? "text-emerald-400" : "text-muted-foreground"} />
-                  {useLive ? "Live (BayutAPI)" : "Mock Data"}
+                  {useLive ? "Live listings (Bayut)" : "DLD registered sales"}
                 </span>
                 <div
                   className={cn(
@@ -128,14 +128,14 @@ export function Sidebar() {
               </button>
             ) : (
               <div className="px-3 py-2 rounded-lg text-xs text-muted-foreground bg-accent/50 border border-border">
-                Add BAYUT_API_KEY to .env for real data
+                Add BAYUT_API_KEY to .env for live listings
               </div>
             )}
           </div>
 
           <div className="text-xs text-muted-foreground space-y-1">
-            <p>Mock DLD-style dataset</p>
-            <p>5-Factor Scoring</p>
+            <p>Dubai Land Department open data</p>
+            <p>4-factor scoring, Jan–Sep 2026</p>
           </div>
         </div>
       </aside>

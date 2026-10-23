@@ -17,12 +17,14 @@ const recColors: Record<string, string> = {
   INVEST: "#10b981",
   HOLD: "#f59e0b",
   AVOID: "#ef4444",
+  "INSUFFICIENT DATA": "#6b7280",
 };
 
 const recBg: Record<string, string> = {
   INVEST: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
   HOLD: "bg-amber-500/20 text-amber-400 border-amber-500/30",
   AVOID: "bg-red-500/20 text-red-400 border-red-500/30",
+  "INSUFFICIENT DATA": "bg-muted text-muted-foreground border-border",
 };
 
 export default function MapPage() {
@@ -49,6 +51,7 @@ export default function MapPage() {
   const invest = features.filter((f) => f.recommendation === "INVEST");
   const hold = features.filter((f) => f.recommendation === "HOLD");
   const avoid = features.filter((f) => f.recommendation === "AVOID");
+  const unscored = features.filter((f) => f.composite_score === null);
 
   return (
     <div className="p-6 space-y-6">
@@ -71,6 +74,10 @@ export default function MapPage() {
           <div className="flex items-center gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
             <span className="text-muted-foreground">{avoid.length} Avoid</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-gray-500" />
+            <span className="text-muted-foreground">{unscored.length} Not enough rent data</span>
           </div>
         </div>
       </div>
@@ -96,7 +103,7 @@ export default function MapPage() {
                   <div>
                     <CardTitle className="text-xl">{selected.community}</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {selected.district || "Dubai"}
+                      Median AED {Math.round(selected.avg_price_per_sqft).toLocaleString()}/sqft (ready)
                     </p>
                   </div>
                   <Badge className={recBg[selected.recommendation]}>
@@ -125,7 +132,9 @@ export default function MapPage() {
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-3xl font-bold">{(selected.composite_score ?? 0).toFixed(0)}</span>
+                      <span className="text-3xl font-bold">
+                        {selected.composite_score === null ? "—" : selected.composite_score.toFixed(0)}
+                      </span>
                       <span className="text-xs text-muted-foreground">/ 100</span>
                     </div>
                   </div>
@@ -136,16 +145,16 @@ export default function MapPage() {
                   <div className="p-3 rounded-lg bg-accent/50">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
                       <TrendingUp size={12} />
-                      Net Yield
+                      Net Yield*
                     </div>
                     <div className="text-xl font-bold text-emerald-400">
-                      {(selected.avg_net_yield ?? 0).toFixed(1)}%
+                      {selected.avg_net_yield === null ? "n/a" : `${selected.avg_net_yield.toFixed(1)}%`}
                     </div>
                   </div>
                   <div className="p-3 rounded-lg bg-accent/50">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
                       <DollarSign size={12} />
-                      Avg Price
+                      Median Price
                     </div>
                     <div className="text-xl font-bold">
                       {(selected.avg_price ?? 0) >= 1000000
@@ -166,8 +175,11 @@ export default function MapPage() {
                     border: `1px solid ${recColors[selected.recommendation]}40`,
                   }}
                 >
-                  View Properties in {selected.community}
+                  View Sales in {selected.community}
                 </button>
+                <p className="text-xs text-muted-foreground">
+                  *Net of management and vacancy, before service charges. Source: DLD open data.
+                </p>
               </CardContent>
             </Card>
           ) : (
@@ -189,7 +201,7 @@ export default function MapPage() {
             <CardContent>
               <div className="space-y-1 max-h-[300px] overflow-y-auto">
                 {features
-                  .sort((a, b) => (b.composite_score ?? 0) - (a.composite_score ?? 0))
+                  .sort((a, b) => (b.composite_score ?? -1) - (a.composite_score ?? -1))
                   .map((f) => (
                     <button
                       key={f.community}
@@ -208,7 +220,7 @@ export default function MapPage() {
                         {f.community}
                       </span>
                       <span className="font-medium text-muted-foreground">
-                        {(f.composite_score ?? 0).toFixed(0)}
+                        {f.composite_score === null ? "—" : f.composite_score.toFixed(0)}
                       </span>
                     </button>
                   ))}

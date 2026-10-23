@@ -1,9 +1,12 @@
 """FastAPI backend for Dubai Property Investor Bot.
 
-Supports two data modes:
-  - Mock data (default): local DuckDB with synthetic transactions
-  - BayutAPI: real DLD-registered data via RapidAPI (set BAYUT_API_KEY in .env)
+Analytics read DuckDB, built from Dubai Land Department open data (registered
+sales, Ejari rents, projects) by src/dld_loader.py and src/db_setup.py.
+`/api/transactions?use_live=true` can instead serve live listings from BayutAPI
+(asking prices, not registered sales) when BAYUT_API_KEY is set.
 """
+
+import csv
 
 import os
 import sys
@@ -23,11 +26,8 @@ from pydantic import BaseModel, Field
 
 from rag import get_transaction, list_transactions, structured_search
 from calculators import calculate_mortgage, calculate_str
-from developer_scorecard import (
-    BASIS as DEVELOPER_BASIS,
-    SOURCE as DEVELOPER_SOURCE,
-    get_all_developer_scores,
-)
+from db_setup import DATA_SOURCE
+from config import COMMUNITY_MAP_PATH
 from price_trends import (
     BASIS as TREND_BASIS,
     SOURCE as TREND_SOURCE,
@@ -117,11 +117,11 @@ def health():
         "status": "ok",
         "version": "2.0.0",
         # What /api/transactions?use_live=true would serve.
-        "data_source": "bayut" if live else "mock",
+        "data_source": "bayut" if live else "dld",
         # What the analytics endpoints (/api/communities, /api/scores, /api/map)
         # actually read. They always query DuckDB, even when Bayut is configured,
         # so reporting a single "bayut" source here mislabelled the whole app.
-        "default_source": "mock",
+        "default_source": "dld",
         "bayut_configured": bool(BAYUT_KEY),
     }
 
@@ -132,12 +132,12 @@ def data_source_info():
     provider = get_provider()
     is_bayut = BAYUT_KEY and "Bayut" in type(provider).__name__
     return {
-        "source": "bayut" if is_bayut else "mock",
+        "source": "bayut" if is_bayut else "dld",
         "bayut_configured": bool(BAYUT_KEY),
         "message": (
-            "Real DLD-registered transaction data via BayutAPI"
+            "Live listings via BayutAPI (asking prices)"
             if is_bayut
-            else "Synthetic mock data (set BAYUT_API_KEY in .env for real data)"
+            else f"{DATA_SOURCE}: apartment sales Jan-Sep 2026"
         ),
     }
 
@@ -182,7 +182,7 @@ def get_transactions(
         limit=limit,
         offset=offset,
     )
-    return {**result, "source": "mock"}
+    return {**result, "source": "dld"}
 
 
 @app.get("/api/transactions/{transaction_id}")
@@ -254,11 +254,14 @@ def str_calculator(
 
 @app.get("/api/developers")
 def developers():
-    scores = get_all_developer_scores()
+    # DLD sales carry no developer, and the projects export only covers
+    # projects completed in 2026, so a developer scorecard would rest on a few
+    # percent of sales. Reported as unavailable rather than guessed.
     return {
-        "developers": [vars(d) for d in scores],
-        "source": DEVELOPER_SOURCE,
-        "basis": DEVELOPER_BASIS,
+        "developers": [],
+        "source": "dld",
+        "basis": ("Not available: DLD sale records have no developer field, and "
+                  "the projects export links only projects completed in 2026."),
     }
 
 
@@ -295,7 +298,8 @@ def top_gainers():
     gainers = get_top_gainers()
     return {
         "gainers": [
-            {"community": g.community, "yoy_change_pct": g.yoy_change_pct, "trend_direction": g.trend_direction}
+            {"community": g.community, "momentum_pct": g.momentum_pct,
+             "change_pct": g.change_pct, "trend_direction": g.trend_direction}
             for g in gainers
         ],
         "source": TREND_SOURCE,
@@ -307,7 +311,7 @@ def top_volume():
     volume = get_top_volume()
     return {
         "volume": [
-            {"community": v.community, "total_volume": sum(v.volumes), "yoy_change_pct": v.yoy_change_pct}
+            {"community": v.community, "total_volume": sum(v.volumes), "change_pct": v.change_pct}
             for v in volume
         ],
         "source": TREND_SOURCE,
@@ -320,33 +324,13 @@ def investment_scores():
     return {"scores": result["community_scores"]}
 
 
-COMMUNITY_COORDS = {
-    "Downtown Dubai": (25.1972, 55.2744),
-    "Dubai Marina": (25.0800, 55.1400),
-    "Palm Jumeirah": (25.1120, 55.1390),
-    "Dubai Hills Estate": (25.1330, 55.2460),
-    "JVC (Jumeirah Village Circle)": (25.0600, 55.2100),
-    "Business Bay": (25.1850, 55.2650),
-    "Arabian Ranches": (25.0500, 55.2800),
-    "Sports City": (25.0400, 55.2200),
-    "Discovery Gardens": (25.0800, 55.1400),
-    "JLT (Jumeirah Lake Towers)": (25.0780, 55.1410),
-    "The Springs": (25.0500, 55.1500),
-    "Al Barsha": (25.1100, 55.2000),
-    "Deira": (25.2600, 55.3000),
-    "Bur Dubai": (25.2300, 55.2800),
-    "International City": (25.1600, 55.4000),
-    "Dubai Silicon Oasis": (25.1200, 55.3900),
-    "Tilal Al Ghaf": (25.0200, 55.2500),
-    "DAMAC Hills 2": (25.0100, 55.2700),
-    "Dubai Creek Harbour": (25.2100, 55.3400),
-    "Bluewaters Island": (25.0800, 55.1200),
-    "Meydan": (25.1700, 55.2700),
-    "Al Furjan": (25.0500, 55.1200),
-    "Dubai South": (24.9200, 55.1600),
-    "Town Square": (25.0700, 55.2500),
-    "DIFC": (25.2100, 55.2800),
-}
+def _load_coords() -> Dict[str, tuple]:
+    """Community -> (lat, lng), from OpenStreetMap (data/reference/community_coords.csv)."""
+    with open(COMMUNITY_MAP_PATH.parent / "community_coords.csv", encoding="utf-8") as f:
+        return {r["community"]: (float(r["lat"]), float(r["lng"])) for r in csv.DictReader(f)}
+
+
+COMMUNITY_COORDS = _load_coords()
 
 
 @app.get("/api/map")
@@ -359,17 +343,17 @@ def map_data():
     for name, coords in COMMUNITY_COORDS.items():
         s = score_map.get(name)
         if not s:
-            # Skip communities with no investment score (e.g. DIFC not in dataset)
             continue
         features.append({
             "community": name,
-            "district": s.get("district", ""),
             "lat": coords[0],
             "lng": coords[1],
-            "composite_score": s.get("composite_score", 0),
-            "recommendation": s.get("recommendation", "HOLD"),
-            "avg_net_yield": s.get("avg_net_yield_pct", 0),
-            "avg_price": s.get("avg_price", 0),
+            # None when the community lacks rent data; the map shows it grey.
+            "composite_score": s.get("composite_score"),
+            "recommendation": s.get("recommendation"),
+            "avg_net_yield": s.get("avg_net_yield_pct"),
+            "avg_price": s.get("avg_price"),
+            "avg_price_per_sqft": s.get("avg_price_per_sqft"),
         })
     return {"features": features}
 
@@ -449,42 +433,44 @@ def _data_only_answer(query: str, structured: dict, error: str) -> str:
         "_Live LLM is temporarily unavailable (daily quota). Answer generated from DuckDB data only._",
         "",
     ]
+    pct = lambda v: "n/a" if v is None else f"{v:.2f}%"
     if scores:
         lines += [
-            "### Top communities by investment score",
+            "### Communities by investment score",
             "",
-            "| Community | Score | Net Yield | Signal |",
-            "|-----------|------:|----------:|--------|",
+            "| Community | Score | Gross Yield | Signal |",
+            "|-----------|------:|------------:|--------|",
         ]
         for s in scores[:6]:
+            score = "n/a" if s["composite_score"] is None else f"{s['composite_score']:.0f}"
             lines.append(
-                f"| {s['community']} | {s['composite_score']:.0f} | "
-                f"{s['avg_net_yield_pct']:.2f}% | {s['recommendation']} |"
+                f"| {s['community']} | {score} | {pct(s['avg_roi_pct'])} | {s['recommendation']} |"
             )
         lines.append("")
         top = scores[0]
-        lines.append(
-            f"**Recommendation: {top['recommendation']}** - "
-            f"**{top['community']}** leads with a score of "
-            f"**{top['composite_score']:.0f}/100** and net yield "
-            f"**{top['avg_net_yield_pct']:.2f}%**."
-        )
+        if top["composite_score"] is not None:
+            lines.append(
+                f"**Recommendation: {top['recommendation']}** - "
+                f"**{top['community']}** leads with a score of "
+                f"**{top['composite_score']:.0f}/100** and gross yield "
+                f"**{top['avg_roi_pct']:.2f}%**."
+            )
     if txns:
         lines += [
             "",
-            "### Matching transactions",
+            "### Sample DLD transactions",
             "",
-            "| ID | Community | Price | Net Yield |",
-            "|----|-----------|------:|----------:|",
+            "| ID | Date | Community | Status | Price |",
+            "|----|------|-----------|--------|------:|",
         ]
         for t in txns[:5]:
             lines.append(
-                f"| {t['transaction_id']} | {t['community']} | "
-                f"AED {t['price_aed']:,.0f} | {t['net_yield_pct']:.2f}% |"
+                f"| {t['transaction_id']} | {t['transaction_date']} | {t['community']} | "
+                f"{t['handover_status']} | AED {t['price_aed']:,.0f} |"
             )
     lines += [
         "",
         "---",
-        "Data as of Q1 2024 — verify with DLD for current conditions.",
+        f"Source: {DATA_SOURCE}, Jan-Sep 2026. Net yields are before service charges.",
     ]
     return "\n".join(lines)

@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/select";
 import { api, type Transaction } from "@/lib/api";
 import { useDataSource } from "@/components/data-source-provider";
-import { Search, Bed, Radio } from "lucide-react";
+import { Search, Bed, Radio, Calendar } from "lucide-react";
+
+const PAGE_SIZE = 60;
 
 function getCommunityName(community: unknown): string {
   if (typeof community === "string") return community;
@@ -32,13 +34,30 @@ export default function PropertiesPage() {
   const [search, setSearch] = useState("");
   const [community, setCommunity] = useState<string>("all");
   const [bedrooms, setBedrooms] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("yield");
+  const [sortBy, setSortBy] = useState<string>("latest");
   const { useLive } = useDataSource();
-  const [dataSource, setDataSource] = useState("mock");
+  const [dataSource, setDataSource] = useState("dld");
+  // The page number belongs to one set of filters: changing a filter starts
+  // again at page 0 without resetting state inside an effect.
+  const queryKey = `${useLive}|${community}|${bedrooms}`;
+  const [pageState, setPageState] = useState({ key: queryKey, n: 0 });
+  const page = pageState.key === queryKey ? pageState.n : 0;
+  const [communityOptions, setCommunityOptions] = useState<string[]>([]);
+
+  // The full list of communities, not just those in the loaded page of sales.
+  useEffect(() => {
+    api
+      .getCommunities()
+      .then((data) => setCommunityOptions(data.communities.map((c) => c.community).sort()))
+      .catch(() => setCommunityOptions([]));
+  }, []);
 
   useEffect(() => {
     let stale = false;
-    const params: Record<string, string> = { limit: useLive ? "50" : "500" };
+    const params: Record<string, string> = {
+      limit: String(PAGE_SIZE),
+      offset: String(page * PAGE_SIZE),
+    };
     if (community !== "all") params.community = community;
     if (bedrooms !== "all") params.bedrooms = bedrooms;
 
@@ -46,7 +65,7 @@ export default function PropertiesPage() {
       .getTransactions(params, useLive)
       .then((data) => {
         if (stale) return;
-        setTransactions(data.transactions);
+        setTransactions((prev) => (page === 0 ? data.transactions : [...prev, ...data.transactions]));
         setTotal(data.total ?? data.transactions.length);
         setDataSource(data.source);
         setError(null);
@@ -62,7 +81,7 @@ export default function PropertiesPage() {
     return () => {
       stale = true;
     };
-  }, [useLive, community, bedrooms]);
+  }, [useLive, community, bedrooms, page]);
 
   let filtered = transactions;
 
@@ -72,7 +91,7 @@ export default function PropertiesPage() {
       (t) =>
         getCommunityName(t.community).toLowerCase().includes(q) ||
         t.transaction_id.toLowerCase().includes(q) ||
-        (typeof t.developer === "string" && t.developer.toLowerCase().includes(q))
+        (typeof t.project === "string" && t.project.toLowerCase().includes(q))
     );
   }
 
@@ -86,7 +105,9 @@ export default function PropertiesPage() {
     );
   }
 
-  if (sortBy === "yield") {
+  if (sortBy === "latest") {
+    filtered = [...filtered].sort((a, b) => b.transaction_date.localeCompare(a.transaction_date));
+  } else if (sortBy === "yield") {
     filtered = [...filtered].sort(
       (a, b) => (b.net_yield_pct ?? 0) - (a.net_yield_pct ?? 0)
     );
@@ -100,7 +121,9 @@ export default function PropertiesPage() {
     );
   }
 
-  const communities = [...new Set(transactions.map((t) => getCommunityName(t.community)))].sort();
+  const communities = communityOptions.length
+    ? communityOptions
+    : [...new Set(transactions.map((t) => getCommunityName(t.community)))].sort();
 
   if (loading) {
     return (
@@ -122,13 +145,14 @@ export default function PropertiesPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Properties</h1>
           <p className="text-muted-foreground mt-1">
-            {filtered.length} of {total} properties
+            Showing {filtered.length.toLocaleString()} of {total.toLocaleString()} registered sales
+            {search && " (search applies to loaded sales)"}
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs">
           <Radio size={14} className={dataSource === "bayut" ? "text-emerald-400" : "text-muted-foreground"} />
           <span className={dataSource === "bayut" ? "text-emerald-400" : "text-muted-foreground"}>
-            {dataSource === "bayut" ? "Live DLD Data" : "Mock Data"}
+            {dataSource === "bayut" ? "Live listings (Bayut)" : "DLD registered sales, Jan–Sep 2026"}
           </span>
         </div>
       </div>
@@ -137,7 +161,7 @@ export default function PropertiesPage() {
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search community, ID, developer..."
+            placeholder="Search community, ID, project..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9"
@@ -171,12 +195,13 @@ export default function PropertiesPage() {
           </SelectContent>
         </Select>
 
-        <Select value={sortBy} onValueChange={(value: string | null) => setSortBy(value ?? "yield")}>
+        <Select value={sortBy} onValueChange={(value: string | null) => setSortBy(value ?? "latest")}>
           <SelectTrigger>
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="yield">Highest Yield</SelectItem>
+            <SelectItem value="latest">Latest</SelectItem>
+            <SelectItem value="yield">Highest Est. Yield</SelectItem>
             <SelectItem value="price">Lowest Price</SelectItem>
             <SelectItem value="sqft">Largest Size</SelectItem>
           </SelectContent>
@@ -196,7 +221,9 @@ export default function PropertiesPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="text-lg">
-                    {t.bedrooms === 0
+                    {t.bedrooms === null
+                      ? "Apartment"
+                      : t.bedrooms === 0
                       ? "Studio"
                       : `${t.bedrooms} Bedroom`}
                   </CardTitle>
@@ -230,15 +257,15 @@ export default function PropertiesPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Net Yield</p>
+                  <p className="text-muted-foreground">Est. Gross Yield</p>
                   <p className="font-bold text-lg text-emerald-400">
-                    {t.net_yield_pct?.toFixed(1) ?? "—"}%
+                    {t.roi_pct != null ? `${t.roi_pct.toFixed(1)}%` : "n/a"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">ROI</p>
-                  <p className="font-bold text-lg text-emerald-400">
-                    {t.roi_pct ?? "—"}%
+                  <p className="text-muted-foreground">AED / sqft</p>
+                  <p className="font-bold text-lg">
+                    {t.price_per_sqft != null ? Math.round(t.price_per_sqft).toLocaleString() : "—"}
                   </p>
                 </div>
               </div>
@@ -246,23 +273,33 @@ export default function PropertiesPage() {
               <div className="flex items-center gap-4 text-xs text-muted-foreground pt-2 border-t">
                 <span className="flex items-center gap-1">
                   <Bed size={12} />
-                  {t.bedrooms}BR
+                  {t.bedrooms === null ? "—" : t.bedrooms === 0 ? "Studio" : `${t.bedrooms}BR`}
                 </span>
-                <span>Floor {t.floor_level ?? "—"}</span>
-                <span>{t.view_type ? `${t.view_type} view` : "—"}</span>
-                {typeof t.developer === "string" && <span>{t.developer}</span>}
-              </div>
-
-              <div className="text-xs text-muted-foreground">
-                <span>
-                  AED {t.price_per_sqft != null ? t.price_per_sqft.toLocaleString() : "—"}/sqft •{" "}
-                  {t.service_charge_aed_sqft ?? "—"} AED/sqft service
+                <span className="flex items-center gap-1">
+                  <Calendar size={12} />
+                  {t.transaction_date}
                 </span>
+                <span className="truncate">{t.project ?? "—"}</span>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
+
+      {transactions.length < total && !useLive && (
+        <div className="flex justify-center">
+          <button
+            onClick={() => setPageState({ key: queryKey, n: page + 1 })}
+            className="px-4 py-2 text-sm rounded-lg border hover:bg-accent"
+          >
+            Load {Math.min(PAGE_SIZE, total - transactions.length)} more
+          </button>
+        </div>
+      )}
+      <p className="text-xs text-muted-foreground">
+        Source: Dubai Land Department open data. Estimated yields apply the community&apos;s median
+        Ejari rent per m² to each unit; n/a where a community has too few rent contracts.
+      </p>
     </div>
   );
 }

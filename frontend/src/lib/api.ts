@@ -18,46 +18,49 @@ async function fetchApi<T>(endpoint: string): Promise<T> {
 
 export type Grade = "A" | "B" | "C" | "D" | "F";
 
+export type Recommendation = "INVEST" | "HOLD" | "AVOID" | "INSUFFICIENT DATA";
+
+// Source: Dubai Land Department open data (registered apartment sales Jan-Sep
+// 2026, Ejari rents). Yield fields are null when a community has fewer than
+// 30 rent contracts; such communities have no score.
 export interface CommunityScore {
   community: string;
-  district: string;
-  transaction_count: number;
-  composite_score: number;
-  recommendation: "INVEST" | "HOLD" | "AVOID";
-  avg_net_yield_pct: number;
-  avg_roi_pct: number;
-  avg_price_per_sqft: number;
-  avg_price: number;
+  transaction_count: number; // ready sales
+  avg_price_per_sqft: number; // median, ready
+  avg_price: number; // median, ready
+  avg_roi_pct: number | null; // gross yield
+  avg_net_yield_pct: number | null; // after management + vacancy, before service charges
+  rent_basis: "new contracts" | "all contracts" | null;
+  rent_contracts: number | null;
+  price_momentum_pct: number | null; // same-project change Q1 -> Q3
+  paired_projects: number | null;
+  offplan_sales: number;
+  pipeline_ratio: number; // off-plan sales per ready sale
+  units_completed_2026: number;
   supply_risk: "LOW" | "MEDIUM" | "HIGH";
-  pipeline_pct_of_stock: number;
-  occupancy_rate: number;
-  master_developer: string;
-  price_score: Grade;
-  yield_score: Grade;
-  net_yield_score: Grade;
-  service_charge_score: Grade;
+  yield_score: Grade | null;
   supply_risk_score: Grade;
-  occupancy_score: Grade;
-  developer_score: Grade;
+  momentum_score: Grade | null;
+  liquidity_score: Grade;
+  composite_score: number | null;
+  recommendation: Recommendation;
 }
 
 export interface Transaction {
   transaction_id: string;
   community: string;
   property_type: string;
-  bedrooms: number;
+  bedrooms: number | null; // 0 = studio
   price_aed: number;
   size_sqft: number;
+  transaction_date: string;
   price_per_sqft: number;
-  roi_pct: number;
-  net_yield_pct: number;
-  estimated_annual_rent: number;
-  annual_service_charges: number;
-  floor_level: number | null;
-  view_type: string | null;
-  developer: string;
-  handover_status: string;
-  service_charge_aed_sqft: number;
+  roi_pct: number | null; // estimated: community rent per m2 x unit size
+  net_yield_pct: number | null;
+  estimated_annual_rent: number | null;
+  project: string | null;
+  developer: string | null;
+  handover_status: "Ready" | "Off-Plan" | string;
 }
 
 export interface MortgageResult {
@@ -113,13 +116,13 @@ export interface TrendPoint {
 
 export interface MapFeature {
   community: string;
-  district: string;
   lat: number;
   lng: number;
-  composite_score: number;
-  recommendation: string;
-  avg_net_yield: number;
+  composite_score: number | null;
+  recommendation: Recommendation;
+  avg_net_yield: number | null;
   avg_price: number;
+  avg_price_per_sqft: number;
 }
 
 export interface HealthResponse {

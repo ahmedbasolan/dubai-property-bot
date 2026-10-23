@@ -1,22 +1,20 @@
 """Quarterly price trends, read from DuckDB.
 
-The series lives in the `price_history` table produced by `generate_data.py`.
-Its latest point is the same average AED/sqft that `v_community_summary`
-reports, so `/api/trends` cannot contradict `/api/scores`.
+The series is the `price_history` view: median AED/sqft of ready apartments
+per community and quarter, from DLD registered sales, with the quarter's sale
+count as volume. Two change figures are reported:
 
-Two things are modelled rather than observed, and both are labelled as such
-here and in the UI:
-
-* Earlier quarters are walked backwards from the anchor with a 2022-2024
-  growth curve and a per-community dispersion factor.
-* `market_volume` is derived from stock turnover (`supply_pipeline`), not from
-  a count of the sampled transactions.
+* `change_pct` - first to latest quarter on community medians. Easy to read,
+  but it moves with which buildings happened to sell.
+* `momentum_pct` - the median change of the *same projects* between those
+  quarters (`v_price_momentum`), which removes that mix effect. Gainers are
+  ranked on it. None when fewer than 5 projects sold in both quarters.
 """
 
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -24,12 +22,12 @@ import duckdb
 
 from config import DB_PATH
 
-SOURCE = "duckdb:price_history"
+SOURCE = "dld:price_history"
 
 BASIS = (
-    "Latest quarter is the sample's average AED/sqft (the same value /api/scores "
-    "reports). Earlier quarters are modelled with a 2022-2024 growth curve; "
-    "volume is modelled from stock turnover, not a count of the sampled transactions."
+    "Median AED/sqft of ready apartments registered with DLD each quarter, "
+    "Q1-Q3 2026; volume is the count of those sales. Momentum compares the same "
+    "projects across quarters, so it isn't skewed by which buildings sold."
 )
 
 
@@ -37,10 +35,11 @@ BASIS = (
 class PriceTrend:
     community: str
     quarters: List[str]
-    prices: List[float]  # avg price per sqft
-    volumes: List[int]  # market transaction volume (modelled)
-    yoy_change_pct: float
-    trend_direction: str  # "up", "down", "stable"
+    prices: List[float]  # median price per sqft, ready apartments
+    volumes: List[int]  # ready sales registered in the quarter
+    change_pct: float  # first -> latest quarter, community medians
+    momentum_pct: Optional[float]  # same-project change; None if too few projects
+    trend_direction: str  # "up", "down", "stable", from momentum when known
 
 
 _conn = duckdb.connect(str(DB_PATH), read_only=True)
@@ -52,7 +51,7 @@ def _has_price_history() -> bool:
     global _table_checked, _has_table
     if not _table_checked:
         _has_table = bool(
-            _conn.execute(
+            _conn.cursor().execute(
                 """
                 SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_name = 'price_history'
@@ -69,7 +68,7 @@ def list_trend_communities() -> List[str]:
         return []
     return [
         row[0]
-        for row in _conn.execute(
+        for row in _conn.cursor().execute(
             "SELECT DISTINCT community FROM price_history ORDER BY community"
         ).fetchall()
     ]
@@ -78,9 +77,9 @@ def list_trend_communities() -> List[str]:
 def get_price_trend(community: str) -> PriceTrend:
     """Get the quarterly price series for one community."""
     if not _has_price_history():
-        return PriceTrend(community, [], [], [], 0.0, "stable")
+        return PriceTrend(community, [], [], [], 0.0, None, "stable")
 
-    rows = _conn.execute(
+    rows = _conn.cursor().execute(
         """
         SELECT community, quarter, avg_price_per_sqft, market_volume
         FROM price_history
@@ -91,37 +90,33 @@ def get_price_trend(community: str) -> PriceTrend:
     ).fetchall()
 
     if not rows:
-        return PriceTrend(community, [], [], [], 0.0, "stable")
+        return PriceTrend(community, [], [], [], 0.0, None, "stable")
 
     name = rows[0][0]
     quarters = [r[1] for r in rows]
     prices = [float(r[2]) for r in rows]
     volumes = [int(r[3]) for r in rows]
 
-    # Year on year: the latest quarter against the same quarter a year earlier
-    # (four points back in a quarterly series), not against the prior quarter.
-    if len(prices) >= 5 and prices[-5]:
-        yoy = ((prices[-1] - prices[-5]) / prices[-5]) * 100
-    else:
-        yoy = 0.0
+    # Only Q1-Q3 2026 exist (the DLD gateway serves the current year), so a
+    # year-on-year figure isn't possible; report first -> latest quarter.
+    change = ((prices[-1] - prices[0]) / prices[0]) * 100 if len(prices) >= 2 and prices[0] else 0.0
 
-    if len(prices) >= 3:
-        recent = prices[-3:]
-        if recent[-1] > recent[0] * 1.02:
-            trend = "up"
-        elif recent[-1] < recent[0] * 0.98:
-            trend = "down"
-        else:
-            trend = "stable"
-    else:
-        trend = "stable"
+    momentum_row = _conn.cursor().execute(
+        "SELECT price_momentum_pct FROM v_price_momentum WHERE lower(community) = lower(?)",
+        [community],
+    ).fetchone()
+    momentum = float(momentum_row[0]) if momentum_row and momentum_row[0] is not None else None
+
+    basis = momentum if momentum is not None else change
+    trend = "up" if basis > 2 else "down" if basis < -2 else "stable"
 
     return PriceTrend(
         community=name,
         quarters=quarters,
         prices=prices,
         volumes=volumes,
-        yoy_change_pct=round(yoy, 1),
+        change_pct=round(change, 1),
+        momentum_pct=momentum,
         trend_direction=trend,
     )
 
@@ -132,14 +127,13 @@ def get_all_trends() -> Dict[str, PriceTrend]:
 
 
 def get_top_gainers(n: int = 5) -> List[PriceTrend]:
-    """Get top N communities by YoY price appreciation."""
-    trends = get_all_trends()
-    sorted_trends = sorted(trends.values(), key=lambda t: t.yoy_change_pct, reverse=True)
-    return sorted_trends[:n]
+    """Top N communities by same-project price momentum (unknown momentum excluded)."""
+    trends = [t for t in get_all_trends().values() if t.momentum_pct is not None]
+    return sorted(trends, key=lambda t: t.momentum_pct, reverse=True)[:n]
 
 
 def get_top_volume(n: int = 5) -> List[PriceTrend]:
-    """Get top N communities by modelled market volume."""
+    """Get top N communities by ready sales registered."""
     trends = get_all_trends()
     sorted_trends = sorted(
         trends.values(), key=lambda t: sum(t.volumes), reverse=True

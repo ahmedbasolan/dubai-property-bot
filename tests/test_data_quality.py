@@ -1,8 +1,8 @@
-"""Data-quality contracts for the generated dataset.
+"""Data-quality contracts for the DLD-backed database.
 
-These pin the two defects found in the review: price and size were drawn
-independently (AED/sqft spanned 612-11,452), and `/trends` reported different
-AED/sqft from `/api/scores` because it came from a separate hardcoded table.
+These pin the properties the app relies on: prices in a plausible range after
+cleaning, series that reconcile with the sales they summarise, and yields and
+scores that only exist when the rent data supports them.
 """
 
 import statistics
@@ -18,7 +18,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 DB_PATH = PROJECT_ROOT / "data" / "dubai_properties.duckdb"
 
 pytestmark = pytest.mark.skipif(
-    not DB_PATH.exists(), reason="database missing - run `make setup` first"
+    not DB_PATH.exists(), reason="database missing - run `python src/db_setup.py` first"
 )
 
 
@@ -28,105 +28,91 @@ def conn():
 
 
 def test_price_and_size_are_correlated(conn):
-    """Price is the driver and size is derived from it.
-
-    With independent draws the correlation was ~0.51; deriving size through the
-    community's price density puts it well above 0.9.
-    """
+    """Registered prices track unit size; a weak link would mean a unit mix-up
+    (sq.m read as sqft) or prices joined to the wrong rows."""
     rows = conn.execute("SELECT price_aed, size_sqft FROM v_net_yield").fetchall()
-    prices = [r[0] for r in rows]
-    sizes = [r[1] for r in rows]
 
-    assert len(rows) > 20
-    assert statistics.correlation(prices, sizes) > 0.85
+    assert len(rows) > 10_000
+    assert statistics.correlation([r[0] for r in rows], [r[1] for r in rows]) > 0.6
 
 
 def test_price_per_sqft_stays_plausible(conn):
-    low, high = conn.execute(
-        "SELECT MIN(price_per_sqft), MAX(price_per_sqft) FROM v_net_yield"
-    ).fetchone()
+    """After outlier cleaning, Dubai apartments sit roughly 400-8,000 AED/sqft."""
+    p01, p50, p99 = conn.execute(
+        "SELECT quantile_cont(price_per_sqft, [0.01, 0.5, 0.99]) FROM v_net_yield"
+    ).fetchone()[0]
 
-    assert 600 <= low, f"lowest AED/sqft is {low}"
-    assert high <= 4000, f"highest AED/sqft is {high}"
-
-
-def test_price_per_sqft_is_stable_within_a_community(conn):
-    """A community's transactions should trade in a similar density band."""
-    rows = conn.execute(
-        """
-        SELECT community, MIN(price_per_sqft), MAX(price_per_sqft)
-        FROM v_net_yield
-        GROUP BY community
-        """
-    ).fetchall()
-
-    for community, low, high in rows:
-        assert high <= low * 2.0, f"{community}: {low} - {high} AED/sqft"
+    assert 300 <= p01, p01
+    assert 1_000 <= p50 <= 3_000, p50
+    assert p99 <= 8_000, p99
 
 
-def test_latest_trend_quarter_matches_the_scores(conn):
-    """/trends and /api/scores must report the same current AED/sqft."""
+def test_trend_volumes_reconcile_with_ready_sales(conn):
+    """/api/trends volume and /api/scores sale count must be the same sales."""
     mismatches = conn.execute(
         """
-        SELECT s.community, s.avg_price_per_sqft, h.avg_price_per_sqft
+        SELECT s.community, s.transaction_count, h.volume
         FROM v_community_summary s
-        JOIN price_history h ON h.community = s.community
-        WHERE h.quarter_start = (SELECT MAX(quarter_start) FROM price_history)
-          AND s.avg_price_per_sqft <> h.avg_price_per_sqft
+        JOIN (SELECT community, SUM(market_volume) AS volume
+              FROM price_history GROUP BY community) h USING (community)
+        WHERE s.transaction_count <> h.volume
         """
     ).fetchall()
 
     assert mismatches == []
 
 
-def test_every_community_has_a_usable_series(conn):
-    counts = conn.execute(
+def test_every_community_has_a_full_series(conn):
+    counts = dict(conn.execute(
         "SELECT community, COUNT(*) FROM price_history GROUP BY community"
-    ).fetchall()
+    ).fetchall())
     communities = conn.execute(
         "SELECT COUNT(DISTINCT community) FROM transactions"
     ).fetchone()[0]
 
     assert len(counts) == communities
-    # At least five points are needed for the year-on-year comparison.
-    assert {count for _, count in counts} and min(c for _, c in counts) >= 5
-    assert len({count for _, count in counts}) == 1, "series lengths differ"
+    assert set(counts.values()) == {3}, "every community should have Q1-Q3 2026"
 
 
-def test_developer_score_is_bounded_by_its_communities(conn):
-    from developer_scorecard import get_all_developer_scores
+def test_yield_exists_only_with_enough_rent_contracts(conn):
+    from db_setup import MIN_YIELD_SAMPLE
 
-    developers = get_all_developer_scores()
-    assert developers
-
-    for developer in developers:
-        composites = [
-            row[0]
-            for row in conn.execute(
-                "SELECT composite_score FROM v_investment_scores WHERE master_developer = ?",
-                [developer.name],
-            ).fetchall()
-        ]
-
-        assert composites, developer.name
-        # Weighted average, rounded to a whole point.
-        assert min(composites) - 1 <= developer.composite_score <= max(composites) + 1
+    rows = conn.execute(
+        "SELECT community, avg_roi_pct, rent_contracts FROM v_investment_scores"
+    ).fetchall()
+    for community, gross, contracts in rows:
+        if gross is not None:
+            assert (contracts or 0) >= MIN_YIELD_SAMPLE, community
+            assert 2 <= gross <= 15, (community, gross)
 
 
-def test_developer_counts_reconcile_with_scorecards(conn):
-    """The chat's developer totals and the scorecards must agree.
+def test_score_exists_exactly_when_yield_does(conn):
+    """No yield, no score: the composite must never be built without its core factor."""
+    bad = conn.execute(
+        """SELECT community FROM v_investment_scores
+           WHERE (composite_score IS NULL) <> (avg_roi_pct IS NULL)"""
+    ).fetchall()
 
-    "Various" communities used to draw from a pool that included the master
-    developers, so Emaar and Nakheel showed 18 transactions by
-    `transactions.developer` and 16 in their scorecards.
-    """
-    from developer_scorecard import get_all_developer_scores
+    assert bad == []
 
-    for developer in get_all_developer_scores():
-        raw = conn.execute(
-            "SELECT COUNT(*) FROM transactions WHERE developer = ?", [developer.name]
-        ).fetchone()[0]
-        assert raw == developer.transaction_count, (
-            f"{developer.name}: {raw} rows name the developer, "
-            f"but the scorecard counts {developer.transaction_count} community transactions"
-        )
+
+def test_momentum_needs_enough_paired_projects(conn):
+    from db_setup import MIN_MOMENTUM_PROJECTS
+
+    bad = conn.execute(
+        f"""SELECT community FROM v_investment_scores
+            WHERE price_momentum_pct IS NOT NULL AND paired_projects < {MIN_MOMENTUM_PROJECTS}"""
+    ).fetchall()
+
+    assert bad == []
+
+
+def test_net_yield_is_gross_less_management_and_vacancy(conn):
+    from config import MANAGEMENT_FEE_RATE, VACANCY_RATE
+
+    rows = conn.execute(
+        "SELECT avg_roi_pct, avg_net_yield_pct FROM v_investment_scores WHERE avg_roi_pct IS NOT NULL"
+    ).fetchall()
+    assert rows
+    for gross, net in rows:
+        assert net == pytest.approx(gross * (1 - MANAGEMENT_FEE_RATE - VACANCY_RATE), abs=0.01)

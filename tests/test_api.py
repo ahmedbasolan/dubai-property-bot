@@ -36,13 +36,14 @@ def conn():
     return duckdb.connect(str(DB_PATH), read_only=True)
 
 
-def test_list_returns_whole_dataset(client, conn):
-    """The list endpoint used to return the LLM's 40-row context sample."""
+def test_list_reports_the_whole_dataset(client, conn):
+    """The list endpoint used to return the LLM's 40-row context sample. With
+    ~48k DLD sales it pages, but `total` must still be the full count."""
     expected = conn.execute("SELECT COUNT(*) FROM v_net_yield").fetchone()[0]
     body = client.get("/api/transactions", params={"limit": 500}).json()
 
     assert body["total"] == expected
-    assert len(body["transactions"]) == expected
+    assert len(body["transactions"]) == min(500, expected)
 
 
 def test_total_is_filtered_count(client, conn):
@@ -54,6 +55,7 @@ def test_total_is_filtered_count(client, conn):
     ).json()
 
     assert body["total"] == expected
+    assert len(body["transactions"]) == min(500, expected)
     assert {t["community"] for t in body["transactions"]} == {"Dubai Marina"}
 
 
@@ -76,20 +78,18 @@ def test_missing_transaction_returns_404(client):
 
 
 def test_scores_have_letter_grades(client):
+    """Supply and liquidity always grade. Yield and momentum grade when the data
+    supports them and are null otherwise, never a made-up letter."""
     scores = client.get("/api/scores").json()["scores"]
 
     assert scores
     for score in scores:
-        for field in (
-            "price_score",
-            "yield_score",
-            "net_yield_score",
-            "service_charge_score",
-            "supply_risk_score",
-            "occupancy_score",
-            "developer_score",
-        ):
+        for field in ("supply_risk_score", "liquidity_score"):
             assert score[field] in {"A", "B", "C", "D", "F"}, (field, score[field])
+        for field in ("yield_score", "momentum_score"):
+            assert score[field] in {"A", "B", "C", "D", "F", None}, (field, score[field])
+        assert (score["yield_score"] is None) == (score["avg_roi_pct"] is None)
+        assert (score["momentum_score"] is None) == (score["price_momentum_pct"] is None)
 
 
 def test_recommendation_agrees_with_composite_score(client):
@@ -102,7 +102,8 @@ def test_recommendation_agrees_with_composite_score(client):
     for score in client.get("/api/scores").json()["scores"]:
         value = score["composite_score"]
         expected = (
-            "INVEST" if value >= 70 else "HOLD" if value >= 50 else "AVOID"
+            "INSUFFICIENT DATA" if value is None
+            else "INVEST" if value >= 70 else "HOLD" if value >= 50 else "AVOID"
         )
         assert score["recommendation"] == expected, (
             score["community"],
@@ -120,8 +121,8 @@ def test_supply_risk_is_upper_case(client):
 def test_health_distinguishes_live_and_default_source(client):
     body = client.get("/api/health").json()
 
-    assert body["default_source"] == "mock"
-    assert body["data_source"] in {"mock", "bayut"}
+    assert body["default_source"] == "dld"
+    assert body["data_source"] in {"dld", "bayut"}
 
 
 def test_chat_get_ignores_api_key(client, monkeypatch):
@@ -142,20 +143,20 @@ def test_chat_get_ignores_api_key(client, monkeypatch):
     assert captured["api_key"] is None
 
 
-def test_every_community_has_supply_and_metadata(conn):
+def test_every_community_has_supply_and_a_score_row(conn):
     missing_supply = conn.execute(
         """SELECT DISTINCT t.community FROM transactions t
            LEFT JOIN supply_pipeline sp ON t.community = sp.community_name
            WHERE sp.community_name IS NULL"""
     ).fetchall()
-    missing_meta = conn.execute(
+    missing_score = conn.execute(
         """SELECT DISTINCT t.community FROM transactions t
-           LEFT JOIN communities c ON t.community = c.community_name
-           WHERE c.community_name IS NULL"""
+           LEFT JOIN v_investment_scores s USING (community)
+           WHERE s.community IS NULL"""
     ).fetchall()
 
     assert missing_supply == []
-    assert missing_meta == []
+    assert missing_score == []
 
 
 def test_unknown_trend_community_returns_404(client):
@@ -165,26 +166,40 @@ def test_unknown_trend_community_returns_404(client):
     assert "Atlantis" in response.json()["detail"]
 
 
-def test_trends_report_their_source_and_basis(client):
-    """/trends must say where the series comes from and what is modelled."""
+def test_trends_report_their_source_and_basis(client, conn):
+    """/trends must say where the series comes from, and its volume must be the
+    real count of registered ready sales."""
     body = client.get("/api/trends").json()
 
-    assert body["source"] == "duckdb:price_history"
-    assert "modelled" in body["basis"].lower()
+    assert body["source"] == "dld:price_history"
+    assert "dld" in body["basis"].lower()
     assert body["trends"]
 
-    points = next(iter(body["trends"].values()))
-    assert points
-    assert "market_volume" in points[0]
-    assert "transactions" not in points[0], "volume is modelled, not sampled"
+    marina = body["trends"]["Dubai Marina"]
+    expected = conn.execute(
+        """SELECT COUNT(*) FROM transactions
+           WHERE community = 'Dubai Marina' AND handover_status = 'Ready'"""
+    ).fetchone()[0]
+    assert sum(p["market_volume"] for p in marina) == expected
 
 
-def test_developer_recommendation_matches_its_score(client):
+def test_concurrent_requests_do_not_share_query_results(client):
+    """One DuckDB connection shared across FastAPI's worker threads mixed up
+    result sets: the dashboard's two parallel fetches crashed with rows from
+    the other query. Each query now runs on its own cursor."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    paths = ["/api/communities", "/api/transactions?limit=8", "/api/scores", "/api/map"] * 4
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        statuses = list(pool.map(lambda p: client.get(p).status_code, paths))
+
+    assert statuses == [200] * len(paths)
+
+
+def test_developers_are_reported_unavailable_not_invented(client):
+    """DLD sales carry no developer; the endpoint must say so, not score guesses."""
     body = client.get("/api/developers").json()
 
-    assert body["developers"]
-    for developer in body["developers"]:
-        value = developer["composite_score"]
-        expected = "INVEST" if value >= 70 else "HOLD" if value >= 50 else "AVOID"
-        assert developer["recommendation"] == expected, developer["name"]
+    assert body["developers"] == []
+    assert "not available" in body["basis"].lower()
 

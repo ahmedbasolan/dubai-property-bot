@@ -30,11 +30,11 @@ def test_scoped_query_includes_the_duckdb_price_trend():
 
     assert trend["community"] == "Dubai Marina"
     assert trend["latest_price"] > 0
-    assert trend["latest_quarter"] == "Q4 2024"
+    assert trend["latest_quarter"] == "Q3 2026"
 
     context = build_context(result, [])
-    assert "PRICE TREND (DuckDB)" in context
-    assert "modelled" in context.lower()
+    assert "PRICE TREND (DLD ready sales)" in context
+    assert "same projects" in context.lower()
 
 
 def test_unscoped_query_has_no_trend_block():
