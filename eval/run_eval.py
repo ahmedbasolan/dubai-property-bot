@@ -3,6 +3,7 @@
   python eval/run_eval.py --retrieval-only   # no LLM calls: is each answer reachable?
   python eval/run_eval.py                    # full run against the configured LLM
   python eval/run_eval.py --fresh            # ignore prior results
+  python eval/run_eval.py --rescore          # re-score saved answers after a scorer fix
 
 Two scores per question (eval/scoring.py):
   retrieval  the right filters applied, and the expected numbers/labels are in
@@ -163,6 +164,30 @@ def run_full(items: List[Dict[str, Any]], model: str = None, resume: bool = True
     return summary
 
 
+def rescore(items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Re-score saved answers with the current scorer; no LLM calls.
+
+    Used after a scorer fix so every answer in a multi-day run is judged by the
+    same rules. Retrieval scores are kept (the context isn't stored).
+    """
+    from rag import known_communities
+
+    out = EVAL_DIR / "eval_results.json"
+    data = json.loads(out.read_text(encoding="utf-8"))
+    by_id = {i["id"]: i for i in items}
+    known = known_communities()
+    changed = 0
+    for r in data["results"]:
+        if r.get("status") == "ok" and r["id"] in by_id:
+            new = score_answer(by_id[r["id"]], r["answer_text"], known)
+            changed += new["pass"] != r["answer"]["pass"]
+            r["answer"] = new
+    summary = _save(out, items, data["results"])
+    print(f"Re-scored {summary['answered']} answers; {changed} changed pass/fail")
+    print_summary("ANSWERS", summary["answer"])
+    return summary
+
+
 if __name__ == "__main__":
     import argparse
 
@@ -172,13 +197,16 @@ if __name__ == "__main__":
     parser.add_argument("--model", default=None, help="override the provider's default model")
     parser.add_argument("--fresh", action="store_true", help="ignore prior results and re-run everything")
     parser.add_argument("--only", default=None, help="comma-separated question types to run")
+    parser.add_argument("--rescore", action="store_true", help="re-score saved answers; no LLM calls")
     args = parser.parse_args()
 
     eval_items = load_eval_set(args.eval_path)
     if args.only:
         wanted = set(args.only.split(","))
         eval_items = [i for i in eval_items if i["type"] in wanted]
-    if args.retrieval_only:
+    if args.rescore:
+        rescore(eval_items)
+    elif args.retrieval_only:
         run_retrieval_only(eval_items)
     else:
         run_full(eval_items, model=args.model, resume=not args.fresh)
