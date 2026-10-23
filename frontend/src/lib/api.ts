@@ -1,4 +1,9 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// Production builds call their own origin: on Vercel the API is a service on
+// the same domain under /api. Local dev talks to uvicorn on :8000. Setting
+// NEXT_PUBLIC_API_URL overrides both (docker-compose does).
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ??
+  (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
 
 async function fetchApi<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`);
