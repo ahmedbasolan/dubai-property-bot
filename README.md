@@ -100,7 +100,7 @@ factors DLD data actually supports:
 
 | Factor | Weight | Measure |
 |--------|--------|---------|
-| Rental yield | 40 | Median Ejari rent per m² ÷ median ready sale price per m² |
+| Rental yield | 40 | Per project, median new Ejari rent per m² ÷ median ready price per m²; the community's median across projects |
 | Supply pressure | 25 | Off-plan sales per ready sale in 2026: units still to be handed over |
 | Price momentum | 20 | Median change of the *same projects* from Q1 to Q3 2026 |
 | Liquidity | 15 | Ready sales registered |
@@ -108,12 +108,14 @@ factors DLD data actually supports:
 Each factor is graded A–F and mapped to 1–5 points. Yield bands are absolute
 (≥7.5% is A); the others were set from the 2026 distribution across communities.
 **Recommendations are bands on that same score**: INVEST ≥ 70, HOLD ≥ 50,
-AVOID < 50. **No yield, no score:** a community with fewer than 30 rent contracts
-is "INSUFFICIENT DATA". Momentum needs at least 5 projects sold in both quarters,
+AVOID < 50. **No yield, no score:** a community needs at least 3 projects with both
+new rents and ready sales, and 30 such contracts; otherwise it's "INSUFFICIENT DATA". Momentum needs at least 5 projects sold in both quarters,
 otherwise it's left out and the other weights are rescaled.
 
 **Why per m² and same-project.** Ejari rows carry no bedroom count, so rents and
-sales are compared per square metre. Raw community medians move with *which*
+sales are compared per square metre, and within the same project: pooling every
+rent against every sale put International City at 11.6% because a third of its
+rents came from one newer tower (like for like it's 8.75%). Raw community medians move with *which*
 buildings sold (Majan's median rose 52% in two quarters, Marina's 10%), while
 comparing the same projects shows most communities softened 4–10% over 2026.
 
@@ -128,9 +130,11 @@ All from Dubai Land Department open data, January–September 2026, cleaned by
 - **95,885 apartment sales** after removing 17 duplicates, 7,616 offices, shops
   and hotel rooms, and 669 price outliers (mostly partial or share transfers
   recorded at a fraction of value). **47,677** fall in the 29 v1 communities.
-- **Ejari rents:** single-unit residential apartment contracts. Rents use DLD's
-  official area names ("Al Barsha South Fourth"), so each one gets its community
-  from the area map or from its project's ready sales.
+- **47,862 Ejari rents** (1–22 October 2026): single-unit residential apartment
+  contracts. Rents use DLD's official area names ("Al Barsha South Fourth"), so each
+  one gets its community from the area map or from its project's ready sales; 16,913
+  land in a v1 community. Yields use new contracts only, since renewals lag the
+  market under the RERA rent cap.
 - **165 projects** completed in 2026: 79,191 apartments handed over.
 - **29 communities**, chosen by rule: at least 250 ready apartment sales.
   Apartments only. Villa-only communities aren't covered, and the gateway's
@@ -269,7 +273,7 @@ Villa and penthouse searches are reported the same way, since the data is
 apartments only. Community filters also scope the investment-score and supply
 tables, and the semantic branch is scoped to the community's own generated report.
 
-Tests: `pytest tests/ eval/test_run_eval.py` - 103 covering the DLD loader
+Tests: `pytest tests/ eval/test_run_eval.py` - 104 covering the DLD loader
 (each cleaning rule on fixture exports, plus checks on the real exports that skip
 without them), extraction, the relaxation safety net, semantic scoping, the eval
 harness, the REST contract (paging, 404s, score/signal agreement, concurrent
@@ -336,9 +340,11 @@ The UI uses a custom **Luxury Gold** design system (`#D4AF37` primary, Cinzel + 
 
 `REVIEW.md` has the full list. The ones that change how results should be read:
 
-- **Rent coverage is thin for now.** The first Ejari export covers one day (22 Oct
-  2026), so only 7 of 29 communities clear the 30-contract minimum for a yield and a
-  score. A month of rents should cover all of them; re-run `make setup` after adding it.
+- **5 of 29 communities have no yield or score**: Discovery Gardens, JBR, Liwan,
+  Motor City and The Greens. Their rents are filed under broad official areas with
+  too few project names that match their sales.
+- **Rents and sales cover different windows**: rents are 1–22 October 2026, sales
+  January–September. Yields compare current rents with this year's prices.
 - **Nine months, one year.** The gateway serves the current year only, so trends run
   Q1-Q3 2026 and there's no year-on-year figure. Earlier years are on data.dubai.
 - **Apartments only.** Villa communities and villa sales aren't covered.

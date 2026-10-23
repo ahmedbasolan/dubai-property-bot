@@ -74,16 +74,41 @@ def test_every_community_has_a_full_series(conn):
     assert set(counts.values()) == {3}, "every community should have Q1-Q3 2026"
 
 
-def test_yield_exists_only_with_enough_rent_contracts(conn):
-    from db_setup import MIN_YIELD_SAMPLE
+def test_yield_exists_only_with_enough_matched_projects(conn):
+    from db_setup import MIN_YIELD_PROJECTS, MIN_YIELD_SAMPLE
 
     rows = conn.execute(
-        "SELECT community, avg_roi_pct, rent_contracts FROM v_investment_scores"
+        "SELECT community, avg_roi_pct, matched_contracts, yield_projects FROM v_investment_scores"
     ).fetchall()
-    for community, gross, contracts in rows:
+    for community, gross, contracts, projects in rows:
         if gross is not None:
-            assert (contracts or 0) >= MIN_YIELD_SAMPLE, community
-            assert 2 <= gross <= 15, (community, gross)
+            assert contracts >= MIN_YIELD_SAMPLE, community
+            assert projects >= MIN_YIELD_PROJECTS, community
+            assert 2 <= gross <= 12, (community, gross)
+
+
+def test_community_yield_is_the_median_of_its_project_yields(conn):
+    """Yield compares rents and sales in the same buildings. Pooling all rents
+    against all sales put International City at 11.6% because a third of its
+    rents came from one newer tower."""
+    check = conn.execute(
+        """
+        WITH s AS (
+            SELECT community, upper(project) AS k, median(price_aed / size_sqm) AS pps
+            FROM transactions WHERE handover_status = 'Ready' AND project IS NOT NULL
+            GROUP BY ALL HAVING COUNT(*) >= 5
+        )
+        SELECT round(median(100 * r.rent_per_sqm / s.pps), 2)
+        FROM v_project_rent r JOIN s ON s.community = r.community AND s.k = r.project_key
+        WHERE r.community = 'International City'
+        """
+    ).fetchone()[0]
+    reported = conn.execute(
+        "SELECT avg_roi_pct FROM v_investment_scores WHERE community = 'International City'"
+    ).fetchone()[0]
+
+    assert reported == check
+    assert reported < 10, "pooled rents vs sales would put it at 11.6%"
 
 
 def test_score_exists_exactly_when_yield_does(conn):

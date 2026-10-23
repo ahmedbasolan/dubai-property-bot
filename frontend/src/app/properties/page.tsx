@@ -297,8 +297,9 @@ export default function PropertiesPage() {
         </div>
       )}
       <p className="text-xs text-muted-foreground">
-        Source: Dubai Land Department open data. Estimated yields apply the community&apos;s median
-        Ejari rent per m² to each unit; n/a where a community has too few rent contracts.
+        Source: Dubai Land Department open data. Estimated yields apply the median new Ejari rent
+        per m² in the unit&apos;s project (or its community) to its size; n/a where there are too
+        few rent contracts.
       </p>
     </div>
   );

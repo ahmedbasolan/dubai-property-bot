@@ -16,8 +16,13 @@ import duckdb
 
 from config import DB_PATH, MANAGEMENT_FEE_RATE, VACANCY_RATE, PROCESSED_DIR
 
-# Fewer contracts or ready sales than this and a community's yield is
-# reported as insufficient data rather than a number.
+# Yield compares rents and ready sales within the same projects. A project
+# counts when it has this many new-contract rents and this many ready sales;
+# a community needs this many such projects and matched rents, else its
+# yield is reported as insufficient data rather than a number.
+MIN_PROJECT_RENTS = 5
+MIN_PROJECT_SALES = 5
+MIN_YIELD_PROJECTS = 3
 MIN_YIELD_SAMPLE = 30
 # Momentum compares the same projects in the first and last quarter; fewer
 # paired projects than this and it's reported as unknown.
@@ -77,40 +82,75 @@ def _load_dld(conn):
         WHERE s.community IS NOT NULL
     """)
 
-    # Market rent per community: new contracts when there are enough of
-    # them (renewals lag the market under the RERA rent cap), else all.
+    # Market rent is new contracts only: renewals lag the market under the
+    # RERA rent cap. Per project, and per community as a fallback.
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_project_rent AS
+        SELECT community, upper(project) AS project_key,
+               median(rent_per_sqm) AS rent_per_sqm, COUNT(*) AS new_contracts
+        FROM dld_rents
+        WHERE community IS NOT NULL AND project IS NOT NULL AND is_new_contract
+        GROUP BY ALL
+        HAVING COUNT(*) >= {MIN_PROJECT_RENTS}
+    """)
     conn.execute(f"""
         CREATE OR REPLACE VIEW v_community_rent AS
-        WITH r AS (
-            SELECT community,
-                   median(rent_per_sqm) FILTER (WHERE is_new_contract) AS new_rent_per_sqm,
-                   median(rent_per_sqm) AS all_rent_per_sqm,
-                   COUNT(*) FILTER (WHERE is_new_contract) AS new_contracts,
-                   COUNT(*) AS rent_contracts
-            FROM dld_rents WHERE community IS NOT NULL GROUP BY community
-        )
-        SELECT community, new_contracts, rent_contracts,
-            CASE WHEN new_contracts >= {MIN_YIELD_SAMPLE} THEN new_rent_per_sqm
-                 WHEN rent_contracts >= {MIN_YIELD_SAMPLE} THEN all_rent_per_sqm END AS rent_per_sqm,
-            CASE WHEN new_contracts >= {MIN_YIELD_SAMPLE} THEN 'new contracts'
-                 WHEN rent_contracts >= {MIN_YIELD_SAMPLE} THEN 'all contracts' END AS rent_basis
-        FROM r
+        SELECT community,
+               COUNT(*) AS rent_contracts,
+               COUNT(*) FILTER (WHERE is_new_contract) AS new_contracts,
+               CASE WHEN COUNT(*) FILTER (WHERE is_new_contract) >= {MIN_YIELD_SAMPLE}
+                    THEN median(rent_per_sqm) FILTER (WHERE is_new_contract) END AS rent_per_sqm
+        FROM dld_rents WHERE community IS NOT NULL GROUP BY community
     """)
 
-    # Per-sale yield: the community's market rent per m2 applied to this
+    # Community yield, like for like: each project's median new rent per m2
+    # over its own median ready price per m2, then the median across
+    # projects. Pooling all rents against all sales compared different
+    # buildings - International City read 11.6% because a third of its
+    # rents were one newer tower, against older blocks' sale prices.
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_community_yield AS
+        WITH s AS (
+            SELECT community, upper(project) AS project_key,
+                   median(price_aed / size_sqm) AS price_per_sqm, COUNT(*) AS ready_sales
+            FROM transactions
+            WHERE handover_status = 'Ready' AND project IS NOT NULL
+            GROUP BY ALL
+            HAVING COUNT(*) >= {MIN_PROJECT_SALES}
+        ),
+        pairs AS (
+            SELECT r.community, 100 * r.rent_per_sqm / s.price_per_sqm AS yield_pct, r.new_contracts
+            FROM v_project_rent r JOIN s USING (community, project_key)
+        )
+        SELECT community,
+               COUNT(*) AS yield_projects,
+               SUM(new_contracts) AS matched_contracts,
+               CASE WHEN COUNT(*) >= {MIN_YIELD_PROJECTS} AND SUM(new_contracts) >= {MIN_YIELD_SAMPLE}
+                    THEN ROUND(median(yield_pct), 2) END AS gross_yield_pct
+        FROM pairs GROUP BY community
+    """)
+
+    # Per-sale yield estimate: the sale's own project rent per m2 when that
+    # project has enough new contracts, else the community's, applied to the
     # unit's size. Net deducts management and vacancy only; DLD publishes no
     # service charges, so net yield is before service charges.
     conn.execute(f"""
         CREATE OR REPLACE VIEW v_net_yield AS
+        WITH r AS (
+            SELECT t.*, coalesce(pr.rent_per_sqm, cr.rent_per_sqm) AS rent_per_sqm
+            FROM transactions t
+            LEFT JOIN v_project_rent pr
+                   ON pr.community = t.community AND pr.project_key = upper(t.project)
+            LEFT JOIN v_community_rent cr ON cr.community = t.community
+        )
         SELECT
-            t.*,
-            ROUND(t.price_aed / t.size_sqft, 1) AS price_per_sqft,
-            ROUND(cr.rent_per_sqm * t.size_sqm) AS estimated_annual_rent,
-            ROUND(100 * cr.rent_per_sqm * t.size_sqm / t.price_aed, 2) AS roi_pct,
-            ROUND(100 * cr.rent_per_sqm * t.size_sqm * (1 - {MANAGEMENT_FEE_RATE} - {VACANCY_RATE})
-                  / t.price_aed, 2) AS net_yield_pct
-        FROM transactions t
-        LEFT JOIN v_community_rent cr USING (community)
+            r.* EXCLUDE (rent_per_sqm),
+            ROUND(r.price_aed / r.size_sqft, 1) AS price_per_sqft,
+            ROUND(r.rent_per_sqm * r.size_sqm) AS estimated_annual_rent,
+            ROUND(100 * r.rent_per_sqm * r.size_sqm / r.price_aed, 2) AS roi_pct,
+            ROUND(100 * r.rent_per_sqm * r.size_sqm * (1 - {MANAGEMENT_FEE_RATE} - {VACANCY_RATE})
+                  / r.price_aed, 2) AS net_yield_pct
+        FROM r
     """)
 
     # Quarterly ready-apartment series (what /api/trends reads), plus a
@@ -202,11 +242,12 @@ def _load_dld(conn):
             ROUND(median(t.price_aed / t.size_sqft) FILTER (WHERE t.handover_status = 'Ready'), 0)
                 AS avg_price_per_sqft,
             ROUND(median(t.price_aed) FILTER (WHERE t.handover_status = 'Ready'), 0) AS avg_price,
-            ROUND(100 * cr.rent_per_sqm
-                  / median(t.price_aed / t.size_sqm) FILTER (WHERE t.handover_status = 'Ready'), 2)
-                AS avg_roi_pct,
-            cr.rent_basis,
-            cr.rent_contracts,
+            cy.gross_yield_pct AS avg_roi_pct,
+            CASE WHEN cy.gross_yield_pct IS NOT NULL
+                 THEN 'same-project, new contracts' END AS rent_basis,
+            coalesce(cr.rent_contracts, 0) AS rent_contracts,
+            coalesce(cy.matched_contracts, 0) AS matched_contracts,
+            coalesce(cy.yield_projects, 0) AS yield_projects,
             pm.price_momentum_pct,
             pm.paired_projects,
             sp.offplan_sales,
@@ -215,10 +256,11 @@ def _load_dld(conn):
             sp.supply_risk
         FROM transactions t
         LEFT JOIN v_community_rent cr USING (community)
+        LEFT JOIN v_community_yield cy USING (community)
         LEFT JOIN v_price_momentum pm USING (community)
         LEFT JOIN supply_pipeline sp ON sp.community_name = t.community
-        GROUP BY t.community, cr.rent_per_sqm, cr.rent_basis, cr.rent_contracts,
-                 pm.price_momentum_pct, pm.paired_projects, sp.offplan_sales,
+        GROUP BY t.community, cy.gross_yield_pct, cr.rent_contracts, cy.matched_contracts,
+                 cy.yield_projects, pm.price_momentum_pct, pm.paired_projects, sp.offplan_sales,
                  sp.pipeline_ratio, sp.units_completed_2026, sp.supply_risk
     """)
 
@@ -269,6 +311,7 @@ def _load_dld(conn):
         SELECT
             community, transaction_count, avg_price_per_sqft, avg_price,
             avg_roi_pct, avg_net_yield_pct, rent_basis, rent_contracts,
+            matched_contracts, yield_projects,
             price_momentum_pct, paired_projects,
             offplan_sales, pipeline_ratio, units_completed_2026, supply_risk,
             yield_score, supply_risk_score, momentum_score, liquidity_score,

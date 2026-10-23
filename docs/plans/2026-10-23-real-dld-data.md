@@ -49,8 +49,19 @@
   - 103 tests pass; frontend type-checks and lints clean; dashboard,
     communities, trends, properties (paging), map and chat checked in the
     browser.
-- [ ] **Rents: one month (Sep 2026)** to lift yield coverage from 7 to ~29
-  communities. Drop it in `data/raw/dld/`, delete the one-day file, run `make setup`.
+- [x] **More rents (2026-10-23):** `rents-2026-10-01-to-22.csv`, 82,084 contracts
+  (1–22 Oct; the gateway returned October rather than the September range set).
+  It replaced the one-day file, which it overlaps, and rent rows have no ID to
+  dedupe on. 47,862 clean, 16,913 in v1 communities.
+  - **Yield changed to same-project matching.** Pooled community rents vs sales
+    put International City at 11.56% and Majan at 10.85%: their rents and sales
+    came from different buildings. Now: per project, median new rent per m² ÷
+    median ready price per m² (≥ 5 of each), and the community takes the median
+    across ≥ 3 such projects with ≥ 30 contracts. International City 8.75%,
+    Majan 7.49%; the others move by under a point.
+  - 24 of 29 communities scored (10 INVEST, 14 HOLD). No yield yet for Discovery
+    Gardens, JBR, Liwan, Motor City and The Greens: their rents sit under broad
+    official areas with too few project names matching their sales.
 - [ ] Rebuild the eval set for DLD data (next roadmap step).
 - [ ] Legacy Streamlit UI (`src/app.py`, `export.py`, `developer_scorecard.py`,
   `generate_data.py`, `MockDataProvider`) still targets the old schema; decide
