@@ -36,7 +36,6 @@ from price_trends import (
     get_top_gainers,
     get_top_volume,
 )
-from data_provider import MockDataProvider
 
 app = FastAPI(title="Dubai Property Investor API", version="2.0.0")
 
@@ -89,30 +88,25 @@ _provider = None
 
 
 def get_provider():
-    """Lazy-init the appropriate data provider."""
+    """Lazy-init the live-listings provider; None when Bayut isn't available.
+
+    Analytics never go through this: they always read DuckDB (DLD data).
+    """
     global _provider
-    if _provider is not None:
+    if _provider is not None or not BAYUT_KEY:
         return _provider
-
-    if BAYUT_KEY:
-        try:
-            from bayut_provider import BayutProvider
-            _provider = BayutProvider(BAYUT_KEY)
-            print("[API] Using BayutAPI (real DLD data)")
-        except Exception as e:
-            print(f"[API] BayutAPI init failed, falling back to mock: {e}")
-            _provider = MockDataProvider()
-    else:
-        _provider = MockDataProvider()
-        print("[API] Using mock data (set BAYUT_API_KEY for real data)")
-
+    try:
+        from bayut_provider import BayutProvider
+        _provider = BayutProvider(BAYUT_KEY)
+        print("[API] BayutAPI configured for live listings")
+    except Exception as e:
+        print(f"[API] BayutAPI init failed; live listings unavailable: {e}")
     return _provider
 
 
 @app.get("/api/health")
 def health():
-    provider = get_provider()
-    live = bool(BAYUT_KEY) and "Bayut" in type(provider).__name__
+    live = get_provider() is not None
     return {
         "status": "ok",
         "version": "2.0.0",
@@ -129,8 +123,7 @@ def health():
 @app.get("/api/data-source")
 def data_source_info():
     """Return current data source status."""
-    provider = get_provider()
-    is_bayut = BAYUT_KEY and "Bayut" in type(provider).__name__
+    is_bayut = get_provider() is not None
     return {
         "source": "bayut" if is_bayut else "dld",
         "bayut_configured": bool(BAYUT_KEY),
@@ -159,8 +152,8 @@ def get_transactions(
     offset: int = Query(default=0, ge=0),
     use_live: bool = Query(default=False, description="Use live BayutAPI data"),
 ):
-    if use_live and BAYUT_KEY:
-        provider = get_provider()
+    provider = get_provider() if use_live else None
+    if provider is not None:
         txns = provider.get_transactions(
             community=community,
             bedrooms=bedrooms,
