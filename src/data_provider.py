@@ -1,14 +1,14 @@
-"""DLD data adapter pattern.
+"""Interface for live data providers.
 
-Defines an interface for data providers so the mock data can be swapped
-for real DLD data, Property Finder API, or Bayut API in the future.
+The analytics read DuckDB, built from DLD open-data exports (db_setup.py).
+This interface is for live sources served alongside it: BayutProvider
+(bayut_provider.py) implements it for live listings, and the stubs below mark
+other sources that could.
 """
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
-from pathlib import Path
-import csv
 
 
 @dataclass
@@ -51,11 +51,10 @@ class CommunitySummary:
 class DataProvider(ABC):
     """Abstract base class for data providers.
 
-    Implement this interface to connect to real data sources:
-    - MockDataProvider (current, local CSV/DuckDB)
+    Implementations:
+    - BayutProvider (bayut_provider.py, live listings)
     - DLDInteractProvider (future, DXB Interact API)
     - PropertyFinderProvider (future, PF API)
-    - BayutProvider (future, Bayut API)
     """
 
     @abstractmethod
@@ -85,110 +84,6 @@ class DataProvider(ABC):
     def health_check(self) -> bool:
         """Verify data source is accessible."""
         pass
-
-
-class MockDataProvider(DataProvider):
-    """Current implementation using local DuckDB."""
-
-    def __init__(self):
-        import sys
-        sys.path.insert(0, str(Path(__file__).parent))
-        from config import DB_PATH
-        import duckdb
-        self.conn = duckdb.connect(str(DB_PATH), read_only=True)
-
-    def get_transactions(
-        self,
-        community: Optional[str] = None,
-        min_price: Optional[int] = None,
-        max_price: Optional[int] = None,
-        bedrooms: Optional[int] = None,
-        property_type: Optional[str] = None,
-        limit: int = 50,
-    ) -> List[Transaction]:
-        where_parts = []
-        params = []
-        if community:
-            where_parts.append("v.community = ?")
-            params.append(community)
-        if min_price is not None:
-            where_parts.append("v.price_aed >= ?")
-            params.append(min_price)
-        if max_price is not None:
-            where_parts.append("v.price_aed <= ?")
-            params.append(max_price)
-        if bedrooms is not None:
-            where_parts.append("v.bedrooms = ?")
-            params.append(bedrooms)
-        if property_type:
-            where_parts.append("v.property_type = ?")
-            params.append(property_type)
-
-        where = " AND ".join(where_parts) if where_parts else "1=1"
-        # net_yield_pct lives on v_net_yield, not on transactions; ordering the
-        # base table by it raised a BinderException. amenities is still read from
-        # transactions, which the view does not expose.
-        query = f"""
-            SELECT v.transaction_id, v.community, v.property_type, v.bedrooms,
-                   v.price_aed, v.size_sqft, t.transaction_date, v.roi_pct,
-                   v.developer, v.handover_status, v.floor_level, v.view_type,
-                   v.service_charge_aed_sqft, v.parking_spots, v.completion_year,
-                   v.furnishing, t.amenities
-            FROM v_net_yield v
-            JOIN transactions t ON t.transaction_id = v.transaction_id
-            WHERE {where}
-            ORDER BY v.net_yield_pct DESC
-            LIMIT {limit}
-        """
-        rows = self.conn.execute(query, params).fetchall()
-        return [
-            Transaction(
-                transaction_id=r[0], community=r[1], property_type=r[2],
-                bedrooms=r[3], price_aed=r[4], size_sqft=r[5],
-                transaction_date=str(r[6]), roi_pct=r[7], developer=r[8],
-                handover_status=r[9], floor_level=r[10], view_type=r[11],
-                service_charge_aed_sqft=r[12], parking_spots=r[13],
-                completion_year=r[14], furnishing=r[15], amenities=r[16],
-            )
-            for r in rows
-        ]
-
-    def get_community_summaries(self) -> List[CommunitySummary]:
-        rows = self.conn.execute("SELECT * FROM v_investment_scores ORDER BY composite_score DESC").fetchall()
-        cols = [
-            "community", "district", "transaction_count", "avg_price_per_sqft",
-            "avg_roi_pct", "avg_net_yield_pct", "avg_service_charge", "avg_price",
-            "supply_risk", "pipeline_pct_of_stock", "occupancy_rate",
-            "master_developer", "price_score", "yield_score", "net_yield_score",
-            "service_charge_score", "supply_risk_score", "occupancy_score",
-            "developer_score", "recommendation", "composite_score",
-        ]
-        return [
-            CommunitySummary(
-                community_name=r[0], district=r[1],
-                avg_price_per_sqft=r[3], avg_roi_pct=r[4],
-                avg_net_yield_pct=r[5], avg_service_charge=r[6],
-                transaction_count=r[2], supply_risk=r[8],
-                composite_score=r[20], recommendation=r[19],
-            )
-            for r in rows
-        ]
-
-    def get_supply_pipeline(self) -> List[Dict[str, Any]]:
-        rows = self.conn.execute("SELECT * FROM supply_pipeline").fetchall()
-        cols = [
-            "community_name", "existing_stock_units", "units_under_construction",
-            "units_completed_last_12_months", "units_expected_next_24_months",
-            "pipeline_pct_of_stock", "supply_risk",
-        ]
-        return [dict(zip(cols, row)) for row in rows]
-
-    def health_check(self) -> bool:
-        try:
-            self.conn.execute("SELECT 1")
-            return True
-        except Exception:
-            return False
 
 
 # --- Future Provider Stubs ---
@@ -237,16 +132,3 @@ class PropertyFinderProvider(DataProvider):
 
     def health_check(self) -> bool:
         return False
-
-
-def get_provider(provider_name: str = "mock") -> DataProvider:
-    """Factory function to get the appropriate data provider."""
-    providers = {
-        "mock": MockDataProvider,
-        "dld": DLDInteractProvider,
-        "property_finder": PropertyFinderProvider,
-    }
-    provider_cls = providers.get(provider_name)
-    if not provider_cls:
-        raise ValueError(f"Unknown provider: {provider_name}. Available: {list(providers.keys())}")
-    return provider_cls()
