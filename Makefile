@@ -2,7 +2,7 @@
 # the python:3.12-slim image. Override with `make PY=python3`.
 PY ?= python
 
-.PHONY: setup dld run-api run-ui eval eval-fresh ingest reports setup-db clean docker-build docker-run help
+.PHONY: setup dld run-api run-ui eval eval-fresh eval-set eval-retrieval ingest reports setup-db clean docker-build docker-run help
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -21,7 +21,13 @@ run-api: ## Launch FastAPI backend on :8000
 run-ui: ## Launch Next.js frontend on :3000
 	cd frontend && npm run dev
 
-eval: ## Run evaluation suite (resumes prior successes; loads .env)
+eval-set: ## Rebuild eval/eval_set.json (questions + ground truth) from DuckDB
+	$(PY) eval/build_eval_set.py
+
+eval-retrieval: ## Score retrieval only - no LLM calls
+	$(PY) eval/run_eval.py --retrieval-only
+
+eval: ## Full eval against the LLM (resumes prior successes; loads .env)
 	$(PY) eval/run_eval.py
 
 eval-fresh: ## Re-run all eval questions (ignore prior results)

@@ -6,25 +6,25 @@ Sobha Hartland recorded 645 ready and 71 off-plan apartment sales registered wit
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,091 (262 sales); Q2 2026 AED 2,000 (165 sales); Q3 2026 AED 1,963 (218 sales).
-Median ready price by unit type: Studio AED 984,000 (AED 1,862/sqft, 22 sales); 1BR AED 1.37M (AED 2,082/sqft, 301 sales); 2BR AED 2.35M (AED 1,964/sqft, 244 sales); 3BR AED 3.25M (AED 1,991/sqft, 58 sales); 4BR AED 4.70M (AED 2,024/sqft, 20 sales).
+Median ready price per sqft in Sobha Hartland by quarter: Q1 2026 AED 2,091 (262 sales); Q2 2026 AED 2,000 (165 sales); Q3 2026 AED 1,963 (218 sales).
+Median ready price by unit type in Sobha Hartland: Studio AED 984,000 (AED 1,862/sqft, 22 sales); 1BR AED 1.37M (AED 2,082/sqft, 301 sales); 2BR AED 2.35M (AED 1,964/sqft, 244 sales); 3BR AED 3.25M (AED 1,991/sqft, 58 sales); 4BR AED 4.70M (AED 2,024/sqft, 20 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.05%. For each of 16 projects with both new Ejari contracts (305 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.26%, before service charges, which DLD does not publish.
+Gross rental yield in Sobha Hartland is 6.05%. For each of 16 projects with both new Ejari contracts (305 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.26%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 14 projects in Q1 and Q3 2026, prices per sqft fell by a median of 4.9%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 14 projects in Q1 and Q3 2026, Sobha Hartland prices per sqft fell by a median of 4.9%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-71 off-plan apartments were sold against 645 ready ones (ratio 0.11), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 3,235 apartments here as completed in 2026, including Sobha Hartland - Crest Grande (2,364 units, 2026-04-15); Sobha Hartland Waves Opulence (871 units, 2026-08-06).
+71 off-plan apartments were sold in Sobha Hartland against 645 ready ones (ratio 0.11), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 3,235 apartments in Sobha Hartland as completed in 2026, including Sobha Hartland - Crest Grande (2,364 units, 2026-04-15); Sobha Hartland Waves Opulence (871 units, 2026-08-06).
 
 ## Most Active Ready Projects
 
-Sobha Hartland - The Crest: 137 sales at a median AED 2,205/sqft; Sobha Hartland - Crest Grande: 117 sales at a median AED 1,955/sqft; Sobha Creek Vistas: 87 sales at a median AED 1,879/sqft; Sobha Creek vistas Reserve: 40 sales at a median AED 2,063/sqft; WILTON TERRACES: 31 sales at a median AED 1,878/sqft.
+Most active ready projects in Sobha Hartland: Sobha Hartland - The Crest: 137 sales at a median AED 2,205/sqft; Sobha Hartland - Crest Grande: 117 sales at a median AED 1,955/sqft; Sobha Creek Vistas: 87 sales at a median AED 1,879/sqft; Sobha Creek vistas Reserve: 40 sales at a median AED 2,063/sqft; WILTON TERRACES: 31 sales at a median AED 1,878/sqft.
 
 ## Source and Method
 

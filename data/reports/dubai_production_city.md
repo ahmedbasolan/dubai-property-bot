@@ -6,25 +6,25 @@ Dubai Production City recorded 544 ready and 1,764 off-plan apartment sales regi
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,001 (198 sales); Q2 2026 AED 1,007 (144 sales); Q3 2026 AED 981 (202 sales).
-Median ready price by unit type: Studio AED 415,000 (AED 1,033/sqft, 179 sales); 1BR AED 650,000 (AED 879/sqft, 251 sales); 2BR AED 1.20M (AED 1,200/sqft, 107 sales).
+Median ready price per sqft in Dubai Production City by quarter: Q1 2026 AED 1,001 (198 sales); Q2 2026 AED 1,007 (144 sales); Q3 2026 AED 981 (202 sales).
+Median ready price by unit type in Dubai Production City: Studio AED 415,000 (AED 1,033/sqft, 179 sales); 1BR AED 650,000 (AED 879/sqft, 251 sales); 2BR AED 1.20M (AED 1,200/sqft, 107 sales).
 
 ## Rental Yield
 
-Gross rental yield is 8.32%. For each of 11 projects with both new Ejari contracts (609 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.24%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Production City is 8.32%. For each of 11 projects with both new Ejari contracts (609 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.24%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 12 projects in Q1 and Q3 2026, prices per sqft fell by a median of 3.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 12 projects in Q1 and Q3 2026, Dubai Production City prices per sqft fell by a median of 3.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-1,764 off-plan apartments were sold against 544 ready ones (ratio 3.24), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 5,593 apartments here as completed in 2026, including JANNAT (5,302 units, 2026-06-04); Viera Residences (291 units, 2026-02-02).
+1,764 off-plan apartments were sold in Dubai Production City against 544 ready ones (ratio 3.24), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 5,593 apartments in Dubai Production City as completed in 2026, including JANNAT (5,302 units, 2026-06-04); Viera Residences (291 units, 2026-02-02).
 
 ## Most Active Ready Projects
 
-LAKESIDE: 115 sales at a median AED 1,041/sqft; QASR SABAH I , II ,III: 88 sales at a median AED 727/sqft; THE CRESCENT: 54 sales at a median AED 844/sqft; LAGO VISTA: 47 sales at a median AED 806/sqft; MIDTOWN - AFNAN: 35 sales at a median AED 1,225/sqft.
+Most active ready projects in Dubai Production City: LAKESIDE: 115 sales at a median AED 1,041/sqft; QASR SABAH I , II ,III: 88 sales at a median AED 727/sqft; THE CRESCENT: 54 sales at a median AED 844/sqft; LAGO VISTA: 47 sales at a median AED 806/sqft; MIDTOWN - AFNAN: 35 sales at a median AED 1,225/sqft.
 
 ## Source and Method
 

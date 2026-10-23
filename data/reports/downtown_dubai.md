@@ -6,25 +6,25 @@ Downtown Dubai recorded 964 ready and 400 off-plan apartment sales registered wi
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,578 (381 sales); Q2 2026 AED 2,400 (242 sales); Q3 2026 AED 2,404 (341 sales).
-Median ready price by unit type: Studio AED 1.18M (AED 2,311/sqft, 59 sales); 1BR AED 2.05M (AED 2,280/sqft, 350 sales); 2BR AED 3.46M (AED 2,517/sqft, 418 sales); 3BR AED 5.50M (AED 2,976/sqft, 112 sales).
+Median ready price per sqft in Downtown Dubai by quarter: Q1 2026 AED 2,578 (381 sales); Q2 2026 AED 2,400 (242 sales); Q3 2026 AED 2,404 (341 sales).
+Median ready price by unit type in Downtown Dubai: Studio AED 1.18M (AED 2,311/sqft, 59 sales); 1BR AED 2.05M (AED 2,280/sqft, 350 sales); 2BR AED 3.46M (AED 2,517/sqft, 418 sales); 3BR AED 5.50M (AED 2,976/sqft, 112 sales).
 
 ## Rental Yield
 
-Gross rental yield is 5.39%. For each of 27 projects with both new Ejari contracts (726 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.69%, before service charges, which DLD does not publish.
+Gross rental yield in Downtown Dubai is 5.39%. For each of 27 projects with both new Ejari contracts (726 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.69%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 24 projects in Q1 and Q3 2026, prices per sqft fell by a median of 9.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 24 projects in Q1 and Q3 2026, Downtown Dubai prices per sqft fell by a median of 9.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-400 off-plan apartments were sold against 964 ready ones (ratio 0.41), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 2,118 apartments here as completed in 2026, including Society House Downtown Dubai (933 units, 2026-09-14); ELEGANCE TOWER (604 units, 2026-09-17); EXQUISITE LIVING RESIDENCES (581 units, 2026-07-15).
+400 off-plan apartments were sold in Downtown Dubai against 964 ready ones (ratio 0.41), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 2,118 apartments in Downtown Dubai as completed in 2026, including Society House Downtown Dubai (933 units, 2026-09-14); ELEGANCE TOWER (604 units, 2026-09-17); EXQUISITE LIVING RESIDENCES (581 units, 2026-07-15).
 
 ## Most Active Ready Projects
 
-BURJ KHALIFA TOWERS: 74 sales at a median AED 2,883/sqft; THE ADDRESS DUBAI OPERA: 43 sales at a median AED 3,367/sqft; Burj Crown: 42 sales at a median AED 2,729/sqft; Imperial  Avenue: 42 sales at a median AED 2,272/sqft; ACT ONE | ACT TWO: 40 sales at a median AED 3,051/sqft.
+Most active ready projects in Downtown Dubai: BURJ KHALIFA TOWERS: 74 sales at a median AED 2,883/sqft; THE ADDRESS DUBAI OPERA: 43 sales at a median AED 3,367/sqft; Burj Crown: 42 sales at a median AED 2,729/sqft; Imperial  Avenue: 42 sales at a median AED 2,272/sqft; ACT ONE | ACT TWO: 40 sales at a median AED 3,051/sqft.
 
 ## Source and Method
 

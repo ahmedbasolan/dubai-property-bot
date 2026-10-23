@@ -6,20 +6,20 @@ JBR (Jumeirah Beach Residence) recorded 286 ready and 0 off-plan apartment sales
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,740 (103 sales); Q2 2026 AED 1,504 (83 sales); Q3 2026 AED 1,551 (100 sales).
-Median ready price by unit type: 1BR AED 1.77M (AED 1,627/sqft, 64 sales); 2BR AED 2.29M (AED 1,613/sqft, 112 sales); 3BR AED 2.80M (AED 1,461/sqft, 69 sales); 4BR AED 5.00M (AED 1,614/sqft, 25 sales).
+Median ready price per sqft in JBR (Jumeirah Beach Residence) by quarter: Q1 2026 AED 1,740 (103 sales); Q2 2026 AED 1,504 (83 sales); Q3 2026 AED 1,551 (100 sales).
+Median ready price by unit type in JBR (Jumeirah Beach Residence): 1BR AED 1.77M (AED 1,627/sqft, 64 sales); 2BR AED 2.29M (AED 1,613/sqft, 112 sales); 3BR AED 2.80M (AED 1,461/sqft, 69 sales); 4BR AED 5.00M (AED 1,614/sqft, 25 sales).
 
 ## Rental Yield
 
-Not enough matched rent data for a reliable yield: 2 projects here have both new Ejari contracts and ready sales (19 contracts); 3 projects and 30 contracts are needed. 29 rent contracts in total are linked to this community.
+Not enough matched rent data for a reliable yield in JBR (Jumeirah Beach Residence): 2 projects have both new Ejari contracts and ready sales (19 contracts); 3 projects and 30 contracts are needed. 29 rent contracts in total are linked to this community.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in JBR (Jumeirah Beach Residence) is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-No off-plan apartments were sold here in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
+No off-plan apartments were sold in JBR (Jumeirah Beach Residence) in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
 
 ## Source and Method
 

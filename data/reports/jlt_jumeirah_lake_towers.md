@@ -6,25 +6,25 @@ JLT (Jumeirah Lake Towers) recorded 580 ready and 424 off-plan apartment sales r
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,467 (260 sales); Q2 2026 AED 1,400 (162 sales); Q3 2026 AED 1,415 (158 sales).
-Median ready price by unit type: Studio AED 780,000 (AED 1,708/sqft, 84 sales); 1BR AED 1.13M (AED 1,359/sqft, 273 sales); 2BR AED 1.90M (AED 1,462/sqft, 172 sales); 3BR AED 2.60M (AED 1,479/sqft, 43 sales).
+Median ready price per sqft in JLT (Jumeirah Lake Towers) by quarter: Q1 2026 AED 1,467 (260 sales); Q2 2026 AED 1,400 (162 sales); Q3 2026 AED 1,415 (158 sales).
+Median ready price by unit type in JLT (Jumeirah Lake Towers): Studio AED 780,000 (AED 1,708/sqft, 84 sales); 1BR AED 1.13M (AED 1,359/sqft, 273 sales); 2BR AED 1.90M (AED 1,462/sqft, 172 sales); 3BR AED 2.60M (AED 1,479/sqft, 43 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.97%. For each of 23 projects with both new Ejari contracts (280 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.06%, before service charges, which DLD does not publish.
+Gross rental yield in JLT (Jumeirah Lake Towers) is 6.97%. For each of 23 projects with both new Ejari contracts (280 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.06%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 20 projects in Q1 and Q3 2026, prices per sqft fell by a median of 4.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 20 projects in Q1 and Q3 2026, JLT (Jumeirah Lake Towers) prices per sqft fell by a median of 4.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-424 off-plan apartments were sold against 580 ready ones (ratio 0.73), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 1,479 apartments here as completed in 2026, including Orra The Embankment (1,479 units, 2026-01-29).
+424 off-plan apartments were sold in JLT (Jumeirah Lake Towers) against 580 ready ones (ratio 0.73), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 1,479 apartments in JLT (Jumeirah Lake Towers) as completed in 2026, including Orra The Embankment (1,479 units, 2026-01-29).
 
 ## Most Active Ready Projects
 
-MBL Royal: 25 sales at a median AED 1,848/sqft; CONCORDE TOWER: 23 sales at a median AED 1,277/sqft; NEW DUBAI GATE2: 20 sales at a median AED 1,452/sqft; GOLD CREST VIEWS2: 20 sales at a median AED 1,677/sqft.
+Most active ready projects in JLT (Jumeirah Lake Towers): MBL Royal: 25 sales at a median AED 1,848/sqft; CONCORDE TOWER: 23 sales at a median AED 1,277/sqft; NEW DUBAI GATE2: 20 sales at a median AED 1,452/sqft; GOLD CREST VIEWS2: 20 sales at a median AED 1,677/sqft.
 
 ## Source and Method
 

@@ -1,370 +1,2046 @@
 {
+  "version": 2,
+  "source": "DuckDB views built from DLD open data; regenerate with eval/build_eval_set.py",
+  "sales_window": [
+    "2026-01-01",
+    "2026-09-30"
+  ],
   "eval_set": [
     {
-      "id": "eval_001",
-      "question": "Which community has the best ROI for 1BR apartments under AED 1.5M?",
-      "expected_keywords": [
-        "JVC",
-        "International City",
-        "Discovery Gardens",
-        "Sports City",
-        "high ROI"
-      ],
-      "expected_answer_summary": "JVC, International City, Discovery Gardens, and Sports City offer the highest ROI (8.5-9.8%) for 1BR apartments under AED 1.5M."
+      "id": "yield_lookup_01",
+      "type": "yield_lookup",
+      "question": "What rental yield can I expect in JVC?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)"
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 7.39,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_002",
-      "question": "What is the average price per sqft in Downtown Dubai?",
-      "expected_keywords": [
-        "2100",
-        "2800",
-        "AED",
-        "sqft"
-      ],
-      "expected_answer_summary": "Average price per sqft in Downtown Dubai is AED 2,100-2,800."
+      "id": "yield_lookup_02",
+      "type": "yield_lookup",
+      "question": "What's the gross rental yield in downtown?",
+      "expect": {
+        "filters": {
+          "community": "Downtown Dubai"
+        },
+        "communities": [
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Downtown Dubai",
+            "value": 5.39,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_003",
-      "question": "Compare rental yields between Dubai Marina and JVC.",
-      "expected_keywords": [
-        "Dubai Marina",
-        "JVC",
-        "yield",
-        "7.0",
-        "8.5",
-        "9.5"
-      ],
-      "expected_answer_summary": "JVC offers higher rental yields (8.5-9.5%) compared to Dubai Marina (7.0-8.0%)."
+      "id": "yield_lookup_03",
+      "type": "yield_lookup",
+      "question": "Rental yield for apartments in Dubai Marina?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina"
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Marina",
+            "value": 5.81,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_004",
-      "question": "What properties are available in Business Bay for under AED 2M?",
-      "expected_keywords": [
-        "Business Bay",
-        "apartment",
-        "studio",
-        "1BR",
-        "2BR"
-      ],
-      "expected_answer_summary": "Business Bay has 1BR apartments around AED 1.15M and 2BR around AED 1.85M, both under AED 2M."
+      "id": "yield_lookup_04",
+      "type": "yield_lookup",
+      "question": "How much rental yield does Business Bay give?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay"
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": 6.61,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_005",
-      "question": "Which developer has the most transactions in the dataset?",
-      "expected_keywords": [
-        "Emaar",
-        "Nakheel",
-        "16",
-        "most transactions"
-      ],
-      "expected_answer_summary": "Emaar and Nakheel are tied with 16 transactions each (master-developed communities)."
+      "id": "yield_lookup_05",
+      "type": "yield_lookup",
+      "question": "What yield do DSO apartments return?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Silicon Oasis"
+        },
+        "communities": [
+          "Dubai Silicon Oasis"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 9.08,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_006",
-      "question": "What is the ROI range for off-plan properties vs ready properties?",
-      "expected_keywords": [
-        "off-plan",
-        "ready",
-        "ROI",
-        "range"
-      ],
-      "expected_answer_summary": "Off-plan properties (Dubai Hills, Tilal Al Ghaf, DAMAC Hills 2) typically offer 5.5-8.7% ROI, while ready properties range from 5.2-10.2%."
+      "id": "yield_lookup_06",
+      "type": "yield_lookup",
+      "question": "Gross yield in International City?",
+      "expect": {
+        "filters": {
+          "community": "International City"
+        },
+        "communities": [
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 8.75,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_007",
-      "question": "What are the risks of investing in DAMAC Hills 2 according to market reports?",
-      "expected_keywords": [
-        "DAMAC Hills 2",
-        "risk",
-        "off-plan",
-        "completion"
-      ],
-      "expected_answer_summary": "As an off-plan community, DAMAC Hills 2 carries completion risk, but offers competitive pricing with ROI of 8.0-8.6%."
+      "id": "yield_lookup_07",
+      "type": "yield_lookup",
+      "question": "What is the rental yield in JLT?",
+      "expect": {
+        "filters": {
+          "community": "JLT (Jumeirah Lake Towers)"
+        },
+        "communities": [
+          "JLT (Jumeirah Lake Towers)"
+        ],
+        "numbers": [
+          {
+            "community": "JLT (Jumeirah Lake Towers)",
+            "value": 6.97,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_008",
-      "question": "Which communities have villas available and what are their price ranges?",
-      "expected_keywords": [
-        "villa",
-        "Palm Jumeirah",
-        "Arabian Ranches",
-        "Springs",
-        "price"
-      ],
-      "expected_answer_summary": "Villas available in Palm Jumeirah (AED 6.5M-12.5M), Arabian Ranches (AED 3.2M-6.2M), and The Springs (AED 2.8M)."
+      "id": "yield_lookup_08",
+      "type": "yield_lookup",
+      "question": "What return can a landlord expect in Sports City?",
+      "expect": {
+        "filters": {
+          "community": "Sports City"
+        },
+        "communities": [
+          "Sports City"
+        ],
+        "numbers": [
+          {
+            "community": "Sports City",
+            "value": 8.28,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_009",
-      "question": "What is the occupancy rate in Downtown Dubai according to the market report?",
-      "expected_keywords": [
-        "92%",
-        "occupancy",
-        "Downtown Dubai"
-      ],
-      "expected_answer_summary": "Downtown Dubai has an occupancy rate of 92% according to the Q1 2024 market report."
+      "id": "yield_lookup_09",
+      "type": "yield_lookup",
+      "question": "Rental yield in Arjan?",
+      "expect": {
+        "filters": {
+          "community": "Arjan"
+        },
+        "communities": [
+          "Arjan"
+        ],
+        "numbers": [
+          {
+            "community": "Arjan",
+            "value": 7.72,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_010",
-      "question": "Recommend the top 3 communities for a first-time investor with AED 1M budget.",
-      "expected_keywords": [
-        "JVC",
-        "first-time",
-        "budget",
-        "yield",
-        "recommendation"
-      ],
-      "expected_answer_summary": "Top recommendations: JVC (highest yield 8.5-9.5%), International City (low entry, 9.8-10.2% yield), and Town Square (affordable, 8.3-9.0% yield)."
+      "id": "yield_lookup_10",
+      "type": "yield_lookup",
+      "question": "What's the yield in Dubai Creek Harbour?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Creek Harbour"
+        },
+        "communities": [
+          "Dubai Creek Harbour"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Creek Harbour",
+            "value": 5.34,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_011",
-      "question": "What is the net yield for a property in Dubai Marina with AED 1.35M price and AED 14/sqft service charges?",
-      "expected_keywords": [
-        "net yield",
-        "service charges",
-        "Dubai Marina",
-        "AED",
-        "sqft"
-      ],
-      "expected_answer_summary": "Net yield is approximately 5.5-6.5% after deducting service charges, management fees (8%), and vacancy loss (5%)."
+      "id": "yield_lookup_11",
+      "type": "yield_lookup",
+      "question": "How is the rental yield in Palm Jumeirah?",
+      "expect": {
+        "filters": {
+          "community": "Palm Jumeirah"
+        },
+        "communities": [
+          "Palm Jumeirah"
+        ],
+        "numbers": [
+          {
+            "community": "Palm Jumeirah",
+            "value": 4.64,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_012",
-      "question": "Which communities have HIGH supply risk?",
-      "expected_keywords": [
-        "supply risk",
-        "high",
-        "pipeline",
-        "units",
-        "construction"
-      ],
-      "expected_answer_summary": "Communities with >15% of stock in pipeline have HIGH supply risk. This includes Tilal Al Ghaf, DAMAC Hills 2, Dubai South, and JVC."
+      "id": "yield_lookup_12",
+      "type": "yield_lookup",
+      "question": "What yield does Meydan offer landlords?",
+      "expect": {
+        "filters": {
+          "community": "Meydan"
+        },
+        "communities": [
+          "Meydan"
+        ],
+        "numbers": [
+          {
+            "community": "Meydan",
+            "value": 6.91,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_013",
-      "question": "What is the monthly mortgage payment for a AED 1.5M property with 20% down payment at 4.5% for 25 years?",
-      "expected_keywords": [
-        "mortgage",
-        "monthly",
-        "AED",
-        "6670",
-        "6,670",
-        "down payment"
-      ],
-      "expected_answer_summary": "Monthly mortgage payment is approximately AED 6,670 with 20% down payment (AED 300K), 4.5% interest, 25 year tenure."
+      "id": "yield_lookup_13",
+      "type": "yield_lookup",
+      "question": "Rental yield in Majan?",
+      "expect": {
+        "filters": {
+          "community": "Majan"
+        },
+        "communities": [
+          "Majan"
+        ],
+        "numbers": [
+          {
+            "community": "Majan",
+            "value": 7.49,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_014",
-      "question": "What are the total acquisition costs for a AED 1M property including DLD fees and agency fees?",
-      "expected_keywords": [
-        "DLD",
-        "transfer fee",
-        "4%",
-        "agency",
-        "2%",
-        "acquisition"
-      ],
-      "expected_answer_summary": "Total acquisition cost includes: DLD transfer fee (4% + AED 580 admin), agency fee (2%), total approximately AED 1.066M."
+      "id": "yield_lookup_14",
+      "type": "yield_lookup",
+      "question": "What's the gross yield in JVT?",
+      "expect": {
+        "filters": {
+          "community": "JVT (Jumeirah Village Triangle)"
+        },
+        "communities": [
+          "JVT (Jumeirah Village Triangle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVT (Jumeirah Village Triangle)",
+            "value": 7.35,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_015",
-      "question": "How much can I earn from short-term renting a 1BR in Downtown Dubai?",
-      "expected_keywords": [
-        "short-term",
-        "Airbnb",
-        "Downtown Dubai",
-        "daily rate",
-        "occupancy",
-        "revenue"
-      ],
-      "expected_answer_summary": "A 1BR in Downtown Dubai can earn AED 650/night at 75% occupancy, generating approximately AED 177,000/year gross revenue."
+      "id": "yield_lookup_15",
+      "type": "yield_lookup",
+      "question": "Yield on an apartment in Dubai Hills?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Hills Estate"
+        },
+        "communities": [
+          "Dubai Hills Estate"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Hills Estate",
+            "value": 5.92,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_016",
-      "question": "Is short-term rental better than long-term rental in Dubai Marina?",
-      "expected_keywords": [
-        "short-term",
-        "long-term",
-        "Dubai Marina",
-        "comparison",
-        "premium"
-      ],
-      "expected_answer_summary": "Short-term rental in Dubai Marina generates approximately 40-50% premium over long-term rental, but requires DTCM license and management fees."
+      "id": "yield_unavailable_01",
+      "type": "yield_unavailable",
+      "question": "What rental yield can I expect in JBR?",
+      "expect": {
+        "filters": {
+          "community": "JBR (Jumeirah Beach Residence)"
+        },
+        "refuse": true,
+        "refuse_for": [
+          "JBR (Jumeirah Beach Residence)"
+        ]
+      }
     },
     {
-      "id": "eval_017",
-      "question": "What is the service charge difference between Downtown Dubai and JVC?",
-      "expected_keywords": [
-        "service charge",
-        "Downtown Dubai",
-        "JVC",
-        "AED",
-        "sqft",
-        "comparison"
-      ],
-      "expected_answer_summary": "Downtown Dubai has higher service charges (AED 18-30/sqft) compared to JVC (AED 8-15/sqft), directly impacting net yield."
+      "id": "yield_unavailable_02",
+      "type": "yield_unavailable",
+      "question": "What rental yield can I expect in Discovery Gardens?",
+      "expect": {
+        "filters": {
+          "community": "Discovery Gardens"
+        },
+        "refuse": true,
+        "refuse_for": [
+          "Discovery Gardens"
+        ]
+      }
     },
     {
-      "id": "eval_018",
-      "question": "Which developer has the best on-time delivery rate?",
-      "expected_keywords": [
-        "developer",
-        "on-time",
-        "delivery",
-        "Emaar",
-        "Meraas",
-        "track record"
-      ],
-      "expected_answer_summary": "Emaar has 92% on-time delivery rate, followed by Meraas at 88%. These developers have strong track records in Dubai."
+      "id": "yield_unavailable_03",
+      "type": "yield_unavailable",
+      "question": "What rental yield can I expect in Motor City?",
+      "expect": {
+        "filters": {
+          "community": "Motor City"
+        },
+        "refuse": true,
+        "refuse_for": [
+          "Motor City"
+        ]
+      }
     },
     {
-      "id": "eval_019",
-      "question": "What is the ROI for a studio apartment in International City?",
-      "expected_keywords": [
-        "studio",
-        "International City",
-        "ROI",
-        "yield",
-        "affordable"
-      ],
-      "expected_answer_summary": "Studios in International City offer ROI of 9.5-10.5%, among the highest in Dubai due to low entry price and consistent rental demand."
+      "id": "yield_unavailable_04",
+      "type": "yield_unavailable",
+      "question": "What rental yield can I expect in Liwan?",
+      "expect": {
+        "filters": {
+          "community": "Liwan"
+        },
+        "refuse": true,
+        "refuse_for": [
+          "Liwan"
+        ]
+      }
     },
     {
-      "id": "eval_020",
-      "question": "Compare the investment scores of Dubai Hills Estate and Business Bay.",
-      "expected_keywords": [
-        "Dubai Hills Estate",
-        "Business Bay",
-        "score",
-        "comparison",
-        "investment"
-      ],
-      "expected_answer_summary": "Dubai Hills Estate has higher composite score due to newer developments, better community planning, and strong Emaar brand premium."
+      "id": "yield_unavailable_05",
+      "type": "yield_unavailable",
+      "question": "What rental yield can I expect in The Greens?",
+      "expect": {
+        "filters": {
+          "community": "The Greens"
+        },
+        "refuse": true,
+        "refuse_for": [
+          "The Greens"
+        ]
+      }
     },
     {
-      "id": "eval_021",
-      "question": "What view types are available in Palm Jumeirah and how do they affect price?",
-      "expected_keywords": [
-        "Palm Jumeirah",
-        "view",
-        "sea",
-        "atlantis",
-        "price",
-        "premium"
-      ],
-      "expected_answer_summary": "Palm Jumeirah offers sea, Atlantis, and community views. Sea view commands 25-40% premium over community view."
+      "id": "compare_yield_01",
+      "type": "compare_yield",
+      "question": "Compare rental yields in JVC and Dubai Marina.",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai Marina",
+            "JVC (Jumeirah Village Circle)"
+          ]
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)",
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 7.39,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Dubai Marina",
+            "value": 5.81,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_022",
-      "question": "What is the price per sqft trend in Dubai Marina over the last 2 years?",
-      "expected_keywords": [
-        "Dubai Marina",
-        "price",
-        "trend",
-        "sqft",
-        "appreciation",
-        "growth"
-      ],
-      "expected_answer_summary": "Dubai Marina price per sqft increased from AED 1,500 (Q1 2022) to AED 2,050 (Q1 2024), approximately 37% appreciation."
+      "id": "compare_yield_02",
+      "type": "compare_yield",
+      "question": "Business Bay or Downtown: which gives the better yield?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Business Bay",
+            "Downtown Dubai"
+          ]
+        },
+        "communities": [
+          "Business Bay",
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": 6.61,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Downtown Dubai",
+            "value": 5.39,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_023",
-      "question": "Which communities have the highest transaction volume?",
-      "expected_keywords": [
-        "transaction volume",
-        "Dubai Marina",
-        "JVC",
-        "Downtown",
-        "Business Bay",
-        "high volume"
-      ],
-      "expected_answer_summary": "Dubai Marina, JVC, and Downtown Dubai have the highest transaction volumes, indicating strong market liquidity."
+      "id": "compare_yield_03",
+      "type": "compare_yield",
+      "question": "Compare the rental yield of DSO and International City.",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai Silicon Oasis",
+            "International City"
+          ]
+        },
+        "communities": [
+          "Dubai Silicon Oasis",
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 9.08,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "International City",
+            "value": 8.75,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_024",
-      "question": "What is the floor level premium in Dubai buildings?",
-      "expected_keywords": [
-        "floor",
-        "premium",
-        "high floor",
-        "low floor",
-        "view",
-        "price"
-      ],
-      "expected_answer_summary": "Higher floors command 10-20% premium in Dubai due to better views, less noise, and prestige factor."
+      "id": "compare_yield_04",
+      "type": "compare_yield",
+      "question": "JLT vs Dubai Marina for rental yield?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai Marina",
+            "JLT (Jumeirah Lake Towers)"
+          ]
+        },
+        "communities": [
+          "JLT (Jumeirah Lake Towers)",
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "JLT (Jumeirah Lake Towers)",
+            "value": 6.97,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Dubai Marina",
+            "value": 5.81,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_025",
-      "question": "What parking spots are typical for apartments in Business Bay?",
-      "expected_keywords": [
-        "parking",
-        "Business Bay",
-        "spots",
-        "apartment",
-        "amenities"
-      ],
-      "expected_answer_summary": "Business Bay apartments typically have 1 parking spot for 1BR and 2 spots for 2BR units, consistent with urban Dubai standards."
+      "id": "compare_yield_05",
+      "type": "compare_yield",
+      "question": "Is Arjan or JVT the better yield play?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Arjan",
+            "JVT (Jumeirah Village Triangle)"
+          ]
+        },
+        "communities": [
+          "Arjan",
+          "JVT (Jumeirah Village Triangle)"
+        ],
+        "numbers": [
+          {
+            "community": "Arjan",
+            "value": 7.72,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "JVT (Jumeirah Village Triangle)",
+            "value": 7.35,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_026",
-      "question": "What is the completion year range for properties in Dubai Hills Estate?",
-      "expected_keywords": [
-        "completion year",
-        "Dubai Hills Estate",
-        "new",
-        "recent",
-        "2018",
-        "2025"
-      ],
-      "expected_answer_summary": "Dubai Hills Estate properties range from 2018 to 2025, with many recent completions reflecting its newer development status."
+      "id": "compare_yield_06",
+      "type": "compare_yield",
+      "question": "Compare yields in Sports City and Dubai South.",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai South",
+            "Sports City"
+          ]
+        },
+        "communities": [
+          "Sports City",
+          "Dubai South"
+        ],
+        "numbers": [
+          {
+            "community": "Sports City",
+            "value": 8.28,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Dubai South",
+            "value": 7.6,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_027",
-      "question": "What furnishing options are available in Downtown Dubai?",
-      "expected_keywords": [
-        "furnishing",
-        "Downtown Dubai",
-        "furnished",
-        "unfurnished",
-        "semi-furnished"
-      ],
-      "expected_answer_summary": "Downtown Dubai has 35% furnished, 45% unfurnished, and 20% semi-furnished units, reflecting its cosmopolitan tenant base."
+      "id": "compare_yield_07",
+      "type": "compare_yield",
+      "question": "Dubai Hills or Creek Harbour for rental income?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai Creek Harbour",
+            "Dubai Hills Estate"
+          ]
+        },
+        "communities": [
+          "Dubai Hills Estate",
+          "Dubai Creek Harbour"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Hills Estate",
+            "value": 5.92,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Dubai Creek Harbour",
+            "value": 5.34,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_028",
-      "question": "How does the supply pipeline affect property prices in a community?",
-      "expected_keywords": [
-        "supply pipeline",
-        "prices",
-        "impact",
-        "construction",
-        "new units",
-        "oversupply"
-      ],
-      "expected_answer_summary": "Communities with >15% new supply in 24 months see 3.5% lower price growth due to oversupply risk and increased competition."
+      "id": "compare_yield_08",
+      "type": "compare_yield",
+      "question": "Compare Meydan and Sobha Hartland rental yields.",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Meydan",
+            "Sobha Hartland"
+          ]
+        },
+        "communities": [
+          "Meydan",
+          "Sobha Hartland"
+        ],
+        "numbers": [
+          {
+            "community": "Meydan",
+            "value": 6.91,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Sobha Hartland",
+            "value": 6.05,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_029",
-      "question": "What is the recommended investment strategy for a AED 5M budget?",
-      "expected_keywords": [
-        "investment strategy",
-        "AED 5M",
-        "portfolio",
-        "diversification",
-        "recommendation"
-      ],
-      "expected_answer_summary": "With AED 5M, consider diversifying: 1-2 units in prime areas (Downtown/Marina) for capital appreciation, plus 2-3 units in high-yield areas (JVC/International City) for rental income."
+      "id": "compare_yield_09",
+      "type": "compare_yield",
+      "question": "Palm Jumeirah vs downtown yield?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Downtown Dubai",
+            "Palm Jumeirah"
+          ]
+        },
+        "communities": [
+          "Palm Jumeirah",
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Palm Jumeirah",
+            "value": 4.64,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "Downtown Dubai",
+            "value": 5.39,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
     },
     {
-      "id": "eval_030",
-      "question": "What are the Golden Visa requirements through property investment in Dubai?",
-      "expected_keywords": [
-        "Golden Visa",
-        "AED 2M",
-        "property investment",
-        "visa",
-        "residency"
-      ],
-      "expected_answer_summary": "Golden Visa requires AED 2M property investment. This can be one property or multiple properties totaling AED 2M+, providing 10-year renewable residency."
+      "id": "compare_yield_10",
+      "type": "compare_yield",
+      "question": "Which yields more, Town Square or DAMAC Hills?",
+      "expect": {
+        "filters": {
+          "communities": [
+            "DAMAC Hills",
+            "Town Square"
+          ]
+        },
+        "communities": [
+          "Town Square",
+          "DAMAC Hills"
+        ],
+        "numbers": [
+          {
+            "community": "Town Square",
+            "value": 7.19,
+            "kind": "pct",
+            "tol": 0.1
+          },
+          {
+            "community": "DAMAC Hills",
+            "value": 7.14,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_01",
+      "type": "recommendation",
+      "question": "Is International City a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "International City"
+        },
+        "communities": [
+          "International City"
+        ],
+        "labels": [
+          {
+            "community": "International City",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 88.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_02",
+      "type": "recommendation",
+      "question": "Is Dubai Silicon Oasis a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Silicon Oasis"
+        },
+        "communities": [
+          "Dubai Silicon Oasis"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 84.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_03",
+      "type": "recommendation",
+      "question": "Is Sports City a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Sports City"
+        },
+        "communities": [
+          "Sports City"
+        ],
+        "labels": [
+          {
+            "community": "Sports City",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Sports City",
+            "value": 75.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_04",
+      "type": "recommendation",
+      "question": "Is Arjan a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Arjan"
+        },
+        "communities": [
+          "Arjan"
+        ],
+        "labels": [
+          {
+            "community": "Arjan",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Arjan",
+            "value": 74.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_05",
+      "type": "recommendation",
+      "question": "Is Dubai Marina a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina"
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Marina",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Marina",
+            "value": 72.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_06",
+      "type": "recommendation",
+      "question": "Is Town Square a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Town Square"
+        },
+        "communities": [
+          "Town Square"
+        ],
+        "labels": [
+          {
+            "community": "Town Square",
+            "value": "INVEST"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Town Square",
+            "value": 72.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_07",
+      "type": "recommendation",
+      "question": "Is Business Bay a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay"
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "labels": [
+          {
+            "community": "Business Bay",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": 66.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_08",
+      "type": "recommendation",
+      "question": "Is JVC a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)"
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "labels": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 66.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_09",
+      "type": "recommendation",
+      "question": "Is Dubai Production City a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Production City"
+        },
+        "communities": [
+          "Dubai Production City"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Production City",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Production City",
+            "value": 66.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_10",
+      "type": "recommendation",
+      "question": "Is Downtown Dubai a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Downtown Dubai"
+        },
+        "communities": [
+          "Downtown Dubai"
+        ],
+        "labels": [
+          {
+            "community": "Downtown Dubai",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Downtown Dubai",
+            "value": 52.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_11",
+      "type": "recommendation",
+      "question": "Is Palm Jumeirah a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Palm Jumeirah"
+        },
+        "communities": [
+          "Palm Jumeirah"
+        ],
+        "labels": [
+          {
+            "community": "Palm Jumeirah",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Palm Jumeirah",
+            "value": 50.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "recommendation_12",
+      "type": "recommendation",
+      "question": "Is Majan a good investment right now?",
+      "expect": {
+        "filters": {
+          "community": "Majan"
+        },
+        "communities": [
+          "Majan"
+        ],
+        "labels": [
+          {
+            "community": "Majan",
+            "value": "HOLD"
+          }
+        ],
+        "numbers": [
+          {
+            "community": "Majan",
+            "value": 58.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_01",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 1-bedroom apartment cost in JVC?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)",
+          "bedrooms": 1
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 997700.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_02",
+      "type": "price_by_bedrooms",
+      "question": "How much does a studio cost in JVC?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)",
+          "bedrooms": 0
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 610000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_03",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 2-bedroom apartment cost in Business Bay?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay",
+          "bedrooms": 2
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": 2254058.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_04",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 1-bedroom apartment cost in Dubai Marina?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina",
+          "bedrooms": 1
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Marina",
+            "value": 1550000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_05",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 1-bedroom apartment cost in Downtown Dubai?",
+      "expect": {
+        "filters": {
+          "community": "Downtown Dubai",
+          "bedrooms": 1
+        },
+        "communities": [
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Downtown Dubai",
+            "value": 2050000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_06",
+      "type": "price_by_bedrooms",
+      "question": "How much does a studio cost in International City?",
+      "expect": {
+        "filters": {
+          "community": "International City",
+          "bedrooms": 0
+        },
+        "communities": [
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 338000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_07",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 1-bedroom apartment cost in Arjan?",
+      "expect": {
+        "filters": {
+          "community": "Arjan",
+          "bedrooms": 1
+        },
+        "communities": [
+          "Arjan"
+        ],
+        "numbers": [
+          {
+            "community": "Arjan",
+            "value": 1000000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_08",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 1-bedroom apartment cost in Dubai Silicon Oasis?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Silicon Oasis",
+          "bedrooms": 1
+        },
+        "communities": [
+          "Dubai Silicon Oasis"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 730000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_09",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 2-bedroom apartment cost in JLT?",
+      "expect": {
+        "filters": {
+          "community": "JLT (Jumeirah Lake Towers)",
+          "bedrooms": 2
+        },
+        "communities": [
+          "JLT (Jumeirah Lake Towers)"
+        ],
+        "numbers": [
+          {
+            "community": "JLT (Jumeirah Lake Towers)",
+            "value": 1900000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_by_bedrooms_10",
+      "type": "price_by_bedrooms",
+      "question": "How much does a 2-bedroom apartment cost in Dubai Hills?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Hills Estate",
+          "bedrooms": 2
+        },
+        "communities": [
+          "Dubai Hills Estate"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Hills Estate",
+            "value": 2500000.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_01",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in JVC?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)"
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 1275.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_02",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Business Bay?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay"
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": 1845.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_03",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Downtown Dubai?",
+      "expect": {
+        "filters": {
+          "community": "Downtown Dubai"
+        },
+        "communities": [
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Downtown Dubai",
+            "value": 2468.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_04",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Dubai Marina?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina"
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Marina",
+            "value": 1864.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_05",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Palm Jumeirah?",
+      "expect": {
+        "filters": {
+          "community": "Palm Jumeirah"
+        },
+        "communities": [
+          "Palm Jumeirah"
+        ],
+        "numbers": [
+          {
+            "community": "Palm Jumeirah",
+            "value": 2660.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_06",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in International City?",
+      "expect": {
+        "filters": {
+          "community": "International City"
+        },
+        "communities": [
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 670.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_07",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Creek Harbour?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Creek Harbour"
+        },
+        "communities": [
+          "Dubai Creek Harbour"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Creek Harbour",
+            "value": 2319.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "price_per_sqft_08",
+      "type": "price_per_sqft",
+      "question": "What's the median price per square foot in Al Furjan?",
+      "expect": {
+        "filters": {
+          "community": "Al Furjan"
+        },
+        "communities": [
+          "Al Furjan"
+        ],
+        "numbers": [
+          {
+            "community": "Al Furjan",
+            "value": 1265.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_01",
+      "type": "momentum",
+      "question": "How have apartment prices in Business Bay moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay"
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "numbers": [
+          {
+            "community": "Business Bay",
+            "value": -9.6,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_02",
+      "type": "momentum",
+      "question": "How have apartment prices in JVC moved this year?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)"
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": -9.3,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_03",
+      "type": "momentum",
+      "question": "How have apartment prices in Downtown Dubai moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Downtown Dubai"
+        },
+        "communities": [
+          "Downtown Dubai"
+        ],
+        "numbers": [
+          {
+            "community": "Downtown Dubai",
+            "value": -9.0,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_04",
+      "type": "momentum",
+      "question": "How have apartment prices in Dubai Marina moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina"
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Marina",
+            "value": -5.3,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_05",
+      "type": "momentum",
+      "question": "How have apartment prices in DSO moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Silicon Oasis"
+        },
+        "communities": [
+          "Dubai Silicon Oasis"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": -5.0,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_06",
+      "type": "momentum",
+      "question": "How have apartment prices in Arjan moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Arjan"
+        },
+        "communities": [
+          "Arjan"
+        ],
+        "numbers": [
+          {
+            "community": "Arjan",
+            "value": -3.8,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_07",
+      "type": "momentum",
+      "question": "How have apartment prices in Dubai Hills moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Hills Estate"
+        },
+        "communities": [
+          "Dubai Hills Estate"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Hills Estate",
+            "value": -7.8,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "momentum_08",
+      "type": "momentum",
+      "question": "How have apartment prices in Dubai Healthcare City moved this year?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Healthcare City"
+        },
+        "communities": [
+          "Dubai Healthcare City"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Healthcare City",
+            "value": -15.2,
+            "kind": "pct",
+            "tol": 0.2,
+            "abs": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_01",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Dubai Land Residence Complex?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Land Residence Complex"
+        },
+        "communities": [
+          "Dubai Land Residence Complex"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Land Residence Complex",
+            "value": "HIGH"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_02",
+      "type": "supply_risk",
+      "question": "What's the supply risk in JVT?",
+      "expect": {
+        "filters": {
+          "community": "JVT (Jumeirah Village Triangle)"
+        },
+        "communities": [
+          "JVT (Jumeirah Village Triangle)"
+        ],
+        "labels": [
+          {
+            "community": "JVT (Jumeirah Village Triangle)",
+            "value": "HIGH"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_03",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Majan?",
+      "expect": {
+        "filters": {
+          "community": "Majan"
+        },
+        "communities": [
+          "Majan"
+        ],
+        "labels": [
+          {
+            "community": "Majan",
+            "value": "HIGH"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_04",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Dubai Marina?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina"
+        },
+        "communities": [
+          "Dubai Marina"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Marina",
+            "value": "LOW"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_05",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Sobha Hartland?",
+      "expect": {
+        "filters": {
+          "community": "Sobha Hartland"
+        },
+        "communities": [
+          "Sobha Hartland"
+        ],
+        "labels": [
+          {
+            "community": "Sobha Hartland",
+            "value": "LOW"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_06",
+      "type": "supply_risk",
+      "question": "What's the supply risk in JVC?",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)"
+        },
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "labels": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": "MEDIUM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_07",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Business Bay?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay"
+        },
+        "communities": [
+          "Business Bay"
+        ],
+        "labels": [
+          {
+            "community": "Business Bay",
+            "value": "MEDIUM"
+          }
+        ]
+      }
+    },
+    {
+      "id": "supply_risk_08",
+      "type": "supply_risk",
+      "question": "What's the supply risk in Production City?",
+      "expect": {
+        "filters": {
+          "community": "Dubai Production City"
+        },
+        "communities": [
+          "Dubai Production City"
+        ],
+        "labels": [
+          {
+            "community": "Dubai Production City",
+            "value": "HIGH"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ranking_01",
+      "type": "ranking",
+      "question": "Which community has the highest rental yield?",
+      "expect": {
+        "communities": [
+          "Dubai Silicon Oasis"
+        ],
+        "numbers": [
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 9.08,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "ranking_02",
+      "type": "ranking",
+      "question": "Which community has the lowest rental yield?",
+      "expect": {
+        "communities": [
+          "Palm Jumeirah"
+        ],
+        "numbers": [
+          {
+            "community": "Palm Jumeirah",
+            "value": 4.64,
+            "kind": "pct",
+            "tol": 0.1
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "ranking_03",
+      "type": "ranking",
+      "question": "Which community has the highest investment score?",
+      "expect": {
+        "communities": [
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 88.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "ranking_04",
+      "type": "ranking",
+      "question": "What are the top 3 communities by investment score?",
+      "expect": {
+        "communities": [
+          "International City",
+          "Dubai Silicon Oasis",
+          "Sports City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 88.0,
+            "kind": "score",
+            "tol": 0.5
+          },
+          {
+            "community": "Dubai Silicon Oasis",
+            "value": 84.0,
+            "kind": "score",
+            "tol": 0.5
+          },
+          {
+            "community": "Sports City",
+            "value": 75.0,
+            "kind": "score",
+            "tol": 0.5
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "ranking_05",
+      "type": "ranking",
+      "question": "Where are apartments cheapest per square foot?",
+      "expect": {
+        "communities": [
+          "International City"
+        ],
+        "numbers": [
+          {
+            "community": "International City",
+            "value": 670.0,
+            "kind": "aed",
+            "tol": 0.015,
+            "rel": true
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "ranking_06",
+      "type": "ranking",
+      "question": "Which community had the most ready apartment sales this year?",
+      "expect": {
+        "communities": [
+          "JVC (Jumeirah Village Circle)"
+        ],
+        "numbers": [
+          {
+            "community": "JVC (Jumeirah Village Circle)",
+            "value": 2930.0,
+            "kind": "number",
+            "tol": 0
+          }
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "budget_filter_01",
+      "type": "budget_filter",
+      "question": "Best rental yield for a 1-bedroom under AED 1M?",
+      "expect": {
+        "filters": {
+          "bedrooms": 1,
+          "max_price": 1000000
+        }
+      }
+    },
+    {
+      "id": "budget_filter_02",
+      "type": "budget_filter",
+      "question": "Studio apartments under AED 600K in JVC",
+      "expect": {
+        "filters": {
+          "community": "JVC (Jumeirah Village Circle)",
+          "bedrooms": 0,
+          "max_price": 600000
+        }
+      }
+    },
+    {
+      "id": "budget_filter_03",
+      "type": "budget_filter",
+      "question": "2BR in Dubai Marina over AED 2M",
+      "expect": {
+        "filters": {
+          "community": "Dubai Marina",
+          "bedrooms": 2,
+          "min_price": 2000000
+        }
+      }
+    },
+    {
+      "id": "budget_filter_04",
+      "type": "budget_filter",
+      "question": "What can I buy in Business Bay with a AED 1.5M budget?",
+      "expect": {
+        "filters": {
+          "community": "Business Bay",
+          "max_price": 1500000
+        }
+      }
+    },
+    {
+      "id": "budget_filter_05",
+      "type": "budget_filter",
+      "question": "Compare 1BR prices in JLT and Dubai Marina",
+      "expect": {
+        "filters": {
+          "communities": [
+            "Dubai Marina",
+            "JLT (Jumeirah Lake Towers)"
+          ],
+          "bedrooms": 1
+        }
+      }
+    },
+    {
+      "id": "out_of_scope_01",
+      "type": "out_of_scope",
+      "question": "What's the rental yield on villas in Arabian Ranches?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": true,
+        "allowed_mentions": [
+          "Arabian Ranches"
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_02",
+      "type": "out_of_scope",
+      "question": "Is DAMAC Hills 2 a good investment?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": true,
+        "allowed_mentions": [
+          "DAMAC Hills 2"
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_03",
+      "type": "out_of_scope",
+      "question": "What rental yield does Bluewaters offer?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": true,
+        "allowed_mentions": [
+          "Bluewaters"
+        ],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_04",
+      "type": "out_of_scope",
+      "question": "How much do penthouses on Palm Jumeirah cost?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": true,
+        "allowed_mentions": [],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_05",
+      "type": "out_of_scope",
+      "question": "Which developer has the best delivery track record?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": false,
+        "allowed_mentions": [],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_06",
+      "type": "out_of_scope",
+      "question": "What are the service charges per sqft in JVC?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": false,
+        "allowed_mentions": [],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_07",
+      "type": "out_of_scope",
+      "question": "What's the occupancy rate in Dubai Marina?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": false,
+        "allowed_mentions": [],
+        "filters": {}
+      }
+    },
+    {
+      "id": "out_of_scope_08",
+      "type": "out_of_scope",
+      "question": "What were Dubai Marina apartment prices in 2024?",
+      "expect": {
+        "refuse": true,
+        "refuse_in_context": false,
+        "allowed_mentions": [],
+        "filters": {}
+      }
     }
   ]
 }

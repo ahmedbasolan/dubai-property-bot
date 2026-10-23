@@ -6,25 +6,25 @@ JVC (Jumeirah Village Circle) recorded 2,930 ready and 4,231 off-plan apartment 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,358 (1,036 sales); Q2 2026 AED 1,273 (776 sales); Q3 2026 AED 1,226 (1,118 sales).
-Median ready price by unit type: Studio AED 610,000 (AED 1,427/sqft, 738 sales); 1BR AED 997,700 (AED 1,265/sqft, 1,666 sales); 2BR AED 1.50M (AED 1,176/sqft, 451 sales); 3BR AED 2.23M (AED 1,403/sqft, 68 sales).
+Median ready price per sqft in JVC (Jumeirah Village Circle) by quarter: Q1 2026 AED 1,358 (1,036 sales); Q2 2026 AED 1,273 (776 sales); Q3 2026 AED 1,226 (1,118 sales).
+Median ready price by unit type in JVC (Jumeirah Village Circle): Studio AED 610,000 (AED 1,427/sqft, 738 sales); 1BR AED 997,700 (AED 1,265/sqft, 1,666 sales); 2BR AED 1.50M (AED 1,176/sqft, 451 sales); 3BR AED 2.23M (AED 1,403/sqft, 68 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.39%. For each of 84 projects with both new Ejari contracts (894 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.43%, before service charges, which DLD does not publish.
+Gross rental yield in JVC (Jumeirah Village Circle) is 7.39%. For each of 84 projects with both new Ejari contracts (894 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.43%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 69 projects in Q1 and Q3 2026, prices per sqft fell by a median of 9.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 69 projects in Q1 and Q3 2026, JVC (Jumeirah Village Circle) prices per sqft fell by a median of 9.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-4,231 off-plan apartments were sold against 2,930 ready ones (ratio 1.44), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 9,727 apartments here as completed in 2026, including Binghatti Apex (1,230 units, 2026-04-23); Binghatti Grove (1,065 units, 2026-10-01); NEVA RESIDENCES (1,020 units, 2026-03-12); HELVETIA RESIDENCES (969 units, 2026-09-30); THE HAVEN GARDEN (415 units, 2026-04-06).
+4,231 off-plan apartments were sold in JVC (Jumeirah Village Circle) against 2,930 ready ones (ratio 1.44), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 9,727 apartments in JVC (Jumeirah Village Circle) as completed in 2026, including Binghatti Apex (1,230 units, 2026-04-23); Binghatti Grove (1,065 units, 2026-10-01); NEVA RESIDENCES (1,020 units, 2026-03-12); HELVETIA RESIDENCES (969 units, 2026-09-30); THE HAVEN GARDEN (415 units, 2026-04-06).
 
 ## Most Active Ready Projects
 
-Binghatti Apex: 187 sales at a median AED 1,429/sqft; Luma Park Views: 161 sales at a median AED 1,615/sqft; Binghatti Phoenix: 74 sales at a median AED 1,526/sqft; OXBRIDGE GARDENS: 72 sales at a median AED 890/sqft; Binghatti Royale: 68 sales at a median AED 1,606/sqft.
+Most active ready projects in JVC (Jumeirah Village Circle): Binghatti Apex: 187 sales at a median AED 1,429/sqft; Luma Park Views: 161 sales at a median AED 1,615/sqft; Binghatti Phoenix: 74 sales at a median AED 1,526/sqft; OXBRIDGE GARDENS: 72 sales at a median AED 890/sqft; Binghatti Royale: 68 sales at a median AED 1,606/sqft.
 
 ## Source and Method
 

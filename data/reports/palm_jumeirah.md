@@ -6,25 +6,25 @@ Palm Jumeirah recorded 440 ready and 259 off-plan apartment sales registered wit
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,870 (189 sales); Q2 2026 AED 2,455 (134 sales); Q3 2026 AED 2,424 (117 sales).
-Median ready price by unit type: Studio AED 1.50M (AED 3,824/sqft, 49 sales); 1BR AED 2.90M (AED 2,714/sqft, 94 sales); 2BR AED 4.67M (AED 2,495/sqft, 182 sales); 3BR AED 6.40M (AED 2,485/sqft, 83 sales); 4BR AED 17.38M (AED 3,366/sqft, 20 sales).
+Median ready price per sqft in Palm Jumeirah by quarter: Q1 2026 AED 2,870 (189 sales); Q2 2026 AED 2,455 (134 sales); Q3 2026 AED 2,424 (117 sales).
+Median ready price by unit type in Palm Jumeirah: Studio AED 1.50M (AED 3,824/sqft, 49 sales); 1BR AED 2.90M (AED 2,714/sqft, 94 sales); 2BR AED 4.67M (AED 2,495/sqft, 182 sales); 3BR AED 6.40M (AED 2,485/sqft, 83 sales); 4BR AED 17.38M (AED 3,366/sqft, 20 sales).
 
 ## Rental Yield
 
-Gross rental yield is 4.64%. For each of 8 projects with both new Ejari contracts (97 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.04%, before service charges, which DLD does not publish.
+Gross rental yield in Palm Jumeirah is 4.64%. For each of 8 projects with both new Ejari contracts (97 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.04%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 8 projects in Q1 and Q3 2026, prices per sqft fell by a median of 7.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 8 projects in Q1 and Q3 2026, Palm Jumeirah prices per sqft fell by a median of 7.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-259 off-plan apartments were sold against 440 ready ones (ratio 0.59), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 1,654 apartments here as completed in 2026, including SERENIA LIVING (844 units, 2026-04-23); Six Senses Residences The Palm, Dubai (772 units, 2026-09-03); LUCE (38 units, 2026-10-20).
+259 off-plan apartments were sold in Palm Jumeirah against 440 ready ones (ratio 0.59), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 1,654 apartments in Palm Jumeirah as completed in 2026, including SERENIA LIVING (844 units, 2026-04-23); Six Senses Residences The Palm, Dubai (772 units, 2026-09-03); LUCE (38 units, 2026-10-20).
 
 ## Most Active Ready Projects
 
-MARINA RESIDENCE: 45 sales at a median AED 2,205/sqft; GOLDEN MILE: 34 sales at a median AED 1,941/sqft; Seven Hotel and Apartments The Palm: 31 sales at a median AED 3,672/sqft; ROYAL AMWAJ: 25 sales at a median AED 2,330/sqft; THE PALM TOWER: 23 sales at a median AED 4,342/sqft.
+Most active ready projects in Palm Jumeirah: MARINA RESIDENCE: 45 sales at a median AED 2,205/sqft; GOLDEN MILE: 34 sales at a median AED 1,941/sqft; Seven Hotel and Apartments The Palm: 31 sales at a median AED 3,672/sqft; ROYAL AMWAJ: 25 sales at a median AED 2,330/sqft; THE PALM TOWER: 23 sales at a median AED 4,342/sqft.
 
 ## Source and Method
 

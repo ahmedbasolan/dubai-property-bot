@@ -6,25 +6,25 @@ International City recorded 1,111 ready and 1,079 off-plan apartment sales regis
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 706 (398 sales); Q2 2026 AED 608 (376 sales); Q3 2026 AED 696 (337 sales).
-Median ready price by unit type: Studio AED 338,000 (AED 703/sqft, 509 sales); 1BR AED 470,000 (AED 624/sqft, 501 sales); 2BR AED 750,000 (AED 761/sqft, 65 sales); 3BR AED 1.59M (AED 663/sqft, 36 sales).
+Median ready price per sqft in International City by quarter: Q1 2026 AED 706 (398 sales); Q2 2026 AED 608 (376 sales); Q3 2026 AED 696 (337 sales).
+Median ready price by unit type in International City: Studio AED 338,000 (AED 703/sqft, 509 sales); 1BR AED 470,000 (AED 624/sqft, 501 sales); 2BR AED 750,000 (AED 761/sqft, 65 sales); 3BR AED 1.59M (AED 663/sqft, 36 sales).
 
 ## Rental Yield
 
-Gross rental yield is 8.75%. For each of 3 projects with both new Ejari contracts (126 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.61%, before service charges, which DLD does not publish.
+Gross rental yield in International City is 8.75%. For each of 3 projects with both new Ejari contracts (126 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.61%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in International City is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-1,079 off-plan apartments were sold against 1,111 ready ones (ratio 0.97), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 571 apartments here as completed in 2026, including SPORTS VIEW RESIDENCE BY AL HELAL AL ZAHABY (261 units, 2026-07-22); Silver Park Residency (159 units, 2026-03-18); 4B Living (151 units, 2026-09-16).
+1,079 off-plan apartments were sold in International City against 1,111 ready ones (ratio 0.97), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 571 apartments in International City as completed in 2026, including SPORTS VIEW RESIDENCE BY AL HELAL AL ZAHABY (261 units, 2026-07-22); Silver Park Residency (159 units, 2026-03-18); 4B Living (151 units, 2026-09-16).
 
 ## Most Active Ready Projects
 
-INTERNATIONAL CITY EMARATI: 73 sales at a median AED 652/sqft; Lawnz Residence by Danube: 44 sales at a median AED 1,185/sqft; CLASSIC APARTMENTS: 24 sales at a median AED 592/sqft.
+Most active ready projects in International City: INTERNATIONAL CITY EMARATI: 73 sales at a median AED 652/sqft; Lawnz Residence by Danube: 44 sales at a median AED 1,185/sqft; CLASSIC APARTMENTS: 24 sales at a median AED 592/sqft.
 
 ## Source and Method
 

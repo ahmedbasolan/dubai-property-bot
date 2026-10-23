@@ -6,20 +6,20 @@ Discovery Gardens recorded 771 ready and 0 off-plan apartment sales registered w
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,041 (333 sales); Q2 2026 AED 970 (236 sales); Q3 2026 AED 893 (202 sales).
-Median ready price by unit type: Studio AED 515,000 (AED 1,064/sqft, 332 sales); 1BR AED 780,373 (AED 889/sqft, 311 sales); 2BR AED 1.25M (AED 888/sqft, 128 sales).
+Median ready price per sqft in Discovery Gardens by quarter: Q1 2026 AED 1,041 (333 sales); Q2 2026 AED 970 (236 sales); Q3 2026 AED 893 (202 sales).
+Median ready price by unit type in Discovery Gardens: Studio AED 515,000 (AED 1,064/sqft, 332 sales); 1BR AED 780,373 (AED 889/sqft, 311 sales); 2BR AED 1.25M (AED 888/sqft, 128 sales).
 
 ## Rental Yield
 
-Not enough matched rent data for a reliable yield: 0 projects here have both new Ejari contracts and ready sales (0 contracts); 3 projects and 30 contracts are needed. 0 rent contracts in total are linked to this community.
+Not enough matched rent data for a reliable yield in Discovery Gardens: 0 projects have both new Ejari contracts and ready sales (0 contracts); 3 projects and 30 contracts are needed. 0 rent contracts in total are linked to this community.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in Discovery Gardens is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-No off-plan apartments were sold here in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
+No off-plan apartments were sold in Discovery Gardens in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
 
 ## Source and Method
 

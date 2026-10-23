@@ -6,25 +6,25 @@ Majan recorded 648 ready and 3,271 off-plan apartment sales registered with the 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 851 (470 sales); Q2 2026 AED 1,300 (74 sales); Q3 2026 AED 1,297 (104 sales).
-Median ready price by unit type: Studio AED 512,236 (AED 851/sqft, 197 sales); 1BR AED 800,000 (AED 891/sqft, 307 sales); 2BR AED 1.28M (AED 949/sqft, 133 sales).
+Median ready price per sqft in Majan by quarter: Q1 2026 AED 851 (470 sales); Q2 2026 AED 1,300 (74 sales); Q3 2026 AED 1,297 (104 sales).
+Median ready price by unit type in Majan: Studio AED 512,236 (AED 851/sqft, 197 sales); 1BR AED 800,000 (AED 891/sqft, 307 sales); 2BR AED 1.28M (AED 949/sqft, 133 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.49%. For each of 4 projects with both new Ejari contracts (44 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.52%, before service charges, which DLD does not publish.
+Gross rental yield in Majan is 7.49%. For each of 4 projects with both new Ejari contracts (44 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.52%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in Majan is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-3,271 off-plan apartments were sold against 648 ready ones (ratio 5.05), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 1,143 apartments here as completed in 2026, including CELIA HEIGHTS (406 units, 2026-07-16); TULIP OASIS 10 (309 units, 2026-06-29); DEANSGATE by ADE (176 units, 2026-02-04); ARAS HEIGHTS (146 units, 2026-03-12); AMETHYST BY SIROYA (106 units, 2026-07-15).
+3,271 off-plan apartments were sold in Majan against 648 ready ones (ratio 5.05), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 1,143 apartments in Majan as completed in 2026, including CELIA HEIGHTS (406 units, 2026-07-16); TULIP OASIS 10 (309 units, 2026-06-29); DEANSGATE by ADE (176 units, 2026-02-04); ARAS HEIGHTS (146 units, 2026-03-12); AMETHYST BY SIROYA (106 units, 2026-07-15).
 
 ## Most Active Ready Projects
 
-Paradise View 1: 141 sales at a median AED 893/sqft; THE HAVEN: 41 sales at a median AED 1,480/sqft.
+Most active ready projects in Majan: Paradise View 1: 141 sales at a median AED 893/sqft; THE HAVEN: 41 sales at a median AED 1,480/sqft.
 
 ## Source and Method
 

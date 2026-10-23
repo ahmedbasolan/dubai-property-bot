@@ -6,25 +6,25 @@ JVT (Jumeirah Village Triangle) recorded 291 ready and 1,726 off-plan apartment 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,416 (137 sales); Q2 2026 AED 1,199 (78 sales); Q3 2026 AED 1,357 (76 sales).
-Median ready price by unit type: Studio AED 570,000 (AED 1,292/sqft, 98 sales); 1BR AED 1.02M (AED 1,341/sqft, 141 sales); 2BR AED 1.67M (AED 1,371/sqft, 45 sales).
+Median ready price per sqft in JVT (Jumeirah Village Triangle) by quarter: Q1 2026 AED 1,416 (137 sales); Q2 2026 AED 1,199 (78 sales); Q3 2026 AED 1,357 (76 sales).
+Median ready price by unit type in JVT (Jumeirah Village Triangle): Studio AED 570,000 (AED 1,292/sqft, 98 sales); 1BR AED 1.02M (AED 1,341/sqft, 141 sales); 2BR AED 1.67M (AED 1,371/sqft, 45 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.35%. For each of 6 projects with both new Ejari contracts (90 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.39%, before service charges, which DLD does not publish.
+Gross rental yield in JVT (Jumeirah Village Triangle) is 7.35%. For each of 6 projects with both new Ejari contracts (90 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.39%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 6 projects in Q1 and Q3 2026, prices per sqft fell by a median of 1.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 6 projects in Q1 and Q3 2026, JVT (Jumeirah Village Triangle) prices per sqft fell by a median of 1.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-1,726 off-plan apartments were sold against 291 ready ones (ratio 5.93), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 3,538 apartments here as completed in 2026, including Seslia Tower (845 units, 2026-07-22); FH Residency (667 units, 2026-07-06); ELBRUS TOWER (608 units, 2026-09-03); LILIUM TOWER (608 units, 2026-10-01); ALTAI TOWER (538 units, 2026-10-21).
+1,726 off-plan apartments were sold in JVT (Jumeirah Village Triangle) against 291 ready ones (ratio 5.93), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 3,538 apartments in JVT (Jumeirah Village Triangle) as completed in 2026, including Seslia Tower (845 units, 2026-07-22); FH Residency (667 units, 2026-07-06); ELBRUS TOWER (608 units, 2026-09-03); LILIUM TOWER (608 units, 2026-10-01); ALTAI TOWER (538 units, 2026-10-21).
 
 ## Most Active Ready Projects
 
-CLOUD Tower: 48 sales at a median AED 1,433/sqft; TERHAB HOTEL & TOWERS AT JUMEIRAH VILLAGE TRIANGLE: 45 sales at a median AED 2,252/sqft; Milestone Residences: 27 sales at a median AED 1,397/sqft; AL JAWHARA TOWER: 25 sales at a median AED 1,149/sqft; IMPERIAL RESIDENCE: 21 sales at a median AED 1,002/sqft.
+Most active ready projects in JVT (Jumeirah Village Triangle): CLOUD Tower: 48 sales at a median AED 1,433/sqft; TERHAB HOTEL & TOWERS AT JUMEIRAH VILLAGE TRIANGLE: 45 sales at a median AED 2,252/sqft; Milestone Residences: 27 sales at a median AED 1,397/sqft; AL JAWHARA TOWER: 25 sales at a median AED 1,149/sqft; IMPERIAL RESIDENCE: 21 sales at a median AED 1,002/sqft.
 
 ## Source and Method
 

@@ -842,6 +842,21 @@ def rag_query(
     deterministically from the query text - see src/filters.py for the rules and
     for what is deliberately left unfiltered. Set auto_filters=False to bypass.
     """
+    retrieved = retrieve(query, filters=filters, auto_filters=auto_filters)
+    answer = generate_answer(
+        query, retrieved["context"], retrieved["structured"], retrieved["semantic"],
+        provider=provider, api_key=api_key, model=model,
+    )
+    return {"answer": answer, **retrieved}
+
+
+def retrieve(
+    query: str,
+    filters: Optional[Dict[str, Any]] = None,
+    auto_filters: bool = True,
+) -> Dict[str, Any]:
+    """Everything before generation: filters, structured + semantic search and
+    the context string. Separate so retrieval can be evaluated without an LLM."""
     extracted = {"filters": {}, "skipped": []}
     if filters is None and auto_filters:
         extracted = extract_filters(query, known_communities())
@@ -859,17 +874,7 @@ def rag_query(
             "other communities and must not be attributed to it"
         ]
     context = build_context(structured, semantic)
-    answer = generate_answer(
-        query, context, structured, semantic,
-        provider=provider, api_key=api_key, model=model,
-    )
-
-    return {
-        "answer": answer,
-        "structured": structured,
-        "semantic": semantic,
-        "context": context,
-    }
+    return {"structured": structured, "semantic": semantic, "context": context}
 
 
 def health_check() -> Dict[str, bool]:

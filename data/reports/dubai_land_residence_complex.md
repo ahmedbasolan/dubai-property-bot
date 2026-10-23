@@ -6,25 +6,25 @@ Dubai Land Residence Complex recorded 436 ready and 4,338 off-plan apartment sal
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 817 (165 sales); Q2 2026 AED 793 (119 sales); Q3 2026 AED 861 (152 sales).
-Median ready price by unit type: Studio AED 440,000 (AED 911/sqft, 131 sales); 1BR AED 620,449 (AED 761/sqft, 175 sales); 2BR AED 930,000 (AED 738/sqft, 122 sales).
+Median ready price per sqft in Dubai Land Residence Complex by quarter: Q1 2026 AED 817 (165 sales); Q2 2026 AED 793 (119 sales); Q3 2026 AED 861 (152 sales).
+Median ready price by unit type in Dubai Land Residence Complex: Studio AED 440,000 (AED 911/sqft, 131 sales); 1BR AED 620,449 (AED 761/sqft, 175 sales); 2BR AED 930,000 (AED 738/sqft, 122 sales).
 
 ## Rental Yield
 
-Gross rental yield is 8.66%. For each of 5 projects with both new Ejari contracts (113 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.53%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Land Residence Complex is 8.66%. For each of 5 projects with both new Ejari contracts (113 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.53%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 5 projects in Q1 and Q3 2026, prices per sqft fell by a median of 0.7%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 5 projects in Q1 and Q3 2026, Dubai Land Residence Complex prices per sqft fell by a median of 0.7%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-4,338 off-plan apartments were sold against 436 ready ones (ratio 9.95), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 578 apartments here as completed in 2026, including Weybridge Gardens (378 units, 2026-09-08); AARK RESIDENCES (200 units, 2026-04-27).
+4,338 off-plan apartments were sold in Dubai Land Residence Complex against 436 ready ones (ratio 9.95), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 578 apartments in Dubai Land Residence Complex as completed in 2026, including Weybridge Gardens (378 units, 2026-09-08); AARK RESIDENCES (200 units, 2026-04-27).
 
 ## Most Active Ready Projects
 
-SKY COURTS: 193 sales at a median AED 715/sqft; BLUE WAVE: 31 sales at a median AED 953/sqft; THE V TOWER: 25 sales at a median AED 1,051/sqft; DESERT SUN TOWER: 25 sales at a median AED 761/sqft; Time 1: 20 sales at a median AED 1,263/sqft.
+Most active ready projects in Dubai Land Residence Complex: SKY COURTS: 193 sales at a median AED 715/sqft; BLUE WAVE: 31 sales at a median AED 953/sqft; THE V TOWER: 25 sales at a median AED 1,051/sqft; DESERT SUN TOWER: 25 sales at a median AED 761/sqft; Time 1: 20 sales at a median AED 1,263/sqft.
 
 ## Source and Method
 

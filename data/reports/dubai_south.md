@@ -6,25 +6,25 @@ Dubai South recorded 526 ready and 765 off-plan apartment sales registered with 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,091 (222 sales); Q2 2026 AED 1,068 (187 sales); Q3 2026 AED 1,087 (117 sales).
-Median ready price by unit type: Studio AED 495,131 (AED 1,199/sqft, 138 sales); 1BR AED 745,000 (AED 1,055/sqft, 197 sales); 2BR AED 1.12M (AED 1,001/sqft, 166 sales); 3BR AED 1.65M (AED 1,027/sqft, 25 sales).
+Median ready price per sqft in Dubai South by quarter: Q1 2026 AED 1,091 (222 sales); Q2 2026 AED 1,068 (187 sales); Q3 2026 AED 1,087 (117 sales).
+Median ready price by unit type in Dubai South: Studio AED 495,131 (AED 1,199/sqft, 138 sales); 1BR AED 745,000 (AED 1,055/sqft, 197 sales); 2BR AED 1.12M (AED 1,001/sqft, 166 sales); 3BR AED 1.65M (AED 1,027/sqft, 25 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.60%. For each of 6 projects with both new Ejari contracts (93 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.61%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai South is 7.60%. For each of 6 projects with both new Ejari contracts (93 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.61%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 7 projects in Q1 and Q3 2026, prices per sqft fell by a median of 6.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 7 projects in Q1 and Q3 2026, Dubai South prices per sqft fell by a median of 6.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-765 off-plan apartments were sold against 526 ready ones (ratio 1.45), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 255 apartments here as completed in 2026, including Cresswell Residences (166 units, 2026-04-20); Trafford Residence (89 units, 2026-08-27).
+765 off-plan apartments were sold in Dubai South against 526 ready ones (ratio 1.45), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 255 apartments in Dubai South as completed in 2026, including Cresswell Residences (166 units, 2026-04-20); Trafford Residence (89 units, 2026-08-27).
 
 ## Most Active Ready Projects
 
-MAG 5 BOULEVARD: 58 sales at a median AED 1,117/sqft; CELESTIA: 56 sales at a median AED 1,115/sqft.
+Most active ready projects in Dubai South: MAG 5 BOULEVARD: 58 sales at a median AED 1,117/sqft; CELESTIA: 56 sales at a median AED 1,115/sqft.
 
 ## Source and Method
 

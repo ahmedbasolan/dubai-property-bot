@@ -6,25 +6,25 @@ Dubai Hills Estate recorded 560 ready and 152 off-plan apartment sales registere
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,429 (213 sales); Q2 2026 AED 2,301 (148 sales); Q3 2026 AED 2,166 (199 sales).
-Median ready price by unit type: Studio AED 990,000 (AED 2,133/sqft, 22 sales); 1BR AED 1.53M (AED 2,305/sqft, 227 sales); 2BR AED 2.50M (AED 2,313/sqft, 232 sales); 3BR AED 4.15M (AED 2,501/sqft, 75 sales).
+Median ready price per sqft in Dubai Hills Estate by quarter: Q1 2026 AED 2,429 (213 sales); Q2 2026 AED 2,301 (148 sales); Q3 2026 AED 2,166 (199 sales).
+Median ready price by unit type in Dubai Hills Estate: Studio AED 990,000 (AED 2,133/sqft, 22 sales); 1BR AED 1.53M (AED 2,305/sqft, 227 sales); 2BR AED 2.50M (AED 2,313/sqft, 232 sales); 3BR AED 4.15M (AED 2,501/sqft, 75 sales).
 
 ## Rental Yield
 
-Gross rental yield is 5.92%. For each of 19 projects with both new Ejari contracts (245 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.15%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Hills Estate is 5.92%. For each of 19 projects with both new Ejari contracts (245 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.15%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 15 projects in Q1 and Q3 2026, prices per sqft fell by a median of 7.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 15 projects in Q1 and Q3 2026, Dubai Hills Estate prices per sqft fell by a median of 7.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-152 off-plan apartments were sold against 560 ready ones (ratio 0.27), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 2,298 apartments here as completed in 2026, including Golf Grand (720 units, 2026-01-23); 399 Hills Park B (543 units, 2026-08-03); Golf Residences by Fortimo (431 units, 2026-06-07); ELLINGTON HOUSE II (356 units, 2026-03-15); ELLINGTON HOUSE III (248 units, 2026-07-30).
+152 off-plan apartments were sold in Dubai Hills Estate against 560 ready ones (ratio 0.27), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 2,298 apartments in Dubai Hills Estate as completed in 2026, including Golf Grand (720 units, 2026-01-23); 399 Hills Park B (543 units, 2026-08-03); Golf Residences by Fortimo (431 units, 2026-06-07); ELLINGTON HOUSE II (356 units, 2026-03-15); ELLINGTON HOUSE III (248 units, 2026-07-30).
 
 ## Most Active Ready Projects
 
-Park Horizon: 50 sales at a median AED 2,559/sqft; Lime Gardens: 42 sales at a median AED 2,683/sqft; PARK RIDGE: 41 sales at a median AED 2,416/sqft; Golf Grand: 40 sales at a median AED 2,197/sqft; PARK HEIGHTS II: 38 sales at a median AED 2,077/sqft.
+Most active ready projects in Dubai Hills Estate: Park Horizon: 50 sales at a median AED 2,559/sqft; Lime Gardens: 42 sales at a median AED 2,683/sqft; PARK RIDGE: 41 sales at a median AED 2,416/sqft; Golf Grand: 40 sales at a median AED 2,197/sqft; PARK HEIGHTS II: 38 sales at a median AED 2,077/sqft.
 
 ## Source and Method
 

@@ -6,25 +6,25 @@ Liwan recorded 338 ready and 229 off-plan apartment sales registered with the Du
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 980 (159 sales); Q2 2026 AED 882 (102 sales); Q3 2026 AED 885 (77 sales).
-Median ready price by unit type: Studio AED 540,000 (AED 1,278/sqft, 31 sales); 1BR AED 640,000 (AED 859/sqft, 200 sales); 2BR AED 1.25M (AED 980/sqft, 96 sales).
+Median ready price per sqft in Liwan by quarter: Q1 2026 AED 980 (159 sales); Q2 2026 AED 882 (102 sales); Q3 2026 AED 885 (77 sales).
+Median ready price by unit type in Liwan: Studio AED 540,000 (AED 1,278/sqft, 31 sales); 1BR AED 640,000 (AED 859/sqft, 200 sales); 2BR AED 1.25M (AED 980/sqft, 96 sales).
 
 ## Rental Yield
 
-Not enough matched rent data for a reliable yield: 2 projects here have both new Ejari contracts and ready sales (18 contracts); 3 projects and 30 contracts are needed. 126 rent contracts in total are linked to this community.
+Not enough matched rent data for a reliable yield in Liwan: 2 projects have both new Ejari contracts and ready sales (18 contracts); 3 projects and 30 contracts are needed. 126 rent contracts in total are linked to this community.
 
 ## Price Momentum
 
-Comparing the same 6 projects in Q1 and Q3 2026, prices per sqft fell by a median of 0.4%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 6 projects in Q1 and Q3 2026, Liwan prices per sqft fell by a median of 0.4%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-229 off-plan apartments were sold against 338 ready ones (ratio 0.68), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 213 apartments here as completed in 2026, including Celine By Vision (213 units, 2026-01-22).
+229 off-plan apartments were sold in Liwan against 338 ready ones (ratio 0.68), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 213 apartments in Liwan as completed in 2026, including Celine By Vision (213 units, 2026-01-22).
 
 ## Most Active Ready Projects
 
-Celine By Vision: 36 sales at a median AED 1,224/sqft; Wavez Residence: 28 sales at a median AED 1,229/sqft; QPOINT LIWAN-PLOT R005: 20 sales at a median AED 554/sqft.
+Most active ready projects in Liwan: Celine By Vision: 36 sales at a median AED 1,224/sqft; Wavez Residence: 28 sales at a median AED 1,229/sqft; QPOINT LIWAN-PLOT R005: 20 sales at a median AED 554/sqft.
 
 ## Source and Method
 

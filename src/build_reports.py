@@ -75,24 +75,24 @@ def build_report(conn, community: str) -> str:
 
     lines += ["## Prices", ""]
     if quarters:
-        lines.append("Median ready price per sqft by quarter: " + "; ".join(
+        lines.append(f"Median ready price per sqft in {community} by quarter: " + "; ".join(
             f"{q} AED {p:,.0f} ({n:,} sales)" for q, p, n in quarters) + ".")
     if beds:
-        lines.append("Median ready price by unit type: " + "; ".join(
+        lines.append(f"Median ready price by unit type in {community}: " + "; ".join(
             f"{_beds(b)} {_aed(p)} (AED {ppsf:,.0f}/sqft, {n:,} sales)" for b, p, ppsf, n in beds) + ".")
     lines.append("")
 
     lines += ["## Rental Yield", ""]
     if s["avg_roi_pct"] is None:
         lines.append(
-            f"Not enough matched rent data for a reliable yield: {s['yield_projects']} projects here "
+            f"Not enough matched rent data for a reliable yield in {community}: {s['yield_projects']} projects "
             f"have both new Ejari contracts and ready sales ({s['matched_contracts']} contracts); "
             f"3 projects and 30 contracts are needed. {s['rent_contracts']:,} rent contracts in total "
             "are linked to this community."
         )
     else:
         lines.append(
-            f"Gross rental yield is {s['avg_roi_pct']:.2f}%. For each of {s['yield_projects']} "
+            f"Gross rental yield in {community} is {s['avg_roi_pct']:.2f}%. For each of {s['yield_projects']} "
             f"projects with both new Ejari contracts ({s['matched_contracts']:,} in total, 1–22 "
             "October 2026) and ready sales, median annual rent per square metre is divided by the "
             "same project's median sale price per square metre; this is the median across those "
@@ -105,12 +105,13 @@ def build_report(conn, community: str) -> str:
     lines += ["## Price Momentum", ""]
     if s["price_momentum_pct"] is None:
         lines.append(
-            "Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026."
+            f"Price momentum in {community} is not measured: fewer than 5 projects had at least 3 ready "
+            "sales in both Q1 and Q3 2026."
         )
     else:
         direction = "rose" if s["price_momentum_pct"] > 0 else "fell"
         lines.append(
-            f"Comparing the same {s['paired_projects']} projects in Q1 and Q3 2026, prices per sqft "
+            f"Comparing the same {s['paired_projects']} projects in Q1 and Q3 2026, {community} prices per sqft "
             f"{direction} by a median of {abs(s['price_momentum_pct']):.1f}%. This compares like with "
             "like, unlike the quarterly medians above, which move with which buildings sold."
         )
@@ -119,25 +120,25 @@ def build_report(conn, community: str) -> str:
     lines += ["## Supply", ""]
     if s["offplan_sales"]:
         lines.append(
-            f"{s['offplan_sales']:,} off-plan apartments were sold against {s['transaction_count']:,} "
+            f"{s['offplan_sales']:,} off-plan apartments were sold in {community} against {s['transaction_count']:,} "
             f"ready ones (ratio {s['pipeline_ratio']:.2f}), so supply risk is {s['supply_risk']}: "
             "off-plan units sold now are stock still to be handed over."
         )
     else:
         lines.append(
-            "No off-plan apartments were sold here in 2026, so the data shows no new supply "
+            f"No off-plan apartments were sold in {community} in 2026, so the data shows no new supply "
             f"pipeline. Supply risk is {s['supply_risk']}."
         )
     if handovers:
         lines.append(
-            f"DLD registered {s['units_completed_2026']:,} apartments here as completed in 2026, "
+            f"DLD registered {s['units_completed_2026']:,} apartments in {community} as completed in 2026, "
             "including " + "; ".join(f"{p} ({u:,} units, {d})" for p, u, d in handovers) + "."
         )
     lines.append("")
 
     if projects:
         lines += ["## Most Active Ready Projects", ""]
-        lines.append("; ".join(
+        lines.append(f"Most active ready projects in {community}: " + "; ".join(
             f"{p}: {n:,} sales at a median AED {ppsf:,.0f}/sqft" for p, n, ppsf in projects) + ".")
         lines.append("")
 

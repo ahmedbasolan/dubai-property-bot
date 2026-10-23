@@ -17,3 +17,6 @@ eval/eval_err.log
 
 # Raw DLD open-data exports (large; redistribution terms unconfirmed)
 data/raw/dld/
+
+# Eval run artefacts
+eval/eval_results.tmp

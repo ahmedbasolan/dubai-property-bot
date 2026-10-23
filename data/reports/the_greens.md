@@ -6,20 +6,20 @@ The Greens recorded 289 ready and 0 off-plan apartment sales registered with the
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,906 (123 sales); Q2 2026 AED 1,771 (72 sales); Q3 2026 AED 1,739 (94 sales).
-Median ready price by unit type: Studio AED 900,000 (AED 2,006/sqft, 24 sales); 1BR AED 1.45M (AED 1,826/sqft, 131 sales); 2BR AED 2.45M (AED 1,741/sqft, 110 sales); 3BR AED 3.38M (AED 1,784/sqft, 20 sales).
+Median ready price per sqft in The Greens by quarter: Q1 2026 AED 1,906 (123 sales); Q2 2026 AED 1,771 (72 sales); Q3 2026 AED 1,739 (94 sales).
+Median ready price by unit type in The Greens: Studio AED 900,000 (AED 2,006/sqft, 24 sales); 1BR AED 1.45M (AED 1,826/sqft, 131 sales); 2BR AED 2.45M (AED 1,741/sqft, 110 sales); 3BR AED 3.38M (AED 1,784/sqft, 20 sales).
 
 ## Rental Yield
 
-Not enough matched rent data for a reliable yield: 2 projects here have both new Ejari contracts and ready sales (15 contracts); 3 projects and 30 contracts are needed. 28 rent contracts in total are linked to this community.
+Not enough matched rent data for a reliable yield in The Greens: 2 projects have both new Ejari contracts and ready sales (15 contracts); 3 projects and 30 contracts are needed. 28 rent contracts in total are linked to this community.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in The Greens is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-No off-plan apartments were sold here in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
+No off-plan apartments were sold in The Greens in 2026, so the data shows no new supply pipeline. Supply risk is LOW.
 
 ## Source and Method
 
