@@ -9,6 +9,7 @@ const recColors: Record<string, string> = {
   INVEST: "#10b981",
   HOLD: "#f59e0b",
   AVOID: "#ef4444",
+  "INSUFFICIENT DATA": "#6b7280",
 };
 
 interface LeafletMapProps {
@@ -19,7 +20,9 @@ interface LeafletMapProps {
 
 function createCircleMarker(f: MapFeature, map: L.Map, onSelect: (f: MapFeature) => void) {
   const color = recColors[f.recommendation] || "#888";
-  const radius = 8 + (f.composite_score / 100) * 12;
+  const radius = f.composite_score === null ? 8 : 8 + (f.composite_score / 100) * 12;
+  const scoreText = f.composite_score === null ? "–" : f.composite_score.toFixed(0);
+  const netYield = f.avg_net_yield === null ? "n/a" : `${f.avg_net_yield.toFixed(1)}%`;
 
   const icon = L.divIcon({
     className: "community-marker",
@@ -40,7 +43,7 @@ function createCircleMarker(f: MapFeature, map: L.Map, onSelect: (f: MapFeature)
         text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         cursor: pointer;
         transition: transform 0.2s, box-shadow 0.2s;
-      ">${(f.composite_score ?? 0).toFixed(0)}</div>
+      ">${scoreText}</div>
     `,
     iconSize: [radius * 2, radius * 2],
     iconAnchor: [radius, radius],
@@ -51,15 +54,15 @@ function createCircleMarker(f: MapFeature, map: L.Map, onSelect: (f: MapFeature)
   const popupContent = `
     <div style="font-family: system-ui; min-width: 180px;">
       <div style="font-weight: 700; font-size: 14px; margin-bottom: 4px;">${f.community}</div>
-      <div style="font-size: 12px; color: #888; margin-bottom: 8px;">${f.district}</div>
+      <div style="font-size: 12px; color: #888; margin-bottom: 8px;">Median AED ${Math.round(f.avg_price_per_sqft).toLocaleString()}/sqft (ready)</div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px;">
         <div>
           <div style="color: #888;">Score</div>
-          <div style="font-weight: 700; font-size: 16px;">${(f.composite_score ?? 0).toFixed(0)}<span style="font-size: 11px; color: #888;">/100</span></div>
+          <div style="font-weight: 700; font-size: 16px;">${scoreText}<span style="font-size: 11px; color: #888;">/100</span></div>
         </div>
         <div>
-          <div style="color: #888;">Net Yield</div>
-          <div style="font-weight: 700; font-size: 16px; color: ${color};">${(f.avg_net_yield ?? 0).toFixed(1)}%</div>
+          <div style="color: #888;">Net Yield*</div>
+          <div style="font-weight: 700; font-size: 16px; color: ${color};">${netYield}</div>
         </div>
       </div>
       <div style="margin-top: 8px; padding: 4px 8px; border-radius: 6px; text-align: center; font-weight: 700; font-size: 12px; background: ${color}20; color: ${color};">

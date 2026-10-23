@@ -45,12 +45,20 @@ class TestCommunityExtraction:
             ("how is JVC performing", "JVC (Jumeirah Village Circle)"),
             ("what about JLT", "JLT (Jumeirah Lake Towers)"),
             ("DSO supply risk?", "Dubai Silicon Oasis"),
-            ("is damac hills 2 risky", "DAMAC Hills 2"),
+            ("is damac hills risky", "DAMAC Hills"),
+            ("is damac hills 2 risky", None),  # dropped villa community, not DAMAC Hills
             ("marina yields", "Dubai Marina"),
+            ("arjan or majan?", None),  # two communities: a comparison, not one filter
+            ("how is IMPZ doing", "Dubai Production City"),
         ],
     )
     def test_aliases_resolve_to_database_values(self, query, expected, communities):
         assert fx(query, communities).get("community") == expected
+
+    def test_uncovered_community_is_reported_not_matched(self, communities):
+        result = extract_filters("is damac hills 2 a good buy", communities)
+        assert "community" not in result["filters"]
+        assert any("damac hills 2" in s and "apartments only" in s for s in result["skipped"])
 
     def test_resolved_value_actually_matches_rows(self, communities, conn):
         """The resolved string must be the exact column value, or the ILIKE
@@ -62,10 +70,14 @@ class TestCommunityExtraction:
         ).fetchone()[0]
         assert n > 0, f"resolved {value!r} matches no rows"
 
-    def test_comparison_question_is_not_filtered(self, communities):
-        """Naming two communities is a comparison, not a filter."""
+    def test_comparison_is_scoped_to_both_communities(self, communities):
+        """Naming two communities is a comparison, scoped to both."""
         result = extract_filters("Compare Dubai Marina and JVC yields", communities)
         assert "community" not in result["filters"]
+        assert result["filters"]["communities"] == [
+            "Dubai Marina",
+            "JVC (Jumeirah Village Circle)",
+        ]
         assert any("comparison" in s for s in result["skipped"])
 
     def test_unknown_community_yields_no_filter(self, communities):
@@ -73,8 +85,11 @@ class TestCommunityExtraction:
 
 
 class TestPropertyType:
-    def test_plural_villa_is_filtered(self, communities):
-        assert fx("Which communities have villas?", communities).get("property_type") == "Villa"
+    def test_villas_are_reported_as_not_covered(self, communities):
+        """DLD data here is apartments only: a villa filter would match nothing."""
+        result = extract_filters("Which communities have villas?", communities)
+        assert "property_type" not in result["filters"]
+        assert any("villas" in s and "apartment" in s for s in result["skipped"])
 
     def test_apartment_and_villa_together_is_ambiguous(self, communities):
         result = extract_filters("Compare villa and apartment prices", communities)
@@ -84,7 +99,7 @@ class TestPropertyType:
     def test_filtered_value_matches_rows_case_insensitively(self, communities, conn):
         """`property_type = 'villa'` returns 0 rows against a column holding
         'Villa', which is exactly how a filter becomes a false 'no data'."""
-        f = fx("show me villas", communities)
+        f = fx("show me apartments", communities)
         value = f["property_type"]
         strict = conn.execute(
             "SELECT COUNT(*) FROM transactions WHERE property_type = ?", [value]
@@ -155,10 +170,10 @@ class TestPrice:
 
 class TestCombined:
     def test_multiple_dimensions_combine(self, communities):
-        f = fx("2BR villa in Arabian Ranches under AED 4M", communities)
+        f = fx("2BR apartment in JVC under AED 4M", communities)
         assert f == {
-            "community": "Arabian Ranches",
-            "property_type": "Villa",
+            "community": "JVC (Jumeirah Village Circle)",
+            "property_type": "Apartment",
             "bedrooms": 2,
             "max_price": 4_000_000,
         }
@@ -208,32 +223,31 @@ class TestSemanticScoping:
 
         hits = rag.semantic_search("average price per sqft", n_results=3, community="Downtown Dubai")
         assert hits
-        assert {h["metadata"].get("community") for h in hits} == {"Downtown"}
+        assert {h["metadata"].get("community") for h in hits} == {"Downtown Dubai"}
 
     def test_marina_is_scoped_to_marina(self):
         import rag
 
         hits = rag.semantic_search("investment highlights", n_results=3, community="Dubai Marina")
         assert hits
-        assert {h["metadata"].get("community") for h in hits} == {"Marina"}
+        assert {h["metadata"].get("community") for h in hits} == {"Dubai Marina"}
 
     def test_community_without_a_report_is_left_unscoped(self):
         """DAMAC Hills 2 has no report. Filtering to it would return nothing,
         so it stays unscoped and the gap is reported instead."""
         import rag
 
-        assert "DAMAC Hills 2" not in rag.REPORT_COMMUNITY_MAP
+        assert not rag.has_report("DAMAC Hills 2")
         hits = rag.semantic_search("risks", n_results=3, community="DAMAC Hills 2")
         assert hits, "should fall back to unscoped rather than returning nothing"
 
-    def test_report_map_only_names_real_reports(self, conn):
-        """Every community in the map must actually have report chunks."""
+    def test_every_community_has_its_own_report(self, communities):
+        """build_reports.py writes one report per community, keyed by the
+        exact DuckDB name, so scoping never falls back for a real community."""
         import rag
 
-        col = rag.chroma_client.get_collection("market_reports")
-        available = {m.get("community") for m in col.get(include=["metadatas"])["metadatas"]}
-        for db_name, report_name in rag.REPORT_COMMUNITY_MAP.items():
-            assert report_name in available, f"{db_name} -> {report_name} has no chunks"
+        missing = [c for c in communities if not rag.has_report(c)]
+        assert missing == []
 
 
 class TestScoreAndSupplyScoping:
@@ -255,7 +269,7 @@ class TestScoreAndSupplyScoping:
         import rag
 
         s = rag.structured_search("x", filters=None)
-        assert len(s["community_scores"]) == 24
+        assert len(s["community_scores"]) == 29
         assert len(s["supply_info"]) > 1
 
 
