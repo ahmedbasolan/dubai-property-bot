@@ -1,7 +1,9 @@
 """Ingestion pipeline: embed market reports into ChromaDB.
 
-Transactions are loaded into DuckDB via db_setup.py.
-This script only handles semantic search for market reports.
+The reports are generated from DuckDB by build_reports.py (one per community),
+so semantic search returns the same figures as the structured views. This
+script rebuilds the collection from scratch each run, so a community dropped
+from the data can't linger as a stale report.
 """
 
 import json
@@ -14,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import chromadb
 from chromadb.config import Settings
 
-from config import DATA_DIR, CHROMA_DIR, PROCESSED_DIR
+from config import CHROMA_DIR, PROCESSED_DIR, REPORTS_DIR
 
 
 def load_markdown_reports(data_dir: Path) -> List[Dict[str, Any]]:
@@ -41,7 +43,10 @@ def load_markdown_reports(data_dir: Path) -> List[Dict[str, Any]]:
         for i, (header, body) in enumerate(sections):
             if not body or body.startswith("---"):
                 continue
-            community_name = md_file.stem.replace("market_report_", "").replace("_", " ").title()
+            # The title line carries the exact DuckDB community name:
+            # "# JVC (Jumeirah Village Circle) Market Report (DLD data, ...)"
+            title = content.splitlines()[0].lstrip("# ")
+            community_name = title.split(" Market Report")[0]
             doc_text = f"[Market Report: {community_name}] {header}: {body}"
             docs.append({
                 "id": f"{md_file.stem}_section_{i}",
@@ -63,12 +68,15 @@ def ingest_reports():
         settings=Settings(anonymized_telemetry=False),
     )
 
-    report_col = client.get_or_create_collection(
+    # list_collections returns names in some chromadb versions, objects in others
+    if "market_reports" in [getattr(c, "name", c) for c in client.list_collections()]:
+        client.delete_collection("market_reports")
+    report_col = client.create_collection(
         name="market_reports",
         metadata={"description": "Dubai market reports for semantic search"},
     )
 
-    report_docs = load_markdown_reports(DATA_DIR)
+    report_docs = load_markdown_reports(REPORTS_DIR)
     if report_docs:
         batch_size = 50
         for i in range(0, len(report_docs), batch_size):

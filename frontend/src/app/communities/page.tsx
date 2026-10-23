@@ -57,7 +57,10 @@ export default function CommunitiesPage() {
     INVEST: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
     HOLD: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     AVOID: "bg-red-500/20 text-red-400 border-red-500/30",
+    "INSUFFICIENT DATA": "bg-muted text-muted-foreground border-border",
   };
+  const scoredCount = communities.filter((c) => c.composite_score !== null).length;
+  const pct = (v: number | null, digits = 1) => (v === null ? "n/a" : `${v.toFixed(digits)}%`);
 
   return (
     <div className="p-6 space-y-6">
@@ -66,7 +69,10 @@ export default function CommunitiesPage() {
           Investment Leaderboard
         </h1>
         <p className="text-muted-foreground mt-1">
-          Communities ranked by 5-factor investment score
+          Ranked on rental yield, supply pipeline, price momentum and liquidity, from
+          Dubai Land Department sales and Ejari rents (Jan–Sep 2026).{" "}
+          {scoredCount < communities.length &&
+            `${communities.length - scoredCount} communities lack enough rent contracts for a score yet.`}
         </p>
       </div>
 
@@ -80,7 +86,7 @@ export default function CommunitiesPage() {
                 : ""
             }`}
           >
-            {i < 3 && (
+            {i < 3 && c.composite_score !== null && (
               <div className="absolute top-3 right-3">
                 <Trophy
                   size={20}
@@ -103,7 +109,9 @@ export default function CommunitiesPage() {
                     </span>
                     {c.community}
                   </CardTitle>
-                  <p className="text-sm text-muted-foreground">{c.district ?? "Dubai"}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {c.transaction_count.toLocaleString()} ready sales
+                  </p>
                 </div>
                 <Badge className={recColors[c.recommendation]}>
                   {c.recommendation}
@@ -114,7 +122,7 @@ export default function CommunitiesPage() {
               <div className="flex items-center justify-between">
                 <div className="text-center">
                   <div className="text-3xl font-bold">
-                    {(c.composite_score ?? 0).toFixed(0)}
+                    {c.composite_score === null ? "—" : c.composite_score.toFixed(0)}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Score / 100
@@ -123,10 +131,10 @@ export default function CommunitiesPage() {
                 <div className="h-12 w-px bg-border" />
                 <div className="text-center">
                   <div className="text-3xl font-bold text-emerald-400">
-                    {(c.avg_net_yield_pct ?? 0).toFixed(1)}%
+                    {pct(c.avg_roi_pct)}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    Net Yield
+                    Gross Yield
                   </div>
                 </div>
                 <div className="h-12 w-px bg-border" />
@@ -142,12 +150,16 @@ export default function CommunitiesPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Price Grade</span>
-                  <span className="font-medium">{c.price_score ?? "—"}</span>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Yield Grade</span>
                   <span className="font-medium">{c.yield_score ?? "—"}</span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded bg-accent/50">
+                  <span className="text-muted-foreground">Momentum</span>
+                  <span className="font-medium">
+                    {c.price_momentum_pct === null
+                      ? "—"
+                      : `${c.price_momentum_pct > 0 ? "+" : ""}${c.price_momentum_pct.toFixed(1)}%`}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
                   <span className="text-muted-foreground">Supply Risk</span>
@@ -164,18 +176,16 @@ export default function CommunitiesPage() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Pipeline</span>
-                  <span className="font-medium">
-                    {c.pipeline_pct_of_stock ?? 0}%
-                  </span>
+                  <span className="text-muted-foreground">Off-plan / ready</span>
+                  <span className="font-medium">{c.pipeline_ratio.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Developer</span>
-                  <span className="font-medium">{c.master_developer ?? "—"}</span>
+                  <span className="text-muted-foreground">Liquidity</span>
+                  <span className="font-medium">{c.liquidity_score}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Occupancy</span>
-                  <span className="font-medium">{c.occupancy_rate ?? 0}%</span>
+                  <span className="text-muted-foreground">Rent contracts</span>
+                  <span className="font-medium">{c.rent_contracts ?? 0}</span>
                 </div>
               </div>
             </CardContent>

@@ -1,4 +1,11 @@
-"""DuckDB setup: schema, data loading, and analytical views."""
+"""DuckDB setup: load real DLD data and build the analytical views.
+
+Input is the parquet output of `src/dld_loader.py` (DLD open-data sales,
+Ejari rents and projects). The views keep the names the API, RAG and UI read
+(`transactions`, `v_net_yield`, `v_community_summary`, `v_investment_scores`,
+`price_history`, `supply_pipeline`), now computed from registered records.
+Method and data window: docs/plans/2026-10-23-real-dld-data.md.
+"""
 
 import sys
 from pathlib import Path
@@ -7,334 +14,294 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import duckdb
 
-from config import PROJECT_ROOT, DATA_DIR, DB_PATH, MANAGEMENT_FEE_RATE, VACANCY_RATE
+from config import DB_PATH, MANAGEMENT_FEE_RATE, VACANCY_RATE, PROCESSED_DIR
+
+# Fewer contracts or ready sales than this and a community's yield is
+# reported as insufficient data rather than a number.
+MIN_YIELD_SAMPLE = 30
+# Momentum compares the same projects in the first and last quarter; fewer
+# paired projects than this and it's reported as unknown.
+MIN_MOMENTUM_PROJECTS = 5
+MIN_PROJECT_SALES_PER_QUARTER = 3
+
+# Composite weights (sum 100). Price/sqft and 2026 handovers are reported
+# but not weighted: yield already prices value against rent, and handovers
+# only link for projects in the 2026 projects export.
+WEIGHTS = {"yield": 40, "supply": 25, "momentum": 20, "liquidity": 15}
+
+DATA_SOURCE = "Dubai Land Department open data (sales, Ejari rents, projects)"
 
 
 def init_db():
-    """Initialize DuckDB with schema, load data, create views."""
+    """Rebuild the database from the DLD parquet files."""
+    missing = [n for n in ("sales", "rents", "projects")
+               if not (PROCESSED_DIR / f"dld_{n}.parquet").exists()]
+    if missing:
+        raise SystemExit(f"Missing DLD data ({', '.join(missing)}): run `python src/dld_loader.py` "
+                         "after exporting to data/raw/dld/")
+
+    DB_PATH.unlink(missing_ok=True)  # views and tables changed shape; start clean
     conn = duckdb.connect(str(DB_PATH))
-
-    # --- Schema ---
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS transactions (
-            transaction_id VARCHAR PRIMARY KEY,
-            community VARCHAR,
-            property_type VARCHAR,
-            bedrooms INTEGER,
-            price_aed BIGINT,
-            size_sqft INTEGER,
-            transaction_date DATE,
-            roi_pct DOUBLE,
-            developer VARCHAR,
-            handover_status VARCHAR,
-            floor_level INTEGER,
-            view_type VARCHAR,
-            service_charge_aed_sqft DOUBLE,
-            parking_spots INTEGER,
-            completion_year INTEGER,
-            furnishing VARCHAR,
-            amenities VARCHAR
-        )
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS communities (
-            community_name VARCHAR PRIMARY KEY,
-            district VARCHAR,
-            established_year INTEGER,
-            master_developer VARCHAR,
-            occupancy_rate DOUBLE,
-            off_plan_percentage DOUBLE
-        )
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS supply_pipeline (
-            community_name VARCHAR PRIMARY KEY,
-            existing_stock_units INTEGER,
-            units_under_construction INTEGER,
-            units_completed_last_12_months INTEGER,
-            units_expected_next_24_months INTEGER,
-            pipeline_pct_of_stock DOUBLE,
-            supply_risk VARCHAR
-        )
-    """)
-
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS price_history (
-            community VARCHAR,
-            quarter VARCHAR,
-            quarter_start DATE,
-            avg_price_per_sqft BIGINT,
-            market_volume INTEGER,
-            source VARCHAR,
-            PRIMARY KEY (community, quarter)
-        )
-    """)
-
-    # --- Load CSVs ---
-    _load_csv(conn, "transactions", DATA_DIR / "transactions.csv")
-    _load_csv(conn, "communities", DATA_DIR / "communities.csv")
-    _load_csv(conn, "supply_pipeline", DATA_DIR / "supply_pipeline.csv")
-    _load_csv(conn, "price_history", DATA_DIR / "price_history.csv")
-
-    # --- Analytical Views ---
-
-    # Net yield calculation (deterministic, no LLM involvement)
-    conn.execute(f"""
-        CREATE OR REPLACE VIEW v_net_yield AS
-        SELECT
-            t.transaction_id,
-            t.community,
-            t.property_type,
-            t.bedrooms,
-            t.price_aed,
-            t.size_sqft,
-            t.roi_pct,
-            t.floor_level,
-            t.view_type,
-            t.service_charge_aed_sqft,
-            t.parking_spots,
-            t.completion_year,
-            t.furnishing,
-            t.developer,
-            t.handover_status,
-            -- Estimated annual rent from ROI
-            ROUND(t.price_aed * t.roi_pct / 100) AS estimated_annual_rent,
-            -- Annual service charges
-            ROUND(t.size_sqft * t.service_charge_aed_sqft) AS annual_service_charges,
-            -- Management fees
-            ROUND(t.price_aed * t.roi_pct / 100 * {MANAGEMENT_FEE_RATE}) AS management_fees,
-            -- Vacancy loss (~2-3 weeks/year)
-            ROUND(t.price_aed * t.roi_pct / 100 * {VACANCY_RATE}) AS vacancy_loss,
-            -- Net yield
-            ROUND(
-                (t.price_aed * t.roi_pct / 100
-                 - t.size_sqft * t.service_charge_aed_sqft
-                 - t.price_aed * t.roi_pct / 100 * {MANAGEMENT_FEE_RATE}
-                 - t.price_aed * t.roi_pct / 100 * {VACANCY_RATE}
-                ) / t.price_aed * 100,
-                2
-            ) AS net_yield_pct,
-            -- Price per sqft
-            ROUND(t.price_aed::DOUBLE / t.size_sqft, 1) AS price_per_sqft
-        FROM transactions t
-    """)
-
-    # Community summary with aggregated metrics
-    conn.execute("""
-        CREATE OR REPLACE VIEW v_community_summary AS
-        SELECT
-            v.community,
-            COUNT(*) AS transaction_count,
-            ROUND(AVG(v.price_per_sqft), 0) AS avg_price_per_sqft,
-            ROUND(MIN(v.price_per_sqft), 0) AS min_price_per_sqft,
-            ROUND(MAX(v.price_per_sqft), 0) AS max_price_per_sqft,
-            ROUND(AVG(v.roi_pct), 1) AS avg_roi_pct,
-            ROUND(AVG(v.net_yield_pct), 2) AS avg_net_yield_pct,
-            ROUND(AVG(v.service_charge_aed_sqft), 1) AS avg_service_charge,
-            ROUND(AVG(v.price_aed), 0) AS avg_price,
-            -- Upper-cased so the API contract is one spelling; the CSV stores
-            -- 'high'/'medium'/'low' and the UI compares against 'HIGH'/'MEDIUM'.
-            UPPER(sp.supply_risk) AS supply_risk,
-            sp.pipeline_pct_of_stock,
-            sp.units_expected_next_24_months,
-            c.occupancy_rate,
-            c.district,
-            c.master_developer
-        FROM v_net_yield v
-        LEFT JOIN supply_pipeline sp ON v.community = sp.community_name
-        LEFT JOIN communities c ON v.community = c.community_name
-        GROUP BY v.community, sp.supply_risk, sp.pipeline_pct_of_stock,
-                 sp.units_expected_next_24_months, c.occupancy_rate,
-                 c.district, c.master_developer
-    """)
-
-    # Investment scoring view (5 weighted factors)
-    #
-    # The score and the recommendation are derived from the *same* factor grades,
-    # so the two can never disagree. Previously they were unrelated rule sets:
-    # JVC and International City both scored 76 and were labelled INVEST and HOLD.
-    # Recomputed for the same reason, price/sqft is reported as a grade but not
-    # weighted - price and size are currently drawn independently in
-    # generate_data.py, so the ratio is noise (612-11,452 AED/sqft in one dataset).
-    conn.execute("""
-        CREATE OR REPLACE VIEW v_investment_scores AS
-        WITH community_stats AS (
-            SELECT * FROM v_community_summary
-        ),
-        benchmarks AS (
-            SELECT
-                AVG(avg_price_per_sqft) AS bench_price_sqft,
-                AVG(avg_roi_pct) AS bench_roi,
-                AVG(avg_net_yield_pct) AS bench_net_yield,
-                AVG(avg_service_charge) AS bench_service_charge,
-                AVG(pipeline_pct_of_stock) AS bench_pipeline,
-                AVG(occupancy_rate) AS bench_occupancy
-            FROM community_stats
-        ),
-        grades AS (
-        SELECT
-            cs.community,
-            cs.district,
-            cs.transaction_count,
-            cs.avg_price_per_sqft,
-            cs.avg_roi_pct,
-            cs.avg_net_yield_pct,
-            cs.avg_service_charge,
-            cs.avg_price,
-            cs.supply_risk,
-            cs.pipeline_pct_of_stock,
-            cs.occupancy_rate,
-            cs.master_developer,
-            -- Metric 1: Price/sqft score (lower is better, below avg = good)
-            CASE
-                WHEN cs.avg_price_per_sqft < b.bench_price_sqft * 0.8 THEN 'A'
-                WHEN cs.avg_price_per_sqft < b.bench_price_sqft * 0.95 THEN 'B'
-                WHEN cs.avg_price_per_sqft < b.bench_price_sqft * 1.1 THEN 'C'
-                WHEN cs.avg_price_per_sqft < b.bench_price_sqft * 1.3 THEN 'D'
-                ELSE 'F'
-            END AS price_score,
-            -- Metric 2: Gross yield score (higher is better)
-            CASE
-                WHEN cs.avg_roi_pct >= 8.5 THEN 'A'
-                WHEN cs.avg_roi_pct >= 7.0 THEN 'B'
-                WHEN cs.avg_roi_pct >= 6.0 THEN 'C'
-                WHEN cs.avg_roi_pct >= 5.0 THEN 'D'
-                ELSE 'F'
-            END AS yield_score,
-            -- Metric 3: Net yield score (higher is better)
-            CASE
-                WHEN cs.avg_net_yield_pct >= 7.0 THEN 'A'
-                WHEN cs.avg_net_yield_pct >= 5.5 THEN 'B'
-                WHEN cs.avg_net_yield_pct >= 4.0 THEN 'C'
-                WHEN cs.avg_net_yield_pct >= 2.5 THEN 'D'
-                ELSE 'F'
-            END AS net_yield_score,
-            -- Metric 4: Service charge score (lower is better)
-            CASE
-                WHEN cs.avg_service_charge <= 10 THEN 'A'
-                WHEN cs.avg_service_charge <= 15 THEN 'B'
-                WHEN cs.avg_service_charge <= 20 THEN 'C'
-                WHEN cs.avg_service_charge <= 25 THEN 'D'
-                ELSE 'F'
-            END AS service_charge_score,
-            -- Metric 5: Supply pipeline risk (lower is better)
-            CASE
-                WHEN cs.pipeline_pct_of_stock <= 5 THEN 'A'
-                WHEN cs.pipeline_pct_of_stock <= 10 THEN 'B'
-                WHEN cs.pipeline_pct_of_stock <= 15 THEN 'C'
-                WHEN cs.pipeline_pct_of_stock <= 25 THEN 'D'
-                ELSE 'F'
-            END AS supply_risk_score,
-            -- Metric 6: Occupancy (higher is better)
-            CASE
-                WHEN cs.occupancy_rate >= 0.92 THEN 'A'
-                WHEN cs.occupancy_rate >= 0.88 THEN 'B'
-                WHEN cs.occupancy_rate >= 0.84 THEN 'C'
-                WHEN cs.occupancy_rate >= 0.80 THEN 'D'
-                ELSE 'F'
-            END AS occupancy_score,
-            -- Metric 7: Developer track record (simplified)
-            CASE
-                WHEN cs.master_developer IN ('Emaar', 'Meraas') THEN 'A'
-                WHEN cs.master_developer IN ('Nakheel', 'DAMAC') THEN 'B'
-                WHEN cs.master_developer IN ('DMCC', 'Nshama') THEN 'C'
-                ELSE 'D'
-            END AS developer_score
-        FROM community_stats cs
-        CROSS JOIN benchmarks b
-        ),
-        points AS (
-            SELECT *,
-                (CASE yield_score         WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS yield_points,
-                (CASE net_yield_score     WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS net_points,
-                (CASE supply_risk_score   WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS supply_points,
-                (CASE occupancy_score     WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS occupancy_points,
-                (CASE service_charge_score WHEN 'A' THEN 5 WHEN 'B' THEN 4 WHEN 'C' THEN 3 WHEN 'D' THEN 2 ELSE 1 END) AS service_points
-            FROM grades
-        ),
-        scored AS (
-            -- Weights: gross 25, net 25, supply 20, occupancy 15, service 15.
-            -- Each factor contributes 1-5 points, so the weighted mean divided by
-            -- 5 lands on 20-100.
-            SELECT *,
-                ROUND((
-                    25 * yield_points + 25 * net_points + 20 * supply_points +
-                    15 * occupancy_points + 15 * service_points
-                ) / 5.0, 0) AS composite_score
-            FROM points
-        )
-        SELECT
-            community,
-            district,
-            transaction_count,
-            avg_price_per_sqft,
-            avg_roi_pct,
-            avg_net_yield_pct,
-            avg_service_charge,
-            avg_price,
-            supply_risk,
-            pipeline_pct_of_stock,
-            occupancy_rate,
-            master_developer,
-            price_score,
-            yield_score,
-            net_yield_score,
-            service_charge_score,
-            supply_risk_score,
-            occupancy_score,
-            developer_score,
-            -- One rule set: the signal is a band on the score above, never a
-            -- separate count of threshold passes.
-            CASE
-                WHEN composite_score >= 70 THEN 'INVEST'
-                WHEN composite_score >= 50 THEN 'HOLD'
-                ELSE 'AVOID'
-            END AS recommendation,
-            composite_score
-        FROM scored
-    """)
-
+    _load_dld(conn)
     print(f"DuckDB initialized: {DB_PATH}")
     _print_summary(conn)
     conn.close()
 
 
-def _load_csv(conn, table_name: str, csv_path: Path):
-    """Load a CSV file into a DuckDB table."""
-    if not csv_path.exists():
-        print(f"  WARNING: {csv_path} not found, skipping {table_name}")
-        return
+def _load_dld(conn):
+    for name in ("sales", "rents", "projects"):
+        conn.execute(f"CREATE OR REPLACE TABLE dld_{name} AS SELECT * FROM read_parquet(?)",
+                     [(PROCESSED_DIR / f"dld_{name}.parquet").as_posix()])
 
-    conn.execute(f"DELETE FROM {table_name}")
-    conn.execute(f"""
-        INSERT INTO {table_name}
-        SELECT * FROM read_csv_auto('{csv_path.as_posix()}', header=true, all_varchar=false)
+    # Developer comes from the projects export, matched on project name. It
+    # only covers projects completed in 2026, so most sales have none.
+    conn.execute("""
+        CREATE OR REPLACE VIEW transactions AS
+        SELECT
+            s.transaction_id,
+            s.community,
+            'Apartment' AS property_type,
+            s.bedrooms,
+            s.price_aed,
+            ROUND(s.size_sqft, 0) AS size_sqft,
+            s.size_sqm,
+            s.transaction_date,
+            CASE WHEN s.is_offplan THEN 'Off-Plan' ELSE 'Ready' END AS handover_status,
+            s.project,
+            p.developer,
+            s.has_parking,
+            s.procedure
+        FROM dld_sales s
+        LEFT JOIN (SELECT upper(project) AS key, any_value(developer) AS developer
+                   FROM dld_projects GROUP BY 1) p ON upper(s.project) = p.key
+        WHERE s.community IS NOT NULL
     """)
-    count = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
-    print(f"  Loaded {count} rows into {table_name}")
+
+    # Market rent per community: new contracts when there are enough of
+    # them (renewals lag the market under the RERA rent cap), else all.
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_community_rent AS
+        WITH r AS (
+            SELECT community,
+                   median(rent_per_sqm) FILTER (WHERE is_new_contract) AS new_rent_per_sqm,
+                   median(rent_per_sqm) AS all_rent_per_sqm,
+                   COUNT(*) FILTER (WHERE is_new_contract) AS new_contracts,
+                   COUNT(*) AS rent_contracts
+            FROM dld_rents WHERE community IS NOT NULL GROUP BY community
+        )
+        SELECT community, new_contracts, rent_contracts,
+            CASE WHEN new_contracts >= {MIN_YIELD_SAMPLE} THEN new_rent_per_sqm
+                 WHEN rent_contracts >= {MIN_YIELD_SAMPLE} THEN all_rent_per_sqm END AS rent_per_sqm,
+            CASE WHEN new_contracts >= {MIN_YIELD_SAMPLE} THEN 'new contracts'
+                 WHEN rent_contracts >= {MIN_YIELD_SAMPLE} THEN 'all contracts' END AS rent_basis
+        FROM r
+    """)
+
+    # Per-sale yield: the community's market rent per m2 applied to this
+    # unit's size. Net deducts management and vacancy only; DLD publishes no
+    # service charges, so net yield is before service charges.
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_net_yield AS
+        SELECT
+            t.*,
+            ROUND(t.price_aed / t.size_sqft, 1) AS price_per_sqft,
+            ROUND(cr.rent_per_sqm * t.size_sqm) AS estimated_annual_rent,
+            ROUND(100 * cr.rent_per_sqm * t.size_sqm / t.price_aed, 2) AS roi_pct,
+            ROUND(100 * cr.rent_per_sqm * t.size_sqm * (1 - {MANAGEMENT_FEE_RATE} - {VACANCY_RATE})
+                  / t.price_aed, 2) AS net_yield_pct
+        FROM transactions t
+        LEFT JOIN v_community_rent cr USING (community)
+    """)
+
+    # Quarterly ready-apartment series (what /api/trends reads), plus a
+    # segmented one with off-plan for analysis.
+    conn.execute("""
+        CREATE OR REPLACE VIEW v_dld_price_history AS
+        SELECT
+            community,
+            handover_status AS segment,
+            'Q' || quarter(transaction_date) || ' ' || year(transaction_date) AS quarter,
+            date_trunc('quarter', transaction_date)::DATE AS quarter_start,
+            ROUND(median(price_aed / size_sqft), 0) AS median_price_per_sqft,
+            COUNT(*) AS sales_count
+        FROM transactions
+        GROUP BY ALL
+    """)
+    conn.execute("""
+        CREATE OR REPLACE VIEW price_history AS
+        SELECT community, quarter, quarter_start,
+               median_price_per_sqft AS avg_price_per_sqft,
+               sales_count AS market_volume,
+               'dld' AS source
+        FROM v_dld_price_history WHERE segment = 'Ready'
+    """)
+
+    # Same-project price change, first to last quarter in the data. Raw
+    # community medians swing with which buildings happened to sell
+    # (Majan +52%, Marina +10%); pairing projects removes that mix effect.
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_price_momentum AS
+        WITH bounds AS (
+            SELECT date_trunc('quarter', MIN(transaction_date)) AS first_q,
+                   date_trunc('quarter', MAX(transaction_date)) AS last_q
+            FROM transactions WHERE handover_status = 'Ready'
+        ),
+        p AS (
+            SELECT t.community, t.project, date_trunc('quarter', t.transaction_date) AS q,
+                   median(t.price_aed / t.size_sqft) AS ppsf, COUNT(*) AS n
+            FROM transactions t
+            WHERE t.handover_status = 'Ready' AND t.project IS NOT NULL
+            GROUP BY ALL
+        ),
+        pairs AS (
+            SELECT a.community, b.ppsf / a.ppsf - 1 AS change
+            FROM p a JOIN p b USING (community, project), bounds
+            WHERE a.q = bounds.first_q AND b.q = bounds.last_q
+              AND a.n >= {MIN_PROJECT_SALES_PER_QUARTER} AND b.n >= {MIN_PROJECT_SALES_PER_QUARTER}
+        )
+        SELECT community,
+               COUNT(*) AS paired_projects,
+               CASE WHEN COUNT(*) >= {MIN_MOMENTUM_PROJECTS}
+                    THEN ROUND(100 * median(change), 1) END AS price_momentum_pct
+        FROM pairs GROUP BY community
+    """)
+
+    # Supply: off-plan sold this year is stock still to be handed over, so
+    # off-plan sales per ready sale is the forward pipeline. Handovers are
+    # what DLD registered as completed in 2026 (projects export).
+    conn.execute("""
+        CREATE OR REPLACE VIEW supply_pipeline AS
+        WITH s AS (
+            SELECT community,
+                   COUNT(*) FILTER (WHERE handover_status = 'Off-Plan') AS offplan_sales,
+                   COUNT(*) FILTER (WHERE handover_status = 'Ready') AS ready_sales
+            FROM transactions GROUP BY community
+        ),
+        h AS (
+            SELECT community, SUM(units) AS units_completed
+            FROM dld_projects WHERE community IS NOT NULL AND status = 'FINISHED'
+            GROUP BY community
+        )
+        SELECT
+            s.community AS community_name,
+            s.offplan_sales,
+            s.ready_sales,
+            ROUND(s.offplan_sales / s.ready_sales, 2) AS pipeline_ratio,
+            coalesce(h.units_completed, 0) AS units_completed_2026,
+            CASE WHEN s.offplan_sales / s.ready_sales <= 0.75 THEN 'LOW'
+                 WHEN s.offplan_sales / s.ready_sales <= 1.5 THEN 'MEDIUM'
+                 ELSE 'HIGH' END AS supply_risk
+        FROM s LEFT JOIN h USING (community)
+    """)
+
+    conn.execute("""
+        CREATE OR REPLACE VIEW v_community_summary AS
+        SELECT
+            t.community,
+            COUNT(*) FILTER (WHERE t.handover_status = 'Ready') AS transaction_count,
+            ROUND(median(t.price_aed / t.size_sqft) FILTER (WHERE t.handover_status = 'Ready'), 0)
+                AS avg_price_per_sqft,
+            ROUND(median(t.price_aed) FILTER (WHERE t.handover_status = 'Ready'), 0) AS avg_price,
+            ROUND(100 * cr.rent_per_sqm
+                  / median(t.price_aed / t.size_sqm) FILTER (WHERE t.handover_status = 'Ready'), 2)
+                AS avg_roi_pct,
+            cr.rent_basis,
+            cr.rent_contracts,
+            pm.price_momentum_pct,
+            pm.paired_projects,
+            sp.offplan_sales,
+            sp.pipeline_ratio,
+            sp.units_completed_2026,
+            sp.supply_risk
+        FROM transactions t
+        LEFT JOIN v_community_rent cr USING (community)
+        LEFT JOIN v_price_momentum pm USING (community)
+        LEFT JOIN supply_pipeline sp ON sp.community_name = t.community
+        GROUP BY t.community, cr.rent_per_sqm, cr.rent_basis, cr.rent_contracts,
+                 pm.price_momentum_pct, pm.paired_projects, sp.offplan_sales,
+                 sp.pipeline_ratio, sp.units_completed_2026, sp.supply_risk
+    """)
+
+    # Grades: yield bands are absolute (an investor's 7% is 7% anywhere);
+    # momentum, supply and liquidity bands were set from the Q1-Q3 2026
+    # distribution across the 29 communities (see the plan doc).
+    w = WEIGHTS
+    conn.execute(f"""
+        CREATE OR REPLACE VIEW v_investment_scores AS
+        WITH g AS (
+            SELECT *,
+                ROUND(avg_roi_pct * (1 - {MANAGEMENT_FEE_RATE} - {VACANCY_RATE}), 2) AS avg_net_yield_pct,
+                CASE WHEN avg_roi_pct IS NULL THEN NULL
+                     WHEN avg_roi_pct >= 7.5 THEN 'A' WHEN avg_roi_pct >= 6.5 THEN 'B'
+                     WHEN avg_roi_pct >= 5.5 THEN 'C' WHEN avg_roi_pct >= 4.5 THEN 'D' ELSE 'F' END
+                    AS yield_score,
+                CASE WHEN pipeline_ratio <= 0.25 THEN 'A' WHEN pipeline_ratio <= 0.75 THEN 'B'
+                     WHEN pipeline_ratio <= 1.5 THEN 'C' WHEN pipeline_ratio <= 3 THEN 'D' ELSE 'F' END
+                    AS supply_risk_score,
+                CASE WHEN price_momentum_pct IS NULL THEN NULL
+                     WHEN price_momentum_pct >= 2 THEN 'A' WHEN price_momentum_pct >= -2 THEN 'B'
+                     WHEN price_momentum_pct >= -5 THEN 'C' WHEN price_momentum_pct >= -8 THEN 'D' ELSE 'F' END
+                    AS momentum_score,
+                CASE WHEN transaction_count >= 1000 THEN 'A' WHEN transaction_count >= 700 THEN 'B'
+                     WHEN transaction_count >= 500 THEN 'C' WHEN transaction_count >= 350 THEN 'D' ELSE 'F' END
+                    AS liquidity_score
+            FROM v_community_summary
+        ),
+        pts AS (
+            SELECT *,
+                list_position(['F','D','C','B','A'], yield_score) AS yp,
+                list_position(['F','D','C','B','A'], supply_risk_score) AS sp,
+                list_position(['F','D','C','B','A'], momentum_score) AS mp,
+                list_position(['F','D','C','B','A'], liquidity_score) AS lp
+            FROM g
+        ),
+        scored AS (
+            -- Points 1-5 per factor, weighted mean over the factors present,
+            -- scaled to 20-100. No yield, no score: it's the core factor.
+            SELECT *,
+                CASE WHEN yp IS NULL THEN NULL ELSE ROUND(20 * (
+                    {w['yield']} * yp + {w['supply']} * sp + {w['liquidity']} * lp
+                    + coalesce({w['momentum']} * mp, 0)
+                ) / ({w['yield']} + {w['supply']} + {w['liquidity']}
+                     + CASE WHEN mp IS NULL THEN 0 ELSE {w['momentum']} END), 0) END AS composite_score
+            FROM pts
+        )
+        SELECT
+            community, transaction_count, avg_price_per_sqft, avg_price,
+            avg_roi_pct, avg_net_yield_pct, rent_basis, rent_contracts,
+            price_momentum_pct, paired_projects,
+            offplan_sales, pipeline_ratio, units_completed_2026, supply_risk,
+            yield_score, supply_risk_score, momentum_score, liquidity_score,
+            composite_score,
+            CASE WHEN composite_score IS NULL THEN 'INSUFFICIENT DATA'
+                 WHEN composite_score >= 70 THEN 'INVEST'
+                 WHEN composite_score >= 50 THEN 'HOLD'
+                 ELSE 'AVOID' END AS recommendation
+        FROM scored
+    """)
 
 
 def _print_summary(conn):
     """Print database summary."""
     print("\n--- Database Summary ---")
-    for table in ["transactions", "communities", "supply_pipeline", "price_history"]:
+    for table in ["dld_sales", "dld_rents", "dld_projects", "transactions"]:
         count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-        print(f"  {table}: {count} rows")
+        print(f"  {table}: {count:,} rows")
 
-    # Top 5 communities by net yield
-    print("\n--- Top 5 Communities by Net Yield ---")
+    scored = conn.execute(
+        "SELECT COUNT(*) FILTER (WHERE composite_score IS NOT NULL), COUNT(*) FROM v_investment_scores"
+    ).fetchone()
+    print(f"\n--- Scores: {scored[0]} of {scored[1]} communities have enough rent data ---")
     rows = conn.execute("""
-        SELECT community, avg_roi_pct, avg_net_yield_pct, avg_price_per_sqft,
-               supply_risk, composite_score, recommendation
+        SELECT community, avg_roi_pct, price_momentum_pct, pipeline_ratio,
+               composite_score, recommendation
         FROM v_investment_scores
-        ORDER BY avg_net_yield_pct DESC
-        LIMIT 5
+        ORDER BY composite_score DESC NULLS LAST, community
     """).fetchall()
-    for row in rows:
-        print(f"  {row[0]:30s} | ROI: {row[1]:5.1f}% | Net: {row[2]:5.2f}% | "
-              f"AED/sqft: {row[3]:,.0f} | Risk: {row[4]:6s} | Score: {row[5]:3.0f} | {row[6]}")
+    for c, y, m, p, s, r in rows:
+        fmt = lambda v, f: "  n/a" if v is None else format(v, f)
+        print(f"  {c:32s} | Yield: {fmt(y, '5.2f')}% | Momentum: {fmt(m, '5.1f')}% | "
+              f"Off-plan/ready: {p:5.2f} | Score: {fmt(s, '3.0f')} | {r}")
 
 
 if __name__ == "__main__":
