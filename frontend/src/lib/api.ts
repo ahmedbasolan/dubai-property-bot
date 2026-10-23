@@ -30,8 +30,10 @@ export interface CommunityScore {
   avg_price: number; // median, ready
   avg_roi_pct: number | null; // gross yield
   avg_net_yield_pct: number | null; // after management + vacancy, before service charges
-  rent_basis: "new contracts" | "all contracts" | null;
-  rent_contracts: number | null;
+  rent_basis: string | null; // "same-project, new contracts" when there is a yield
+  rent_contracts: number; // all Ejari contracts linked to the community
+  matched_contracts: number; // new contracts in projects that also have ready sales
+  yield_projects: number; // projects the yield is the median across
   price_momentum_pct: number | null; // same-project change Q1 -> Q3
   paired_projects: number | null;
   offplan_sales: number;

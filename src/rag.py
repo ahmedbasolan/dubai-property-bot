@@ -564,13 +564,15 @@ def build_context(
         parts.append("\n=== COMMUNITY INVESTMENT SCORES (DLD data, Jan-Sep 2026) ===")
         for cs in structured["community_scores"][:8]:
             if cs["composite_score"] is None:
-                yield_part = (f"Yield: INSUFFICIENT DATA (only {cs['rent_contracts'] or 0} "
-                              "Ejari contracts; do not estimate one)")
+                yield_part = (f"Yield: INSUFFICIENT DATA (only {cs['yield_projects']} projects with "
+                              f"both rents and sales, {cs['matched_contracts']} matched Ejari contracts; "
+                              "do not estimate one)")
                 score_part = "Recommendation: INSUFFICIENT DATA (no score)"
             else:
                 yield_part = (f"Gross yield: {cs['avg_roi_pct']:.2f}%, "
                               f"Net yield before service charges: {cs['avg_net_yield_pct']:.2f}% "
-                              f"(rent basis: {cs['rent_basis']}, {cs['rent_contracts']} contracts)")
+                              f"(same-project: {cs['yield_projects']} projects, "
+                              f"{cs['matched_contracts']} new Ejari contracts)")
                 score_part = (f"Recommendation: {cs['recommendation']} "
                               f"(Score: {cs['composite_score']:.0f}/100)")
             momentum = ("n/a" if cs["price_momentum_pct"] is None
@@ -606,7 +608,7 @@ def build_context(
             est = ("estimated gross yield n/a (insufficient rent data)"
                    if tx["roi_pct"] is None else
                    f"estimated gross yield {tx['roi_pct']}% / net {tx['net_yield_pct']:.2f}% "
-                   f"(community rent per m2 x unit size)")
+                   f"(project or community rent per m2 x unit size)")
             parts.append(
                 f"[{tx['transaction_id']}] {tx['transaction_date']}, "
                 f"{tx['community']}, {beds} {tx['property_type']}, "
@@ -711,7 +713,7 @@ def generate_answer(
 3. Distinguish GROSS yield from NET yield. Net yield here deducts management and vacancy only; it is BEFORE service charges, which DLD does not publish. Say so when you quote it.
 4. When data is insufficient, say so clearly. A community marked INSUFFICIENT DATA has no yield or score: never estimate one for it.
 5. Flag supply pipeline risks when relevant (off-plan sales still to be handed over).
-6. The data is Dubai Land Department open data: registered apartment sales Jan-Sep 2026 and Ejari rent contracts. Mention the source when giving numbers.
+6. The data is Dubai Land Department open data: registered apartment sales Jan-Sep 2026 and Ejari rent contracts from 1-22 October 2026. Mention the source when giving numbers.
 
 ## FORMATTING — STRICT
 You MUST use clean markdown formatting. Follow these rules exactly:

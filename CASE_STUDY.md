@@ -46,14 +46,16 @@ Answer citing DLD as the source; "insufficient data" where rents are too few
 ### 1. Rental Yield From Registered Records
 
 ```
-Gross yield = median Ejari rent per m² ÷ median ready sale price per m²
-Net yield   = gross × (1 − 8% management − 5% vacancy)   (before service charges)
+Project yield   = median new Ejari rent per m² ÷ median ready sale price per m² (same project)
+Community yield = median of its project yields
+Net yield       = gross × (1 − 8% management − 5% vacancy)   (before service charges)
 ```
 
 Both sides come from Dubai Land Department records: registered apartment sales and
 Ejari rent contracts. Ejari rows carry no bedroom count, so rent and price are
-matched per square metre. A community needs at least 30 contracts; below that it
-shows "insufficient data", never an estimate. Implemented as DuckDB views:
+matched per square metre, and within the same building, so one tower's rents are
+never set against another's prices. A community needs at least 3 such projects and
+30 contracts; below that it shows "insufficient data", never an estimate. Implemented as DuckDB views:
 deterministic, auditable, never computed by the LLM.
 
 ### 2. 4-Factor Investment Scoring
@@ -109,7 +111,7 @@ only window the gateway serves.
 |-------|------|-------|
 | Sales | 104,187 raw → 95,885 clean | Removed 17 duplicates, 7,616 offices/shops/hotel rooms, 669 price outliers (mostly partial transfers) |
 | In v1 communities | 47,677 | 29 communities with ≥ 250 ready apartment sales |
-| Ejari rents | single-unit residential apartments | Community found via the area map, or via the project's ready sales |
+| Ejari rents | 82,084 raw → 47,862 clean (1–22 Oct 2026) | Single-unit residential apartments; 16,913 in v1 communities, via the area map or the project's ready sales |
 | Projects | 165 | Completed in 2026; 79,191 apartments handed over |
 
 **ChromaDB:** one generated report per community (229 chunks), built from the
@@ -133,6 +135,11 @@ records changed more than the numbers:
   shows most communities softening 4–10% through 2026.
 - **Three scoring factors had no real source.** Occupancy, service charges and
   developer grades were replaced by supply pressure, momentum and liquidity.
+- **Pooled yields mislead too.** Setting all of a community's rents against all its
+  sales put International City at 11.6% and Majan at 10.9%: a third of International
+  City's rents came from one newer tower, compared with older blocks' prices. Matching
+  rents and sales within each project gives 8.75% and 7.49%, and moves the rest by
+  well under a point.
 - **Real data exposed a concurrency bug.** Every API request shared one DuckDB
   connection. With 74 rows queries finished before they could overlap; with 48k,
   two parallel page loads got each other's result rows. Each query now uses its own

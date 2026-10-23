@@ -176,8 +176,8 @@ export default function ComparePage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Yields are estimates: the community&apos;s median Ejari rent per m² applied to
-                  this unit&apos;s size. Net is before service charges.
+                  Yields are estimates: the median new Ejari rent per m² in this unit&apos;s
+                  project (or its community) applied to its size. Net is before service charges.
                 </p>
               </CardContent>
             </Card>

@@ -184,8 +184,8 @@ export default function CommunitiesPage() {
                   <span className="font-medium">{c.liquidity_score}</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-accent/50">
-                  <span className="text-muted-foreground">Rent contracts</span>
-                  <span className="font-medium">{c.rent_contracts ?? 0}</span>
+                  <span className="text-muted-foreground">Yield projects</span>
+                  <span className="font-medium">{c.yield_projects}</span>
                 </div>
               </div>
             </CardContent>
