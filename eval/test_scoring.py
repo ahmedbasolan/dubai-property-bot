@@ -55,6 +55,15 @@ class TestExtraction:
     def test_percent_signs_and_dashes(self):
         assert percents("fell −9.6% while JVT moved -1.3% and +2%") == [-9.6, -1.3, 2.0]
 
+    def test_no_break_spaces_and_hyphens_are_normalised(self):
+        """gpt-oss writes 'Palm\\u202fJumeirah'; a real answer failed on it."""
+        assert mentions("Palm Jumeirah yields 4.64%", "Palm Jumeirah")
+        assert mentions("The Greens", "The Greens")
+        item = {"id": "t", "type": "yield_unavailable", "question": "q",
+                "expect": {"refuse": True, "refuse_for": ["The Greens"]}}
+        text = "You cannot derive a yield for The Greens: the data is insufficient.\nThe Greens has 289 sales."
+        assert score_text(item, text)["refusal_ok"]
+
     def test_aliases_count_as_mentions(self):
         assert mentions("Yields in jvc are strong", JVC)
         assert mentions("Jumeirah Village Circle", JVC)

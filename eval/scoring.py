@@ -44,8 +44,22 @@ _BARE = re.compile(r"(?<![\d.,])(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)(?![\d%])")
 
 # --- Text handling ---------------------------------------------------------
 
+# Models write "Palm Jumeirah" and "ready‑sale": a narrow no-break
+# space defeats `\b...\b` matching on the community name, and a non-breaking
+# hyphen hides "not-enough"-style markers. Normalise both before matching.
+_NORMALISE = str.maketrans({
+    " ": " ", " ": " ", " ": " ", " ": " ", " ": " ",
+    "‐": "-", "‑": "-",
+})
+
+
+def normalise(text: str) -> str:
+    return text.translate(_NORMALISE)
+
+
 def segments(text: str) -> List[str]:
     """Lines, then sentences. A table row is one line, so its cells stay together."""
+    text = normalise(text)
     out = []
     for line in text.splitlines():
         line = line.strip()
@@ -67,7 +81,7 @@ def community_aliases(community: str) -> List[str]:
 
 
 def mentions(text: str, community: str) -> bool:
-    low = text.lower()
+    low = normalise(text).lower()
     return any(re.search(rf"\b{re.escape(a)}\b", low) for a in community_aliases(community))
 
 
@@ -200,6 +214,7 @@ def score_text(item: Dict[str, Any], text: str, in_context: bool = False) -> Dic
     out-of-scope questions (developers, service charges) have nothing for
     retrieval to flag and are judged on the answer alone.
     """
+    text = normalise(text)
     exp = item["expect"]
     single = len(exp.get("communities", [])) <= 1
     numbers = [dict(n, ok=check_number(text, n, single, strict=in_context)) for n in exp.get("numbers", [])]
@@ -257,6 +272,7 @@ def score_retrieval(item: Dict[str, Any], retrieved: Dict[str, Any]) -> Dict[str
 
 
 def score_answer(item: Dict[str, Any], answer: str, known: Iterable[str]) -> Dict[str, Any]:
+    answer = normalise(answer)
     result = score_text(item, answer)
     invented = invented_communities(answer, known, item["expect"].get("allowed_mentions", []))
     result["invented_communities"] = invented
