@@ -6,24 +6,24 @@ Motor City recorded 408 ready and 1,131 off-plan apartment sales registered with
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,043 (193 sales); Q2 2026 AED 986 (130 sales); Q3 2026 AED 1,021 (85 sales).
-Median ready price by unit type: Studio AED 664,651 (AED 984/sqft, 26 sales); 1BR AED 942,162 (AED 1,012/sqft, 192 sales); 2BR AED 1.53M (AED 1,058/sqft, 129 sales); 3BR AED 2.22M (AED 962/sqft, 51 sales).
+Median ready price per sqft in Motor City by quarter: Q1 2026 AED 1,043 (193 sales); Q2 2026 AED 986 (130 sales); Q3 2026 AED 1,021 (85 sales).
+Median ready price by unit type in Motor City: Studio AED 664,651 (AED 984/sqft, 26 sales); 1BR AED 942,162 (AED 1,012/sqft, 192 sales); 2BR AED 1.53M (AED 1,058/sqft, 129 sales); 3BR AED 2.22M (AED 962/sqft, 51 sales).
 
 ## Rental Yield
 
-Not enough matched rent data for a reliable yield: 0 projects here have both new Ejari contracts and ready sales (0 contracts); 3 projects and 30 contracts are needed. 8 rent contracts in total are linked to this community.
+Not enough matched rent data for a reliable yield in Motor City: 0 projects have both new Ejari contracts and ready sales (0 contracts); 3 projects and 30 contracts are needed. 8 rent contracts in total are linked to this community.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in Motor City is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-1,131 off-plan apartments were sold against 408 ready ones (ratio 2.77), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+1,131 off-plan apartments were sold in Motor City against 408 ready ones (ratio 2.77), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
 
 ## Most Active Ready Projects
 
-OIA Residence: 59 sales at a median AED 1,050/sqft; CASA FLORES AND EDEN APARTMENTS: 28 sales at a median AED 900/sqft.
+Most active ready projects in Motor City: OIA Residence: 59 sales at a median AED 1,050/sqft; CASA FLORES AND EDEN APARTMENTS: 28 sales at a median AED 900/sqft.
 
 ## Source and Method
 

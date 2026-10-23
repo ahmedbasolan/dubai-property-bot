@@ -6,25 +6,25 @@ Dubai Marina recorded 1,227 ready and 104 off-plan apartment sales registered wi
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,826 (439 sales); Q2 2026 AED 1,746 (328 sales); Q3 2026 AED 2,010 (460 sales).
-Median ready price by unit type: Studio AED 1.05M (AED 2,302/sqft, 90 sales); 1BR AED 1.55M (AED 1,898/sqft, 528 sales); 2BR AED 2.50M (AED 1,830/sqft, 393 sales); 3BR AED 3.90M (AED 1,792/sqft, 171 sales); 4BR AED 4.50M (AED 1,408/sqft, 35 sales).
+Median ready price per sqft in Dubai Marina by quarter: Q1 2026 AED 1,826 (439 sales); Q2 2026 AED 1,746 (328 sales); Q3 2026 AED 2,010 (460 sales).
+Median ready price by unit type in Dubai Marina: Studio AED 1.05M (AED 2,302/sqft, 90 sales); 1BR AED 1.55M (AED 1,898/sqft, 528 sales); 2BR AED 2.50M (AED 1,830/sqft, 393 sales); 3BR AED 3.90M (AED 1,792/sqft, 171 sales); 4BR AED 4.50M (AED 1,408/sqft, 35 sales).
 
 ## Rental Yield
 
-Gross rental yield is 5.81%. For each of 30 projects with both new Ejari contracts (434 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.05%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Marina is 5.81%. For each of 30 projects with both new Ejari contracts (434 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.05%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 27 projects in Q1 and Q3 2026, prices per sqft fell by a median of 5.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 27 projects in Q1 and Q3 2026, Dubai Marina prices per sqft fell by a median of 5.3%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-104 off-plan apartments were sold against 1,227 ready ones (ratio 0.08), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 415 apartments here as completed in 2026, including Marina Living (415 units, 2026-01-14).
+104 off-plan apartments were sold in Dubai Marina against 1,227 ready ones (ratio 0.08), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 415 apartments in Dubai Marina as completed in 2026, including Marina Living (415 units, 2026-01-14).
 
 ## Most Active Ready Projects
 
-PARK ISLANDS: 46 sales at a median AED 1,996/sqft; PRINCESS TOWER: 33 sales at a median AED 1,548/sqft; SILVERENE: 32 sales at a median AED 2,379/sqft; TORCH TOWER: 31 sales at a median AED 1,483/sqft; DAMAC HEIGHTS: 28 sales at a median AED 2,069/sqft.
+Most active ready projects in Dubai Marina: PARK ISLANDS: 46 sales at a median AED 1,996/sqft; PRINCESS TOWER: 33 sales at a median AED 1,548/sqft; SILVERENE: 32 sales at a median AED 2,379/sqft; TORCH TOWER: 31 sales at a median AED 1,483/sqft; DAMAC HEIGHTS: 28 sales at a median AED 2,069/sqft.
 
 ## Source and Method
 

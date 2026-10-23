@@ -6,25 +6,25 @@ Dubai Silicon Oasis recorded 724 ready and 438 off-plan apartment sales register
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 942 (275 sales); Q2 2026 AED 947 (176 sales); Q3 2026 AED 968 (273 sales).
-Median ready price by unit type: Studio AED 470,000 (AED 1,079/sqft, 160 sales); 1BR AED 730,000 (AED 915/sqft, 394 sales); 2BR AED 1.41M (AED 1,001/sqft, 141 sales); 3BR AED 1.88M (AED 909/sqft, 27 sales).
+Median ready price per sqft in Dubai Silicon Oasis by quarter: Q1 2026 AED 942 (275 sales); Q2 2026 AED 947 (176 sales); Q3 2026 AED 968 (273 sales).
+Median ready price by unit type in Dubai Silicon Oasis: Studio AED 470,000 (AED 1,079/sqft, 160 sales); 1BR AED 730,000 (AED 915/sqft, 394 sales); 2BR AED 1.41M (AED 1,001/sqft, 141 sales); 3BR AED 1.88M (AED 909/sqft, 27 sales).
 
 ## Rental Yield
 
-Gross rental yield is 9.08%. For each of 16 projects with both new Ejari contracts (127 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.90%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Silicon Oasis is 9.08%. For each of 16 projects with both new Ejari contracts (127 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.90%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 18 projects in Q1 and Q3 2026, prices per sqft fell by a median of 5.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 18 projects in Q1 and Q3 2026, Dubai Silicon Oasis prices per sqft fell by a median of 5.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-438 off-plan apartments were sold against 724 ready ones (ratio 0.60), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 269 apartments here as completed in 2026, including AURA ELEGANCE (269 units, 2026-02-10).
+438 off-plan apartments were sold in Dubai Silicon Oasis against 724 ready ones (ratio 0.60), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 269 apartments in Dubai Silicon Oasis as completed in 2026, including AURA ELEGANCE (269 units, 2026-02-10).
 
 ## Most Active Ready Projects
 
-Selicon Star 2: 60 sales at a median AED 927/sqft; SILICON GATE 1: 53 sales at a median AED 857/sqft; ARABIAN GATE: 40 sales at a median AED 1,126/sqft; AURA ELEGANCE: 32 sales at a median AED 1,261/sqft; PALACE TOWER: 25 sales at a median AED 887/sqft.
+Most active ready projects in Dubai Silicon Oasis: Selicon Star 2: 60 sales at a median AED 927/sqft; SILICON GATE 1: 53 sales at a median AED 857/sqft; ARABIAN GATE: 40 sales at a median AED 1,126/sqft; AURA ELEGANCE: 32 sales at a median AED 1,261/sqft; PALACE TOWER: 25 sales at a median AED 887/sqft.
 
 ## Source and Method
 

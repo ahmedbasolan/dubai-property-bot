@@ -6,25 +6,25 @@ Dubai Creek Harbour recorded 832 ready and 107 off-plan apartment sales register
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,395 (352 sales); Q2 2026 AED 2,302 (250 sales); Q3 2026 AED 2,237 (230 sales).
-Median ready price by unit type: 1BR AED 1.73M (AED 2,348/sqft, 286 sales); 2BR AED 2.61M (AED 2,306/sqft, 380 sales); 3BR AED 3.92M (AED 2,314/sqft, 159 sales).
+Median ready price per sqft in Dubai Creek Harbour by quarter: Q1 2026 AED 2,395 (352 sales); Q2 2026 AED 2,302 (250 sales); Q3 2026 AED 2,237 (230 sales).
+Median ready price by unit type in Dubai Creek Harbour: 1BR AED 1.73M (AED 2,348/sqft, 286 sales); 2BR AED 2.61M (AED 2,306/sqft, 380 sales); 3BR AED 3.92M (AED 2,314/sqft, 159 sales).
 
 ## Rental Yield
 
-Gross rental yield is 5.34%. For each of 29 projects with both new Ejari contracts (1,733 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.65%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Creek Harbour is 5.34%. For each of 29 projects with both new Ejari contracts (1,733 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 4.65%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 21 projects in Q1 and Q3 2026, prices per sqft fell by a median of 5.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 21 projects in Q1 and Q3 2026, Dubai Creek Harbour prices per sqft fell by a median of 5.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-107 off-plan apartments were sold against 832 ready ones (ratio 0.13), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 3,466 apartments here as completed in 2026, including The Cove ll (2,683 units, 2026-05-06); Creek Palace (783 units, 2026-03-31).
+107 off-plan apartments were sold in Dubai Creek Harbour against 832 ready ones (ratio 0.13), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 3,466 apartments in Dubai Creek Harbour as completed in 2026, including The Cove ll (2,683 units, 2026-05-06); Creek Palace (783 units, 2026-03-31).
 
 ## Most Active Ready Projects
 
-Palace Residences - North: 66 sales at a median AED 2,689/sqft; Creek Beach - Canopy - Moor: 59 sales at a median AED 2,297/sqft; Creek Beach - Savanna-Cedar-Mangrove: 58 sales at a median AED 2,237/sqft; The Grand: 58 sales at a median AED 2,803/sqft; THE DUBAI CREEK RESIDENCES: 48 sales at a median AED 2,172/sqft.
+Most active ready projects in Dubai Creek Harbour: Palace Residences - North: 66 sales at a median AED 2,689/sqft; Creek Beach - Canopy - Moor: 59 sales at a median AED 2,297/sqft; The Grand: 58 sales at a median AED 2,803/sqft; Creek Beach - Savanna-Cedar-Mangrove: 58 sales at a median AED 2,237/sqft; THE DUBAI CREEK RESIDENCES: 48 sales at a median AED 2,172/sqft.
 
 ## Source and Method
 

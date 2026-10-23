@@ -6,25 +6,25 @@ Dubai Studio City recorded 261 ready and 691 off-plan apartment sales registered
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,402 (125 sales); Q2 2026 AED 1,391 (70 sales); Q3 2026 AED 1,380 (66 sales).
-Median ready price by unit type: Studio AED 529,540 (AED 1,439/sqft, 147 sales); 1BR AED 850,000 (AED 1,298/sqft, 87 sales); 2BR AED 1.15M (AED 1,155/sqft, 22 sales).
+Median ready price per sqft in Dubai Studio City by quarter: Q1 2026 AED 1,402 (125 sales); Q2 2026 AED 1,391 (70 sales); Q3 2026 AED 1,380 (66 sales).
+Median ready price by unit type in Dubai Studio City: Studio AED 529,540 (AED 1,439/sqft, 147 sales); 1BR AED 850,000 (AED 1,298/sqft, 87 sales); 2BR AED 1.15M (AED 1,155/sqft, 22 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.58%. For each of 5 projects with both new Ejari contracts (82 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.59%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Studio City is 7.58%. For each of 5 projects with both new Ejari contracts (82 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.59%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
+Price momentum in Dubai Studio City is not measured: fewer than 5 projects had at least 3 ready sales in both Q1 and Q3 2026.
 
 ## Supply
 
-691 off-plan apartments were sold against 261 ready ones (ratio 2.65), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 457 apartments here as completed in 2026, including Samana Santorini (318 units, 2026-02-22); Divine Residencia (139 units, 2026-04-20).
+691 off-plan apartments were sold in Dubai Studio City against 261 ready ones (ratio 2.65), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 457 apartments in Dubai Studio City as completed in 2026, including Samana Santorini (318 units, 2026-02-22); Divine Residencia (139 units, 2026-04-20).
 
 ## Most Active Ready Projects
 
-Azizi Mirage 1: 156 sales at a median AED 1,403/sqft; LAYA HEIGHTS: 25 sales at a median AED 1,564/sqft; AZIZI VISTA: 20 sales at a median AED 1,367/sqft.
+Most active ready projects in Dubai Studio City: Azizi Mirage 1: 156 sales at a median AED 1,403/sqft; LAYA HEIGHTS: 25 sales at a median AED 1,564/sqft; AZIZI VISTA: 20 sales at a median AED 1,367/sqft.
 
 ## Source and Method
 

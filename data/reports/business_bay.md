@@ -6,25 +6,25 @@ Business Bay recorded 1,619 ready and 1,905 off-plan apartment sales registered 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,916 (629 sales); Q2 2026 AED 1,812 (431 sales); Q3 2026 AED 1,792 (559 sales).
-Median ready price by unit type: Studio AED 1.03M (AED 2,122/sqft, 392 sales); 1BR AED 1.49M (AED 1,883/sqft, 659 sales); 2BR AED 2.25M (AED 1,721/sqft, 422 sales); 3BR AED 3.47M (AED 1,717/sqft, 120 sales); 4BR AED 5.50M (AED 1,379/sqft, 23 sales).
+Median ready price per sqft in Business Bay by quarter: Q1 2026 AED 1,916 (629 sales); Q2 2026 AED 1,812 (431 sales); Q3 2026 AED 1,792 (559 sales).
+Median ready price by unit type in Business Bay: Studio AED 1.03M (AED 2,122/sqft, 392 sales); 1BR AED 1.49M (AED 1,883/sqft, 659 sales); 2BR AED 2.25M (AED 1,721/sqft, 422 sales); 3BR AED 3.47M (AED 1,717/sqft, 120 sales); 4BR AED 5.50M (AED 1,379/sqft, 23 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.61%. For each of 56 projects with both new Ejari contracts (963 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.75%, before service charges, which DLD does not publish.
+Gross rental yield in Business Bay is 6.61%. For each of 56 projects with both new Ejari contracts (963 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.75%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 41 projects in Q1 and Q3 2026, prices per sqft fell by a median of 9.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 41 projects in Q1 and Q3 2026, Business Bay prices per sqft fell by a median of 9.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-1,905 off-plan apartments were sold against 1,619 ready ones (ratio 1.18), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 8,442 apartments here as completed in 2026, including Peninsula Four (2,561 units, 2026-06-25); The EDGE (2,094 units, 2026-08-27); Regalia (1,940 units, 2026-04-29); Peninsula Two (1,024 units, 2026-02-16); Century (460 units, 2026-02-19).
+1,905 off-plan apartments were sold in Business Bay against 1,619 ready ones (ratio 1.18), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 8,442 apartments in Business Bay as completed in 2026, including Peninsula Four (2,561 units, 2026-06-25); The EDGE (2,094 units, 2026-08-27); Regalia (1,940 units, 2026-04-29); Peninsula Two (1,024 units, 2026-02-16); Century (460 units, 2026-02-19).
 
 ## Most Active Ready Projects
 
-Peninsula Three: 137 sales at a median AED 2,667/sqft; DAMAC TOWERS BY PARAMOUNT: 79 sales at a median AED 1,399/sqft; PRIVE BY DAMAC: 59 sales at a median AED 2,183/sqft; AL HABTOOR CITY: 56 sales at a median AED 1,817/sqft; Peninsula Four: 48 sales at a median AED 2,439/sqft.
+Most active ready projects in Business Bay: Peninsula Three: 137 sales at a median AED 2,667/sqft; DAMAC TOWERS BY PARAMOUNT: 79 sales at a median AED 1,399/sqft; PRIVE BY DAMAC: 59 sales at a median AED 2,183/sqft; AL HABTOOR CITY: 56 sales at a median AED 1,817/sqft; Peninsula Four: 48 sales at a median AED 2,439/sqft.
 
 ## Source and Method
 

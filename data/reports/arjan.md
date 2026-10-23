@@ -6,25 +6,25 @@ Arjan recorded 867 ready and 1,561 off-plan apartment sales registered with the 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,365 (328 sales); Q2 2026 AED 1,387 (265 sales); Q3 2026 AED 1,357 (274 sales).
-Median ready price by unit type: Studio AED 585,000 (AED 1,411/sqft, 344 sales); 1BR AED 1.00M (AED 1,376/sqft, 335 sales); 2BR AED 1.46M (AED 1,303/sqft, 162 sales); 3BR AED 2.10M (AED 1,224/sqft, 25 sales).
+Median ready price per sqft in Arjan by quarter: Q1 2026 AED 1,365 (328 sales); Q2 2026 AED 1,387 (265 sales); Q3 2026 AED 1,357 (274 sales).
+Median ready price by unit type in Arjan: Studio AED 585,000 (AED 1,411/sqft, 344 sales); 1BR AED 1.00M (AED 1,376/sqft, 335 sales); 2BR AED 1.46M (AED 1,303/sqft, 162 sales); 3BR AED 2.10M (AED 1,224/sqft, 25 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.72%. For each of 28 projects with both new Ejari contracts (304 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.72%, before service charges, which DLD does not publish.
+Gross rental yield in Arjan is 7.72%. For each of 28 projects with both new Ejari contracts (304 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.72%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 24 projects in Q1 and Q3 2026, prices per sqft fell by a median of 3.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 24 projects in Q1 and Q3 2026, Arjan prices per sqft fell by a median of 3.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-1,561 off-plan apartments were sold against 867 ready ones (ratio 1.80), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
-DLD registered 3,103 apartments here as completed in 2026, including NAS3 (588 units, 2026-04-08); ELEVATE by Prescott (451 units, 2026-06-04); JOYA DORADO RESIDENCE (422 units, 2026-08-11); 48 PARKSIDE (392 units, 2026-05-11); ARBOR VIEW (361 units, 2026-04-06).
+1,561 off-plan apartments were sold in Arjan against 867 ready ones (ratio 1.80), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+DLD registered 3,103 apartments in Arjan as completed in 2026, including NAS3 (588 units, 2026-04-08); ELEVATE by Prescott (451 units, 2026-06-04); JOYA DORADO RESIDENCE (422 units, 2026-08-11); 48 PARKSIDE (392 units, 2026-05-11); ARBOR VIEW (361 units, 2026-04-06).
 
 ## Most Active Ready Projects
 
-TORINO BY ORO24: 81 sales at a median AED 1,676/sqft; SKYZ By Danube: 78 sales at a median AED 1,517/sqft; SIRAJ TOWER: 46 sales at a median AED 1,259/sqft; 48 PARKSIDE: 37 sales at a median AED 1,303/sqft; MIRACLZ TOWER: 35 sales at a median AED 1,321/sqft.
+Most active ready projects in Arjan: TORINO BY ORO24: 81 sales at a median AED 1,676/sqft; SKYZ By Danube: 78 sales at a median AED 1,517/sqft; SIRAJ TOWER: 46 sales at a median AED 1,259/sqft; 48 PARKSIDE: 37 sales at a median AED 1,303/sqft; MIRACLZ TOWER: 35 sales at a median AED 1,321/sqft.
 
 ## Source and Method
 

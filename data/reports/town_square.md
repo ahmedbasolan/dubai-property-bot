@@ -6,24 +6,24 @@ Town Square recorded 338 ready and 70 off-plan apartment sales registered with t
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,324 (138 sales); Q2 2026 AED 1,299 (102 sales); Q3 2026 AED 1,301 (98 sales).
-Median ready price by unit type: Studio AED 542,500 (AED 1,584/sqft, 36 sales); 1BR AED 825,000 (AED 1,417/sqft, 111 sales); 2BR AED 1.20M (AED 1,263/sqft, 151 sales); 3BR AED 1.88M (AED 1,254/sqft, 39 sales).
+Median ready price per sqft in Town Square by quarter: Q1 2026 AED 1,324 (138 sales); Q2 2026 AED 1,299 (102 sales); Q3 2026 AED 1,301 (98 sales).
+Median ready price by unit type in Town Square: Studio AED 542,500 (AED 1,584/sqft, 36 sales); 1BR AED 825,000 (AED 1,417/sqft, 111 sales); 2BR AED 1.20M (AED 1,263/sqft, 151 sales); 3BR AED 1.88M (AED 1,254/sqft, 39 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.19%. For each of 7 projects with both new Ejari contracts (135 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.26%, before service charges, which DLD does not publish.
+Gross rental yield in Town Square is 7.19%. For each of 7 projects with both new Ejari contracts (135 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.26%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 9 projects in Q1 and Q3 2026, prices per sqft fell by a median of 4.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 9 projects in Q1 and Q3 2026, Town Square prices per sqft fell by a median of 4.8%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-70 off-plan apartments were sold against 338 ready ones (ratio 0.21), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+70 off-plan apartments were sold in Town Square against 338 ready ones (ratio 0.21), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
 
 ## Most Active Ready Projects
 
-TOWN SQUARE ZAHRA: 73 sales at a median AED 1,224/sqft; RAWDA APARTMENTS: 44 sales at a median AED 1,294/sqft; HAYAT BOULEVARD: 42 sales at a median AED 1,192/sqft; TOWN SQUARE JENNA AND WARDA: 41 sales at a median AED 1,363/sqft; LIVA: 41 sales at a median AED 1,705/sqft.
+Most active ready projects in Town Square: TOWN SQUARE ZAHRA: 73 sales at a median AED 1,224/sqft; RAWDA APARTMENTS: 44 sales at a median AED 1,294/sqft; HAYAT BOULEVARD: 42 sales at a median AED 1,192/sqft; LIVA: 41 sales at a median AED 1,705/sqft; TOWN SQUARE JENNA AND WARDA: 41 sales at a median AED 1,363/sqft.
 
 ## Source and Method
 

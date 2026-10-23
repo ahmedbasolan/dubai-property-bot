@@ -6,24 +6,24 @@ DAMAC Hills recorded 306 ready and 559 off-plan apartment sales registered with 
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,386 (134 sales); Q2 2026 AED 1,335 (83 sales); Q3 2026 AED 1,290 (89 sales).
-Median ready price by unit type: Studio AED 572,500 (AED 1,356/sqft, 124 sales); 1BR AED 990,000 (AED 1,362/sqft, 131 sales); 2BR AED 1.79M (AED 1,291/sqft, 38 sales).
+Median ready price per sqft in DAMAC Hills by quarter: Q1 2026 AED 1,386 (134 sales); Q2 2026 AED 1,335 (83 sales); Q3 2026 AED 1,290 (89 sales).
+Median ready price by unit type in DAMAC Hills: Studio AED 572,500 (AED 1,356/sqft, 124 sales); 1BR AED 990,000 (AED 1,362/sqft, 131 sales); 2BR AED 1.79M (AED 1,291/sqft, 38 sales).
 
 ## Rental Yield
 
-Gross rental yield is 7.14%. For each of 7 projects with both new Ejari contracts (175 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.21%, before service charges, which DLD does not publish.
+Gross rental yield in DAMAC Hills is 7.14%. For each of 7 projects with both new Ejari contracts (175 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.21%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 9 projects in Q1 and Q3 2026, prices per sqft fell by a median of 8.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 9 projects in Q1 and Q3 2026, DAMAC Hills prices per sqft fell by a median of 8.0%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-559 off-plan apartments were sold against 306 ready ones (ratio 1.83), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
+559 off-plan apartments were sold in DAMAC Hills against 306 ready ones (ratio 1.83), so supply risk is HIGH: off-plan units sold now are stock still to be handed over.
 
 ## Most Active Ready Projects
 
-DAMAC HILLS - CARSON: 94 sales at a median AED 1,364/sqft; DAMAC HILLS - GOLF PROMENADE: 36 sales at a median AED 1,240/sqft; DAMAC HILLS - GOLF VITA: 35 sales at a median AED 1,510/sqft; DAMAC HILLS - LORETO: 27 sales at a median AED 1,236/sqft; DAMAC HILLS - GOLF GATE: 27 sales at a median AED 1,528/sqft.
+Most active ready projects in DAMAC Hills: DAMAC HILLS - CARSON: 94 sales at a median AED 1,364/sqft; DAMAC HILLS - GOLF PROMENADE: 36 sales at a median AED 1,240/sqft; DAMAC HILLS - GOLF VITA: 35 sales at a median AED 1,510/sqft; DAMAC HILLS - GOLF GATE: 27 sales at a median AED 1,528/sqft; DAMAC HILLS - LORETO: 27 sales at a median AED 1,236/sqft.
 
 ## Source and Method
 

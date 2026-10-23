@@ -6,25 +6,25 @@ Dubai Healthcare City recorded 295 ready and 222 off-plan apartment sales regist
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,825 (135 sales); Q2 2026 AED 1,902 (72 sales); Q3 2026 AED 1,585 (88 sales).
-Median ready price by unit type: Studio AED 857,326 (AED 2,038/sqft, 76 sales); 1BR AED 1.25M (AED 1,663/sqft, 137 sales); 2BR AED 2.01M (AED 1,692/sqft, 63 sales).
+Median ready price per sqft in Dubai Healthcare City by quarter: Q1 2026 AED 1,825 (135 sales); Q2 2026 AED 1,902 (72 sales); Q3 2026 AED 1,585 (88 sales).
+Median ready price by unit type in Dubai Healthcare City: Studio AED 857,326 (AED 2,038/sqft, 76 sales); 1BR AED 1.25M (AED 1,663/sqft, 137 sales); 2BR AED 2.01M (AED 1,692/sqft, 63 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.61%. For each of 8 projects with both new Ejari contracts (110 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.75%, before service charges, which DLD does not publish.
+Gross rental yield in Dubai Healthcare City is 6.61%. For each of 8 projects with both new Ejari contracts (110 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 5.75%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 6 projects in Q1 and Q3 2026, prices per sqft fell by a median of 15.2%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 6 projects in Q1 and Q3 2026, Dubai Healthcare City prices per sqft fell by a median of 15.2%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-222 off-plan apartments were sold against 295 ready ones (ratio 0.75), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 1,088 apartments here as completed in 2026, including Binghatti Ivory (683 units, 2026-09-15); Binghatti Pinnacle (405 units, 2026-07-30).
+222 off-plan apartments were sold in Dubai Healthcare City against 295 ready ones (ratio 0.75), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 1,088 apartments in Dubai Healthcare City as completed in 2026, including Binghatti Ivory (683 units, 2026-09-15); Binghatti Pinnacle (405 units, 2026-07-30).
 
 ## Most Active Ready Projects
 
-Farhad Azizi Residence: 38 sales at a median AED 1,876/sqft; Binghatti Avenue: 36 sales at a median AED 1,448/sqft; Fawad Azizi Residence: 27 sales at a median AED 2,008/sqft; Kempinski Residences The Creek: 25 sales at a median AED 2,612/sqft.
+Most active ready projects in Dubai Healthcare City: Farhad Azizi Residence: 38 sales at a median AED 1,876/sqft; Binghatti Avenue: 36 sales at a median AED 1,448/sqft; Fawad Azizi Residence: 27 sales at a median AED 2,008/sqft; Kempinski Residences The Creek: 25 sales at a median AED 2,612/sqft.
 
 ## Source and Method
 

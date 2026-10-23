@@ -6,25 +6,25 @@ Sports City recorded 742 ready and 1,086 off-plan apartment sales registered wit
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 988 (308 sales); Q2 2026 AED 990 (191 sales); Q3 2026 AED 947 (243 sales).
-Median ready price by unit type: Studio AED 480,000 (AED 1,047/sqft, 298 sales); 1BR AED 723,153 (AED 876/sqft, 285 sales); 2BR AED 1.18M (AED 867/sqft, 143 sales).
+Median ready price per sqft in Sports City by quarter: Q1 2026 AED 988 (308 sales); Q2 2026 AED 990 (191 sales); Q3 2026 AED 947 (243 sales).
+Median ready price by unit type in Sports City: Studio AED 480,000 (AED 1,047/sqft, 298 sales); 1BR AED 723,153 (AED 876/sqft, 285 sales); 2BR AED 1.18M (AED 867/sqft, 143 sales).
 
 ## Rental Yield
 
-Gross rental yield is 8.28%. For each of 31 projects with both new Ejari contracts (330 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.20%, before service charges, which DLD does not publish.
+Gross rental yield in Sports City is 8.28%. For each of 31 projects with both new Ejari contracts (330 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 7.20%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 26 projects in Q1 and Q3 2026, prices per sqft fell by a median of 5.7%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 26 projects in Q1 and Q3 2026, Sports City prices per sqft fell by a median of 5.7%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-1,086 off-plan apartments were sold against 742 ready ones (ratio 1.46), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 1,258 apartments here as completed in 2026, including CONDOR GOLF LINKS 18 (523 units, 2026-01-19); Golf Vista Heights (433 units, 2026-05-13); Vista by Prestige One (302 units, 2026-04-02).
+1,086 off-plan apartments were sold in Sports City against 742 ready ones (ratio 1.46), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 1,258 apartments in Sports City as completed in 2026, including CONDOR GOLF LINKS 18 (523 units, 2026-01-19); Golf Vista Heights (433 units, 2026-05-13); Vista by Prestige One (302 units, 2026-04-02).
 
 ## Most Active Ready Projects
 
-CONDOR GOLF LINKS 18: 44 sales at a median AED 1,868/sqft; Hera Tower: 42 sales at a median AED 992/sqft; AMAL TOWER: 37 sales at a median AED 1,015/sqft; Vista by Prestige One: 36 sales at a median AED 1,317/sqft; ELITE 10 SPORTS RESIDENCE: 33 sales at a median AED 1,003/sqft.
+Most active ready projects in Sports City: CONDOR GOLF LINKS 18: 44 sales at a median AED 1,868/sqft; Hera Tower: 42 sales at a median AED 992/sqft; AMAL TOWER: 37 sales at a median AED 1,015/sqft; Vista by Prestige One: 36 sales at a median AED 1,317/sqft; ELITE 10 SPORTS RESIDENCE: 33 sales at a median AED 1,003/sqft.
 
 ## Source and Method
 

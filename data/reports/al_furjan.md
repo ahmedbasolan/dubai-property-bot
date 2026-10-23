@@ -6,25 +6,25 @@ Al Furjan recorded 479 ready and 574 off-plan apartment sales registered with th
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 1,280 (189 sales); Q2 2026 AED 1,331 (130 sales); Q3 2026 AED 1,233 (160 sales).
-Median ready price by unit type: Studio AED 575,000 (AED 1,413/sqft, 79 sales); 1BR AED 1.08M (AED 1,250/sqft, 155 sales); 2BR AED 1.61M (AED 1,227/sqft, 190 sales); 3BR AED 2.23M (AED 1,202/sqft, 55 sales).
+Median ready price per sqft in Al Furjan by quarter: Q1 2026 AED 1,280 (189 sales); Q2 2026 AED 1,331 (130 sales); Q3 2026 AED 1,233 (160 sales).
+Median ready price by unit type in Al Furjan: Studio AED 575,000 (AED 1,413/sqft, 79 sales); 1BR AED 1.08M (AED 1,250/sqft, 155 sales); 2BR AED 1.61M (AED 1,227/sqft, 190 sales); 3BR AED 2.23M (AED 1,202/sqft, 55 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.96%. For each of 13 projects with both new Ejari contracts (138 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.06%, before service charges, which DLD does not publish.
+Gross rental yield in Al Furjan is 6.96%. For each of 13 projects with both new Ejari contracts (138 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.06%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 11 projects in Q1 and Q3 2026, prices per sqft fell by a median of 4.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 11 projects in Q1 and Q3 2026, Al Furjan prices per sqft fell by a median of 4.6%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-574 off-plan apartments were sold against 479 ready ones (ratio 1.20), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
-DLD registered 1,632 apartments here as completed in 2026, including EQUITI HOME (898 units, 2026-01-08); PG ONE AT AL FURJAN (281 units, 2026-03-25); Azizi Central (257 units, 2026-06-09); ZaZEN Ivy (196 units, 2026-05-11).
+574 off-plan apartments were sold in Al Furjan against 479 ready ones (ratio 1.20), so supply risk is MEDIUM: off-plan units sold now are stock still to be handed over.
+DLD registered 1,632 apartments in Al Furjan as completed in 2026, including EQUITI HOME (898 units, 2026-01-08); PG ONE AT AL FURJAN (281 units, 2026-03-25); Azizi Central (257 units, 2026-06-09); ZaZEN Ivy (196 units, 2026-05-11).
 
 ## Most Active Ready Projects
 
-EQUITI HOME: 32 sales at a median AED 1,140/sqft; STARZ TOWER by DANUBE: 25 sales at a median AED 1,280/sqft; Azizi Central: 25 sales at a median AED 1,170/sqft; AMALIA RESIDENCES: 22 sales at a median AED 1,358/sqft; GLAMZ RESIDENCE: 21 sales at a median AED 1,364/sqft.
+Most active ready projects in Al Furjan: EQUITI HOME: 32 sales at a median AED 1,140/sqft; Azizi Central: 25 sales at a median AED 1,170/sqft; STARZ TOWER by DANUBE: 25 sales at a median AED 1,280/sqft; AMALIA RESIDENCES: 22 sales at a median AED 1,358/sqft; GEMZ by Danube: 21 sales at a median AED 1,330/sqft.
 
 ## Source and Method
 

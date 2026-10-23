@@ -6,25 +6,25 @@ Meydan recorded 727 ready and 336 off-plan apartment sales registered with the D
 
 ## Prices
 
-Median ready price per sqft by quarter: Q1 2026 AED 2,003 (281 sales); Q2 2026 AED 1,769 (228 sales); Q3 2026 AED 1,851 (218 sales).
-Median ready price by unit type: Studio AED 685,000 (AED 1,983/sqft, 383 sales); 1BR AED 1.19M (AED 1,831/sqft, 211 sales); 2BR AED 2.13M (AED 1,678/sqft, 115 sales).
+Median ready price per sqft in Meydan by quarter: Q1 2026 AED 2,003 (281 sales); Q2 2026 AED 1,769 (228 sales); Q3 2026 AED 1,851 (218 sales).
+Median ready price by unit type in Meydan: Studio AED 685,000 (AED 1,983/sqft, 383 sales); 1BR AED 1.19M (AED 1,831/sqft, 211 sales); 2BR AED 2.13M (AED 1,678/sqft, 115 sales).
 
 ## Rental Yield
 
-Gross rental yield is 6.91%. For each of 40 projects with both new Ejari contracts (432 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.01%, before service charges, which DLD does not publish.
+Gross rental yield in Meydan is 6.91%. For each of 40 projects with both new Ejari contracts (432 in total, 1–22 October 2026) and ready sales, median annual rent per square metre is divided by the same project's median sale price per square metre; this is the median across those projects. Comparing the same buildings avoids setting one tower's rents against another's prices. Net of management and vacancy it is 6.01%, before service charges, which DLD does not publish.
 
 ## Price Momentum
 
-Comparing the same 22 projects in Q1 and Q3 2026, prices per sqft fell by a median of 6.2%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
+Comparing the same 22 projects in Q1 and Q3 2026, Meydan prices per sqft fell by a median of 6.2%. This compares like with like, unlike the quarterly medians above, which move with which buildings sold.
 
 ## Supply
 
-336 off-plan apartments were sold against 727 ready ones (ratio 0.46), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
-DLD registered 226 apartments here as completed in 2026, including Azizi riviera 58 (226 units, 2026-08-18).
+336 off-plan apartments were sold in Meydan against 727 ready ones (ratio 0.46), so supply risk is LOW: off-plan units sold now are stock still to be handed over.
+DLD registered 226 apartments in Meydan as completed in 2026, including Azizi riviera 58 (226 units, 2026-08-18).
 
 ## Most Active Ready Projects
 
-THE POLO RESIDENCE: 90 sales at a median AED 1,523/sqft; Azizi Riviera Beachfront: 82 sales at a median AED 2,099/sqft; AZIZI RIVIERA 69: 40 sales at a median AED 2,122/sqft; Azizi Riviera 46: 20 sales at a median AED 2,062/sqft.
+Most active ready projects in Meydan: THE POLO RESIDENCE: 90 sales at a median AED 1,523/sqft; Azizi Riviera Beachfront: 82 sales at a median AED 2,099/sqft; AZIZI RIVIERA 69: 40 sales at a median AED 2,122/sqft; Azizi Riviera 46: 20 sales at a median AED 2,062/sqft.
 
 ## Source and Method
 
