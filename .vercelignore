@@ -7,6 +7,7 @@
 !frontend
 !data
 !chroma_db
+!vendor
 !requirements.txt
 !vercel.json
 

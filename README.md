@@ -78,8 +78,9 @@ yields for more communities.
 Docker (optional): `docker compose up --build`. The API container runs the same
 pipeline on start, so `data/raw/dld/` must hold the exports.
 
-Live demo: one Vercel project serves the frontend and the API as two Services.
-See [`docs/deploy.md`](docs/deploy.md).
+**Live demo: https://dubai-property-bot.vercel.app**. One Vercel project serves the frontend and
+the API as two Services; see [`docs/deploy.md`](docs/deploy.md). The demo runs without a server
+LLM key, so the chatbot answers from the data unless you add your own key in its settings.
 
 ## Pages
 

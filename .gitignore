@@ -21,5 +21,9 @@ data/raw/dld/
 # Eval run artefacts
 eval/eval_results.tmp
 
-# Vercel CLI link (project/org ids)
+# Vercel CLI link (project/org ids) and its env file
 .vercel
+.env*
+
+# Bundled ONNX model for the deployment (scripts/vendor_onnx_model.py)
+vendor/
