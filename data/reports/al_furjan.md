@@ -24,7 +24,7 @@ DLD registered 1,632 apartments in Al Furjan as completed in 2026, including EQU
 
 ## Most Active Ready Projects
 
-Most active ready projects in Al Furjan: EQUITI HOME: 32 sales at a median AED 1,140/sqft; Azizi Central: 25 sales at a median AED 1,170/sqft; STARZ TOWER by DANUBE: 25 sales at a median AED 1,280/sqft; AMALIA RESIDENCES: 22 sales at a median AED 1,358/sqft; GEMZ by Danube: 21 sales at a median AED 1,330/sqft.
+Most active ready projects in Al Furjan: EQUITI HOME: 32 sales at a median AED 1,140/sqft; Azizi Central: 25 sales at a median AED 1,170/sqft; STARZ TOWER by DANUBE: 25 sales at a median AED 1,280/sqft; AMALIA RESIDENCES: 22 sales at a median AED 1,358/sqft; Azizi Samia Residence: 21 sales at a median AED 1,070/sqft.
 
 ## Source and Method
 

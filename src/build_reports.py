@@ -48,12 +48,13 @@ def build_report(conn, community: str) -> str:
     projects = conn.execute(f"""
         SELECT project, COUNT(*), median(price_aed / size_sqft) FROM transactions
         WHERE community = ? AND handover_status = 'Ready' AND project IS NOT NULL
-        GROUP BY project HAVING COUNT(*) >= {MIN_BUCKET_SALES} ORDER BY 2 DESC LIMIT 5
+        GROUP BY project HAVING COUNT(*) >= {MIN_BUCKET_SALES}
+        ORDER BY 2 DESC, project LIMIT 5  -- tie-break so rebuilds are identical
     """, [community]).fetchall()
     handovers = conn.execute("""
         SELECT project, units, completion_date FROM dld_projects
         WHERE community = ? AND status = 'FINISHED' AND units > 0
-        ORDER BY units DESC LIMIT 5
+        ORDER BY units DESC, project LIMIT 5
     """, [community]).fetchall()
 
     lines = [f"# {community} Market Report (DLD data, {WINDOW})", ""]

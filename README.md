@@ -195,38 +195,40 @@ Interactive docs: `http://localhost:8000/docs`
 
 ## Running Evaluations
 
+95 questions with ground truth computed from DuckDB (`eval/eval_set.json`; types and
+scoring rules in [`eval/README.md`](eval/README.md)). A number only counts when it sits
+next to the right community, refusals must be near the community they refuse, and any
+answer naming a community the data doesn't have fails.
+
 ```bash
-make eval
+make eval            # full run against the LLM (resumes across the free tier's daily quota)
+python eval/run_eval.py --retrieval-only   # is every answer in the context the LLM gets? no LLM
+python eval/run_eval.py --fallback         # the data-only answers the demo serves without an LLM
 ```
 
-> The eval set and the results below were built on the earlier generated dataset.
-> Rebuilding them for the DLD data is the next step; until then treat these numbers
-> as history, not a measure of the current app.
+| Eval | Result (October 2026 data) | Runs in CI |
+|------|----------------------------|-----------|
+| Retrieval: expected numbers and labels reach the model | **95 / 95** (was 82 / 95) | yes, must stay at 100% |
+| Data-only answers (no LLM key, or quota spent) | **95 / 95** (was 50 / 95) | yes, must stay at 100% |
+| End to end, Groq `openai/gpt-oss-120b` | **85 / 95** before the context fixes below; re-run pending quota | no (needs a key) |
 
-**30-question suite** with automated checks:
-- Keyword matching (answer relevance)
-- Percentage claims validated against the dataset's own range — a *range* check,
-  not an accuracy measure: a fabricated 7.0% passes as long as the real column
-  spans it (see `REVIEW.md`)
-- Community attribution (entity names must exist in DB, alias-normalized)
+The first complete end-to-end run on DLD data
+([`eval/archive/v2_eval_results_before_context_fixes.json`](eval/archive/v2_eval_results_before_context_fixes.json))
+failed 10 questions, and 9 of those were the model being handed the wrong facts:
 
-Latest complete run (Groq `openai/gpt-oss-120b`): 29 of 30. The failure was an HTTP
-413, but not because the context was 10k tokens: the context is ~5.2k, and Groq
-counts the prompt **and** `max_tokens` against its 8,000 TPM cap, so the old 4k
-ceiling made the request ~10k. `LLM_MAX_TOKENS` is now 1,500 with a request-budget
-guard. A fresh run cleared its first 20 questions before the daily quota ran out;
-its Q20 response also exposed a top-8 truncation for comparisons (fixed and
-unit-tested), and Q20 was re-checked on `openai/gpt-oss-20b` and then on the 120b
-itself; both now compare both scores (70 vs 63). A full 120b re-run is pending quota.
+- **Bedroom prices (3 / 10 passed).** The context had the community's all-unit median and
+  the model reported it as the 2-bedroom price. The exact bedroom median is now in the context.
+- **Rankings (4 / 6).** Unscoped questions showed the top 8 communities by score, so the
+  lowest yield and the most sales were never visible. Every community now gets one line.
+- **Developers (1 miss).** With nothing saying developer data was absent, the model
+  presented the off-plan supply ratio as a delivery track record. Topics the data lacks are
+  now stated in the context.
 
-| Metric | Result |
-|--------|--------|
-| Successful | 29 / 30 |
-| Avg keyword score | 56% |
-| Percentage claims outside dataset range | 0 (reported as "100% number accuracy" in earlier revisions) |
-| Community attribution | **100%** |
+The data-only answers matter more than they look: a public demo on Groq's free tier
+(200k tokens a day, about 5.5k per question) can serve roughly 35 LLM answers a day,
+and every question after that is answered from DuckDB alone.
 
-Harness tests: `pytest eval/test_run_eval.py` — 14 tests covering the checks themselves.
+Harness tests: `pytest eval/`.
 
 ### Retrieval sampling
 
@@ -360,6 +362,5 @@ The UI uses a custom **Luxury Gold** design system (`#D4AF37` primary, Cinzel + 
 - **Chat trends are scoped.** A single-community question gets one compact
   `price_history` line (the same series as `/api/trends`); comparisons and broad
   questions do not, to keep the prompt inside the free tier's TPM budget.
-- **The eval's number check is a range check**, not per-question accuracy.
 - **No authentication.** Chat is rate limited per IP (`CHAT_RATE_LIMIT_PER_MIN`,
   default 20/min) but not authenticated; never expose a funded server key publicly.

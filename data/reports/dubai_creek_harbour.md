@@ -24,7 +24,7 @@ DLD registered 3,466 apartments in Dubai Creek Harbour as completed in 2026, inc
 
 ## Most Active Ready Projects
 
-Most active ready projects in Dubai Creek Harbour: Palace Residences - North: 66 sales at a median AED 2,689/sqft; Creek Beach - Canopy - Moor: 59 sales at a median AED 2,297/sqft; The Grand: 58 sales at a median AED 2,803/sqft; Creek Beach - Savanna-Cedar-Mangrove: 58 sales at a median AED 2,237/sqft; THE DUBAI CREEK RESIDENCES: 48 sales at a median AED 2,172/sqft.
+Most active ready projects in Dubai Creek Harbour: Palace Residences - North: 66 sales at a median AED 2,689/sqft; Creek Beach - Canopy - Moor: 59 sales at a median AED 2,297/sqft; Creek Beach - Savanna-Cedar-Mangrove: 58 sales at a median AED 2,237/sqft; The Grand: 58 sales at a median AED 2,803/sqft; THE DUBAI CREEK RESIDENCES: 48 sales at a median AED 2,172/sqft.
 
 ## Source and Method
 

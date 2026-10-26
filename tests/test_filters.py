@@ -19,11 +19,15 @@ from filters import extract_filters  # noqa: E402
 
 DB_PATH = Path(__file__).parent.parent / "data" / "dubai_properties.duckdb"
 
+# Module-wide, not in the conn fixture: several classes call rag directly,
+# which opens the database at import, so they failed instead of skipping.
+pytestmark = pytest.mark.skipif(
+    not DB_PATH.exists(), reason="database missing - run `make setup` first"
+)
+
 
 @pytest.fixture(scope="module")
 def conn():
-    if not DB_PATH.exists():
-        pytest.skip(f"{DB_PATH} missing - run `make setup` first")
     return duckdb.connect(str(DB_PATH), read_only=True)
 
 
