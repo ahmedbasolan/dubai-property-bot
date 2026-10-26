@@ -24,7 +24,7 @@ DLD registered 1,479 apartments in JLT (Jumeirah Lake Towers) as completed in 20
 
 ## Most Active Ready Projects
 
-Most active ready projects in JLT (Jumeirah Lake Towers): MBL Royal: 25 sales at a median AED 1,848/sqft; CONCORDE TOWER: 23 sales at a median AED 1,277/sqft; NEW DUBAI GATE2: 20 sales at a median AED 1,452/sqft; GOLD CREST VIEWS2: 20 sales at a median AED 1,677/sqft.
+Most active ready projects in JLT (Jumeirah Lake Towers): MBL Royal: 25 sales at a median AED 1,848/sqft; CONCORDE TOWER: 23 sales at a median AED 1,277/sqft; GOLD CREST VIEWS2: 20 sales at a median AED 1,677/sqft; NEW DUBAI GATE2: 20 sales at a median AED 1,452/sqft.
 
 ## Source and Method
 

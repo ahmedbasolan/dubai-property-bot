@@ -24,7 +24,7 @@ DLD registered 578 apartments in Dubai Land Residence Complex as completed in 20
 
 ## Most Active Ready Projects
 
-Most active ready projects in Dubai Land Residence Complex: SKY COURTS: 193 sales at a median AED 715/sqft; BLUE WAVE: 31 sales at a median AED 953/sqft; THE V TOWER: 25 sales at a median AED 1,051/sqft; DESERT SUN TOWER: 25 sales at a median AED 761/sqft; Time 1: 20 sales at a median AED 1,263/sqft.
+Most active ready projects in Dubai Land Residence Complex: SKY COURTS: 193 sales at a median AED 715/sqft; BLUE WAVE: 31 sales at a median AED 953/sqft; DESERT SUN TOWER: 25 sales at a median AED 761/sqft; THE V TOWER: 25 sales at a median AED 1,051/sqft; Time 1: 20 sales at a median AED 1,263/sqft.
 
 ## Source and Method
 
