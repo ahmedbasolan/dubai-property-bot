@@ -276,6 +276,33 @@ def _extract_community(query: str, known: Sequence[str]) -> tuple[List[str], Lis
     return [next(iter(matches))], skipped
 
 
+DATA_YEAR = 2026
+
+# Topics with no column behind them. Both answer paths state these up front:
+# asked about developers, the model once presented the off-plan supply ratio
+# as a delivery track record because nothing said developer data was absent.
+UNCOVERED_TOPICS = [
+    (r"\bdevelopers?\b|\bdelivery track record\b",
+     "Developer track records are not covered: DLD sales records carry no developer field."),
+    (r"\bservice charges?\b",
+     "Service charges are not covered: DLD doesn't publish them. Net yields here are "
+     "before service charges."),
+    (r"\b(?:occupancy|vacancy)\b",
+     "Occupancy and vacancy rates are not covered: they aren't in DLD's open data."),
+]
+
+
+def uncovered_topics(query: str) -> List[str]:
+    """Plain-English notes for anything asked about that the data doesn't hold."""
+    text = query.lower()
+    notes = [note for pattern, note in UNCOVERED_TOPICS if re.search(pattern, text)]
+    other_years = sorted({y for y in re.findall(r"\b(20\d\d)\b", text) if int(y) != DATA_YEAR})
+    if other_years:
+        notes.append(f"{', '.join(other_years)} is not covered: the data is DLD's "
+                     f"January-September {DATA_YEAR} records only.")
+    return notes
+
+
 def extract_filters(
     query: str,
     known_communities: Sequence[str] = (),

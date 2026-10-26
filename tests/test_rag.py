@@ -162,3 +162,19 @@ def test_no_per_sale_yield_for_a_community_without_one():
     community = "JBR (Jumeirah Beach Residence)"
     context = build_context(structured_search("yield", filters={"community": community}), [])
     assert states_yield_for(context, community) == []
+
+
+@pytest.mark.parametrize("question", [
+    "Which developer has the best delivery track record?",
+    "What are the service charges per sqft in JVC?",
+    "What's the occupancy rate in Dubai Marina?",
+    "What were Dubai Marina apartment prices in 2024?",
+])
+def test_context_says_when_a_topic_is_not_in_the_data(question):
+    """Asked about developers, the model presented the off-plan supply ratio as
+    a delivery track record and recommended INVEST. Nothing in the context said
+    developer data doesn't exist, so it is now stated, as it is for villas."""
+    from rag import retrieve
+
+    notes = [l for l in retrieve(question)["context"].splitlines() if l.strip().startswith("note:")]
+    assert any("not covered" in n for n in notes), notes

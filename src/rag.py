@@ -13,7 +13,7 @@ from chromadb.config import Settings
 from openai import OpenAI
 
 from config import DB_PATH, CHROMA_DIR, LLM_TEMPERATURE, LLM_MAX_TOKENS
-from filters import extract_filters
+from filters import extract_filters, uncovered_topics
 from price_trends import get_price_trend, BASIS as TREND_BASIS
 
 # Rows of transaction detail handed to the model. Each row costs roughly 110
@@ -920,7 +920,7 @@ def retrieve(
 
     structured = structured_search(query, filters=filters)
     structured["applied_filters"] = filters or {}
-    structured["skipped_filters"] = extracted["skipped"]
+    structured["skipped_filters"] = extracted["skipped"] + uncovered_topics(query)
 
     community = (filters or {}).get("community")
     semantic = semantic_search(query, n_results=3, community=community)

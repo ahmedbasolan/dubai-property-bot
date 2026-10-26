@@ -22,21 +22,7 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from db_setup import DATA_SOURCE
-from filters import extract_filters
-
-DATA_YEAR = 2026
-
-# Topics with no column behind them. Checked before anything else, so a
-# question about one never gets an answer about something adjacent.
-_UNCOVERED_TOPICS = [
-    (r"\bdevelopers?\b|\bdelivery track record\b",
-     "Developer track records are not covered: DLD sales records carry no developer field."),
-    (r"\bservice charges?\b",
-     "Service charges are not covered: DLD doesn't publish them. Net yields here are "
-     "before service charges."),
-    (r"\b(?:occupancy|vacancy)\b",
-     "Occupancy and vacancy rates are not covered: they aren't in DLD's open data."),
-]
+from filters import DATA_YEAR, extract_filters, uncovered_topics
 
 _METRICS = [
     # Order matters: "price per sq ft" is a price question, but a more specific one.
@@ -96,14 +82,7 @@ def data_only_answer(query: str, reason: str) -> Tuple[str, Dict[str, Any]]:
 # --- What was asked ---------------------------------------------------------
 
 def _uncovered(query: str, skipped: List[str]) -> List[str]:
-    text = query.lower()
-    notes = [note for pattern, note in _UNCOVERED_TOPICS if re.search(pattern, text)]
-    other_years = sorted({y for y in re.findall(r"\b(20\d\d)\b", text) if int(y) != DATA_YEAR})
-    if other_years:
-        notes.append(f"{', '.join(other_years)} isn't covered: the data is DLD's "
-                     f"January-September {DATA_YEAR} records only.")
-    notes += [_sentence(s) for s in skipped if "isn't covered" in s]
-    return notes
+    return uncovered_topics(query) + [_sentence(s) for s in skipped if "isn't covered" in s]
 
 
 def _sentence(skip_note: str) -> str:
