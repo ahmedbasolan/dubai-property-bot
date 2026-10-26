@@ -89,6 +89,30 @@ def run_retrieval_only(items: List[Dict[str, Any]]) -> Dict[str, Any]:
     return summary
 
 
+def run_fallback(items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Score the data-only answers the API gives when no LLM is available.
+
+    No LLM calls, so it runs in CI. The public demo serves these answers
+    whenever it has no key or the provider's quota is spent.
+    """
+    from data_answer import data_only_answer
+    from rag import known_communities
+
+    known = known_communities()
+    results = []
+    for item in items:
+        answer, _ = data_only_answer(item["question"], "No LLM is available.")
+        results.append({"id": item["id"], "type": item["type"], "question": item["question"],
+                        "answer_text": answer, "answer": score_answer(item, answer, known)})
+    summary = summarize(results, "answer")
+    out = EVAL_DIR / "fallback_results.json"
+    out.write_text(json.dumps({"summary": summary, "results": results}, indent=2, ensure_ascii=False) + "\n",
+                   encoding="utf-8")
+    print_summary("DATA-ONLY ANSWERS", summary)
+    print(f"\nSaved to {out}")
+    return summary
+
+
 def _save(out: Path, items: List[Dict[str, Any]], results: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Write results in eval-set order with a summary over the answered ones."""
     order = {item["id"]: i for i, item in enumerate(items)}
@@ -198,6 +222,7 @@ if __name__ == "__main__":
     parser.add_argument("--fresh", action="store_true", help="ignore prior results and re-run everything")
     parser.add_argument("--only", default=None, help="comma-separated question types to run")
     parser.add_argument("--rescore", action="store_true", help="re-score saved answers; no LLM calls")
+    parser.add_argument("--fallback", action="store_true", help="score the data-only answers; no LLM calls")
     args = parser.parse_args()
 
     eval_items = load_eval_set(args.eval_path)
@@ -206,6 +231,8 @@ if __name__ == "__main__":
         eval_items = [i for i in eval_items if i["type"] in wanted]
     if args.rescore:
         rescore(eval_items)
+    elif args.fallback:
+        run_fallback(eval_items)
     elif args.retrieval_only:
         run_retrieval_only(eval_items)
     else:
