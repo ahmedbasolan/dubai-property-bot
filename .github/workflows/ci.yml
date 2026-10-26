@@ -40,8 +40,8 @@ jobs:
       - name: Eval - data-only answers (what the demo serves without an LLM)
         run: python eval/run_eval.py --fallback --fail-under 1.0
 
-      - name: Eval - retrieval (is each answer reachable by the LLM?)
-        run: python eval/run_eval.py --retrieval-only --fail-under 0.86
+      - name: Eval - retrieval (is every answer in the context the LLM gets?)
+        run: python eval/run_eval.py --retrieval-only --fail-under 1.0
 
   frontend:
     runs-on: ubuntu-latest
