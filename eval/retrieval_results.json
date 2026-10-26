@@ -2839,7 +2839,9 @@
         "pass": true,
         "filters_ok": true,
         "applied_filters": {},
-        "skipped_filters": [],
+        "skipped_filters": [
+          "Developer track records are not covered: DLD sales records carry no developer field."
+        ],
         "context": {
           "pass": true,
           "numbers": [],
@@ -2860,7 +2862,9 @@
         "applied_filters": {
           "community": "JVC (Jumeirah Village Circle)"
         },
-        "skipped_filters": [],
+        "skipped_filters": [
+          "Service charges are not covered: DLD doesn't publish them. Net yields here are before service charges."
+        ],
         "context": {
           "pass": true,
           "numbers": [],
@@ -2881,7 +2885,9 @@
         "applied_filters": {
           "community": "Dubai Marina"
         },
-        "skipped_filters": [],
+        "skipped_filters": [
+          "Occupancy and vacancy rates are not covered: they aren't in DLD's open data."
+        ],
         "context": {
           "pass": true,
           "numbers": [],
@@ -2903,7 +2909,9 @@
           "community": "Dubai Marina",
           "property_type": "Apartment"
         },
-        "skipped_filters": [],
+        "skipped_filters": [
+          "2024 is not covered: the data is DLD's January-September 2026 records only."
+        ],
         "context": {
           "pass": true,
           "numbers": [],
