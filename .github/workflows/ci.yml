@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"  # the Vercel runtime
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt pytest
+
+      - name: Cache the embedding model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/chroma
+          key: chroma-onnx-${{ hashFiles('requirements.txt') }}
+
+      # Rebuilt from the committed parquet, not the raw DLD exports: those sit
+      # behind a captcha on the DLD gateway.
+      - name: Build DuckDB, reports and vector store
+        run: |
+          python src/db_setup.py
+          python src/build_reports.py
+          python src/ingest.py
+
+      - name: Tests
+        run: pytest tests eval -q
+
+      # No LLM calls in either eval, so no keys are needed.
+      - name: Eval - data-only answers (what the demo serves without an LLM)
+        run: python eval/run_eval.py --fallback --fail-under 1.0
+
+      - name: Eval - retrieval (is each answer reachable by the LLM?)
+        run: python eval/run_eval.py --retrieval-only --fail-under 0.86
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24  # Vercel default
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run build

@@ -2,7 +2,10 @@ __pycache__/
 *.pyc
 *.pyo
 data/dubai_properties.duckdb
-data/processed/
+# The cleaned DLD tables are committed so CI and a fresh clone can rebuild
+# DuckDB without the captcha-gated raw exports (`make setup-db`).
+data/processed/*
+!data/processed/dld_*.parquet
 chroma_db/
 .env
 *.egg-info/

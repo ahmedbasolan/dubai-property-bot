@@ -223,6 +223,8 @@ if __name__ == "__main__":
     parser.add_argument("--only", default=None, help="comma-separated question types to run")
     parser.add_argument("--rescore", action="store_true", help="re-score saved answers; no LLM calls")
     parser.add_argument("--fallback", action="store_true", help="score the data-only answers; no LLM calls")
+    parser.add_argument("--fail-under", type=float, default=None,
+                        help="exit 1 if the pass rate is below this (0-1); for CI")
     args = parser.parse_args()
 
     eval_items = load_eval_set(args.eval_path)
@@ -230,10 +232,12 @@ if __name__ == "__main__":
         wanted = set(args.only.split(","))
         eval_items = [i for i in eval_items if i["type"] in wanted]
     if args.rescore:
-        rescore(eval_items)
+        result = rescore(eval_items)["answer"]
     elif args.fallback:
-        run_fallback(eval_items)
+        result = run_fallback(eval_items)
     elif args.retrieval_only:
-        run_retrieval_only(eval_items)
+        result = run_retrieval_only(eval_items)
     else:
-        run_full(eval_items, model=args.model, resume=not args.fresh)
+        result = run_full(eval_items, model=args.model, resume=not args.fresh)["answer"]
+    if args.fail_under is not None and result["pass_rate"] < args.fail_under:
+        raise SystemExit(f"pass rate {result['pass_rate']:.1%} is below {args.fail_under:.1%}")
