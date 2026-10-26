@@ -43,15 +43,23 @@ data can no longer answer a question (e.g. a community loses its yield).
 - Answers naming a well-known community the data doesn't have fail. Citing DLD
   is tracked as a rate, not required to pass.
 
-## Retrieval baseline (no LLM)
+## Retrieval (no LLM)
 
-86% of 95 questions (October 2026 data). The failures are real retrieval gaps:
+95 of 95 (October 2026 data), held at 100% in CI. The first baseline was 82 of 95, and
+each gap was a fact the model never saw:
 
-| Type | Pass | Cause |
-|------|------|-------|
-| `price_by_bedrooms` | 2/10 | The report's Prices section isn't among the 3 semantic hits; the summary, yield and supply sections outrank it |
-| `yield_unavailable` | 2/5 | Communities without a yield still show per-sale "estimated yield" figures from project-level rents |
-| `ranking` | 4/6 | Unfiltered questions see only the top 8 communities by score; JVC (most sales) and Palm Jumeirah (lowest yield) rank below that |
+| Type | Was | Cause | Fix |
+|------|-----|-------|-----|
+| `price_by_bedrooms` | 2/10 | The report's Prices section rarely ranked in the 3 semantic hits | Exact bedroom median added to the context when a question names a community and a unit size |
+| `yield_unavailable` | 2/5 | Communities without a yield still showed per-sale "estimated yield" figures from project-level rents | Per-sale yields withheld for those communities |
+| `ranking` | 4/6 | Unfiltered questions saw only the top 8 communities by score | One compact line per community for unscoped questions |
+
+## Data-only answers (no LLM)
+
+`run_eval.py --fallback` scores what `/api/chat` returns without an LLM key or once the
+quota is spent: 95 of 95, held at 100% in CI (50 of 95 before it was rewritten to answer
+the metric asked about). Its unit tests in `tests/test_data_answer.py` use phrasings that
+are not in the eval set.
 
 Two scorer bugs were found and fixed while setting the baseline (the first run
 read 96%): sample sales matched medians by coincidence, and a one-community
