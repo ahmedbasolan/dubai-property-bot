@@ -21,6 +21,7 @@ from price_trends import get_price_trend, BASIS as TREND_BASIS
 # context - inside the 8k/min budget of the Groq free tier, which the previous
 # single-request limit could already breach.
 TX_CONTEXT_LIMIT = 40
+MIN_BEDROOM_SALES = 20  # same floor build_reports.py uses for bedroom medians
 
 # Groq's free tier counts the prompt *and* max_tokens against 8k tokens per
 # minute. The request budget below is a safety net for a growing dataset: it
@@ -265,6 +266,7 @@ def structured_search(
         scope_where = f"community IN ({placeholders})"
         scope_params = communities
 
+    results["scoped"] = scope_where != "1=1"
     results["community_scores"] = _rows_as_dicts(
         f"""SELECT * FROM v_investment_scores WHERE {scope_where}
             ORDER BY composite_score DESC NULLS LAST, community""",
@@ -290,6 +292,16 @@ def structured_search(
                 "basis": TREND_BASIS,
             }
 
+    # Exact bedroom median for "how much is a 2-bed in JLT?". Without it the
+    # model was handed the community's all-unit median and reported that: the
+    # eval's price_by_bedrooms questions passed 3 of 10.
+    bedrooms = (filters or {}).get("bedrooms")
+    if community and bedrooms is not None:
+        median, count = bedroom_median(community, bedrooms)
+        results["bedroom_median"] = {
+            "community": community, "bedrooms": bedrooms, "median": median, "count": count,
+        }
+
     # supply_pipeline names the column community_name, not community.
     supply_scope = "1=1"
     supply_params: List[Any] = []
@@ -309,6 +321,16 @@ def structured_search(
 
     results["coverage"] = _coverage_summary(where_clause, params)
     return results
+
+
+def bedroom_median(community: str, bedrooms: int) -> tuple[Optional[float], int]:
+    """Median ready-sale price and sale count for one unit size in a community."""
+    median, count = _db().execute(
+        """SELECT median(price_aed), COUNT(*) FROM transactions
+           WHERE community = ? AND handover_status = 'Ready' AND bedrooms = ?""",
+        [community, bedrooms],
+    ).fetchone()
+    return (float(median) if median is not None else None), count
 
 
 def _rows_as_dicts(query: str, params: List[Any]) -> List[Dict[str, Any]]:
@@ -560,7 +582,26 @@ def build_context(
             "above show otherwise."
         )
 
-    if structured["community_scores"]:
+    if structured["community_scores"] and not structured.get("scoped"):
+        # Every community, one compact line each. The detailed top 8 by score
+        # left rankings unanswerable: Palm Jumeirah (lowest yield) and JVC
+        # (most sales) sat below the cut. This costs about what the 8 did.
+        parts.append("\n=== ALL COMMUNITIES (DLD data, Jan-Sep 2026; ranked by score) ===")
+        for cs in structured["community_scores"]:
+            yield_part = ("gross yield INSUFFICIENT DATA (do not estimate one)"
+                          if cs["avg_roi_pct"] is None else
+                          f"gross yield {cs['avg_roi_pct']:.2f}% (net {cs['avg_net_yield_pct']:.2f}%)")
+            score_part = ("no score" if cs["composite_score"] is None
+                          else f"score {cs['composite_score']:.0f}/100 {cs['recommendation']}")
+            momentum = ("n/a" if cs["price_momentum_pct"] is None
+                        else f"{cs['price_momentum_pct']:+.1f}%")
+            parts.append(
+                f"[{cs['community']}] {yield_part}, {score_part}, "
+                f"median ready AED {cs['avg_price_per_sqft']:,.0f}/sqft, "
+                f"ready sales {cs['transaction_count']:,}, momentum {momentum}, "
+                f"supply risk {cs['supply_risk']}"
+            )
+    elif structured["community_scores"]:
         parts.append("\n=== COMMUNITY INVESTMENT SCORES (DLD data, Jan-Sep 2026) ===")
         for cs in structured["community_scores"][:8]:
             if cs["composite_score"] is None:
@@ -600,13 +641,28 @@ def build_context(
             f"({trend['change_pct']:+.1f}% on community medians). {trend['basis']}"
         )
 
+    beds = structured.get("bedroom_median")
+    if beds:
+        size = "studio" if beds["bedrooms"] == 0 else f"{beds['bedrooms']}-bedroom"
+        parts.append("\n=== BEDROOM MEDIAN (exact, all registered ready sales) ===")
+        if beds["count"] < MIN_BEDROOM_SALES:
+            parts.append(f"[{beds['community']}] only {beds['count']} ready {size} sales: "
+                         "too few for a reliable median; say so.")
+        else:
+            parts.append(f"[{beds['community']}] median ready {size} price: "
+                         f"AED {beds['median']:,.0f} from {beds['count']:,} sales. Use this "
+                         "for the price of that unit size, not the community-wide median.")
+
+    no_yield = {cs["community"] for cs in structured["community_scores"] if cs["avg_roi_pct"] is None}
     if structured["transactions"]:
         parts.append("\n=== SAMPLE DLD TRANSACTIONS ===")
         for tx in structured["transactions"]:
             beds = "Studio" if tx["bedrooms"] == 0 else (
                 "unknown beds" if tx["bedrooms"] is None else f"{tx['bedrooms']}BR")
+            # A community without a yield gets none per sale either: project
+            # rents still give its sales an estimate, which the model quoted.
             est = ("estimated gross yield n/a (insufficient rent data)"
-                   if tx["roi_pct"] is None else
+                   if tx["roi_pct"] is None or tx["community"] in no_yield else
                    f"estimated gross yield {tx['roi_pct']}% / net {tx['net_yield_pct']:.2f}% "
                    f"(project or community rent per m2 x unit size)")
             parts.append(

@@ -84,3 +84,81 @@ def test_answer_budget_fits_the_free_tier_request_limit():
     max_tokens = _budgeted_max_tokens(context)
     assert max_tokens >= MIN_ANSWER_TOKENS
     assert _estimate_tokens(context) + max_tokens <= MAX_REQUEST_TOKENS
+
+
+def test_bedroom_question_gets_the_exact_bedroom_median():
+    """The eval's weakest type: asked for a 2-bedroom price, the model was given
+    only the community's overall median and reported that as the answer. The
+    bedroom median lived in a report section that semantic search rarely
+    surfaced, so it goes into the context directly, like the price trend."""
+    import duckdb
+
+    from rag import build_context, structured_search
+
+    community = "JLT (Jumeirah Lake Towers)"
+    median, count = duckdb.connect(str(DB_PATH), read_only=True).execute(
+        """SELECT median(price_aed), COUNT(*) FROM transactions
+           WHERE community = ? AND handover_status = 'Ready' AND bedrooms = 2""",
+        [community],
+    ).fetchone()
+
+    result = structured_search("2 bed price", filters={"community": community, "bedrooms": 2})
+    context = build_context(result, [])
+
+    line = next(l for l in context.splitlines() if "2-bedroom" in l and "median" in l.lower())
+    assert f"AED {median:,.0f}" in line
+    assert f"{count:,}" in line
+
+
+def test_no_bedroom_block_without_a_bedroom_filter():
+    from rag import build_context, structured_search
+
+    context = build_context(structured_search("prices", filters={"community": "Dubai Marina"}), [])
+    assert "BEDROOM MEDIAN" not in context
+
+
+def _scores():
+    import duckdb
+
+    conn = duckdb.connect(str(DB_PATH), read_only=True)
+    cols = [d[0] for d in conn.execute("SELECT * FROM v_investment_scores LIMIT 0").description]
+    return [dict(zip(cols, r)) for r in conn.execute("SELECT * FROM v_investment_scores").fetchall()]
+
+
+def _line_for(context: str, community: str) -> str:
+    return next(l for l in context.splitlines() if l.startswith(f"[{community}]"))
+
+
+def test_unscoped_context_covers_every_community():
+    """'Lowest yield' and 'most sales' were unanswerable: an unscoped question
+    showed only the top 8 communities by score, and Palm Jumeirah (lowest
+    yield) and JVC (most sales) rank below that."""
+    from rag import build_context, structured_search
+
+    scores = _scores()
+    lowest = min((s for s in scores if s["avg_roi_pct"] is not None), key=lambda s: s["avg_roi_pct"])
+    busiest = max(scores, key=lambda s: s["transaction_count"])
+    context = build_context(structured_search("which community"), [])
+
+    assert f"{lowest['avg_roi_pct']:.2f}%" in _line_for(context, lowest["community"])
+    assert f"{busiest['transaction_count']:,}" in _line_for(context, busiest["community"])
+
+
+def test_unscoped_context_stays_inside_the_request_budget():
+    from rag import MAX_REQUEST_TOKENS, MIN_ANSWER_TOKENS, _estimate_tokens, retrieve
+
+    context = retrieve("Which community has the lowest rental yield?")["context"]
+    assert _estimate_tokens(context) + MIN_ANSWER_TOKENS <= MAX_REQUEST_TOKENS
+
+
+def test_no_per_sale_yield_for_a_community_without_one():
+    """JBR has no community yield (too few matched rents), but its sample sales
+    carried project-level 'estimated yields', inviting the model to quote one."""
+    sys.path.insert(0, str(PROJECT_ROOT / "eval"))
+    from scoring import states_yield_for
+
+    from rag import build_context, structured_search
+
+    community = "JBR (Jumeirah Beach Residence)"
+    context = build_context(structured_search("yield", filters={"community": community}), [])
+    assert states_yield_for(context, community) == []

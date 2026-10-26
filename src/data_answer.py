@@ -24,7 +24,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from db_setup import DATA_SOURCE
 from filters import extract_filters
 
-MIN_BEDROOM_SALES = 20  # same floor build_reports.py uses for bedroom medians
 DATA_YEAR = 2026
 
 # Topics with no column behind them. Checked before anything else, so a
@@ -148,17 +147,6 @@ def _score_order(s: Dict[str, Any]):
     return (s["composite_score"] is None, -(s["composite_score"] or 0), s["community"])
 
 
-def _bedroom_median(community: str, bedrooms: int) -> Tuple[Optional[float], int]:
-    from rag import _db
-
-    median, count = _db().execute(
-        """SELECT median(price_aed), COUNT(*) FROM transactions
-           WHERE community = ? AND handover_status = 'Ready' AND bedrooms = ?""",
-        [community, bedrooms],
-    ).fetchone()
-    return (float(median) if median is not None else None), count
-
-
 # --- Formatting -------------------------------------------------------------
 
 def _pct(v: Optional[float]) -> str:
@@ -195,7 +183,9 @@ def _no_yield(s: Dict[str, Any]) -> str:
 def _lead(metric: Optional[str], s: Dict[str, Any], bedrooms: Optional[int]) -> str:
     c = s["community"]
     if bedrooms is not None:
-        median, count = _bedroom_median(c, bedrooms)
+        from rag import MIN_BEDROOM_SALES, bedroom_median
+
+        median, count = bedroom_median(c, bedrooms)
         if count < MIN_BEDROOM_SALES:
             return (f"{c} had {count} ready {_beds(bedrooms)} sales, too few for a reliable "
                     "median price.")
