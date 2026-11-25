@@ -1,5 +1,15 @@
 # Code Review — Dubai Property Investment Assistant
 
+> **Historical.** This review was written at `cf57bf9` (2026-09-29), when the app ran on
+> synthetic data. PR #2 (2026-10-23) replaced that with real Dubai Land Department data,
+> so the "Data integrity" and "Evaluation claims" sections describe a dataset and an
+> eval that no longer exist. Current limitations are in the [README](../../README.md#known-limitations).
+>
+> "Still open" as of 2026-11-25: **2** done (the Streamlit-era dependencies are gone,
+> and chromadb/duckdb are bounded); **3** partly done (CI runs pytest, eslint, `tsc` and
+> `next build`, but there are still no component tests); **4** fixed (the probe was removed).
+> 1, 5 and 6 have not been rechecked against the real-data version.
+
 Reviewed at `cf57bf9` ("Extract SQL filters deterministically from natural-language
 queries"), 30 commits, working tree clean. Method: read the backend, infra, frontend,
 eval harness and data; ran `pytest` (57 then), `eslint`, `tsc`, and exercised the REST

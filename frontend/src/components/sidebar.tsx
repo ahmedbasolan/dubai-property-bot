@@ -127,8 +127,10 @@ export function Sidebar() {
                 </div>
               </button>
             ) : (
-              <div className="px-3 py-2 rounded-lg text-xs text-muted-foreground bg-accent/50 border border-border">
-                Add BAYUT_API_KEY to .env for live listings
+              // Live listings need BAYUT_API_KEY (see README); visitors just see the active source.
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground bg-accent border border-border">
+                <Radio size={14} className="text-muted-foreground" />
+                DLD registered sales
               </div>
             )}
           </div>
