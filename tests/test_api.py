@@ -1,4 +1,4 @@
-"""API contract tests for the endpoints reviewed in REVIEW.md.
+"""API contract tests for the endpoints reviewed in docs/reviews/2026-09-29-code-review.md.
 
 These cover the regressions the original suite could not see: the list endpoint
 was reusing the LLM's 40-row context sample, errors were returned as HTTP 200,

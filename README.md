@@ -1,5 +1,11 @@
 # Dubai Property Investment Assistant
 
+[![CI](https://github.com/ahmedbasolan/dubai-property-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/ahmedbasolan/dubai-property-bot/actions/workflows/ci.yml)
+
+**[Live demo →](https://dubai-property-bot.vercel.app)** No sign-up or API key needed: without one, the advisor answers from the data alone.
+
+![Dashboard: 29 communities scored on DLD registered sales, with top communities and latest sales](docs/images/home.png)
+
 AI-powered investment scoring and Q&A for Dubai apartments, built on **real Dubai Land Department open data**: 47,677 registered apartment sales and Ejari rent contracts across 29 communities (January–September 2026). It computes rental yields, measures price momentum and supply pressure, scores communities, and answers questions with citations. A community without enough rent data gets "insufficient data", never an estimate.
 
 **Stack:** Next.js 16 + FastAPI + DuckDB + ChromaDB + Groq (LLM). Bayut API optional for live listings.
@@ -330,7 +336,7 @@ dubai-property-bot/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── Makefile
-├── REVIEW.md              # Code review: verified defects and open limitations
+├── docs/reviews/          # An earlier code review (pre real data), kept for history
 └── CASE_STUDY.md
 ```
 
@@ -344,7 +350,7 @@ The UI uses a custom **Luxury Gold** design system (`#D4AF37` primary, Cinzel + 
 
 ## Known limitations
 
-`REVIEW.md` has the full list. The ones that change how results should be read:
+The ones that change how results should be read:
 
 - **5 of 29 communities have no yield or score**: Discovery Gardens, JBR, Liwan,
   Motor City and The Greens. Their rents are filed under broad official areas with

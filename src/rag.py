@@ -943,12 +943,6 @@ def health_check() -> Dict[str, bool]:
         checks["duckdb"] = False
 
     try:
-        chroma_client.get_collection("transactions")
-        checks["chromadb_transactions"] = True
-    except Exception:
-        checks["chromadb_transactions"] = False
-
-    try:
         chroma_client.get_collection("market_reports")
         checks["chromadb_reports"] = True
     except Exception:
